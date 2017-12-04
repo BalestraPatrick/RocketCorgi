@@ -16,7 +16,9 @@
 #include "PlyModel.h"
 
 using namespace std;
-const string PROJECT_FOLDER = "/Users/patrickbalestra/Documents/Github/RocketCorgi";
+//const string PROJECT_FOLDER = "/Users/patrickbalestra/Documents/Github/RocketCorgi";
+const string PROJECT_FOLDER = "/Users/BMW/Documents/Git/RocketCorgi";
+
 /************************************************************************/
 /* Canvas to draw                                                       */
 /************************************************************************/
@@ -27,8 +29,16 @@ class CCanvas : public QGLWidget
 public:
     explicit CCanvas(QWidget *parent = 0) : QGLWidget(parent),
         textureTrain(PROJECT_FOLDER + "/rocket_corgi_src/train.jpg"),
-        modelTrain(PROJECT_FOLDER + "/rocket_corgi_src/corgi_front.obj"),
-        modelTrain2(PROJECT_FOLDER + "/rocket_corgi_src/train.ply")
+		corgiFront(PROJECT_FOLDER + "/rocket_corgi_src/corgi_front.obj"),
+		corgiBack(PROJECT_FOLDER + "/rocket_corgi_src/corgi_front.obj"),
+		harness(PROJECT_FOLDER + "/rocket_corgi_src/corgi_front.obj"),
+		goggles(PROJECT_FOLDER + "/rocket_corgi_src/corgi_front.obj"),
+		topRocketLeft(PROJECT_FOLDER + "/rocket_corgi_src/corgi_front.obj"),
+		bottomRocketLeft(PROJECT_FOLDER + "/rocket_corgi_src/corgi_front.obj"),
+		topRocketRight(PROJECT_FOLDER + "/rocket_corgi_src/corgi_front.obj"),
+		bottomRocketRight(PROJECT_FOLDER + "/rocket_corgi_src/corgi_front.obj")
+
+//        modelTrain2(PROJECT_FOLDER + "/rocket_corgi_src/train.ply")
     {
         QTimer *timer = new QTimer(this);
         connect(timer, SIGNAL(timeout()), this, SLOT(updateGL()));
@@ -68,9 +78,18 @@ private:
     // Models and textures
     Texture textureTrain;
     // Model loaded from .obj format
-    ObjModel modelTrain;
+	ObjModel corgiFront;
+	ObjModel corgiBack;
+	ObjModel goggles;
+	ObjModel harness;
+	ObjModel topRocketRight;
+	ObjModel bottomRocketRight;
+	ObjModel topRocketLeft;
+	ObjModel bottomRocketLeft;
+
+
     // Model loaded from .ply format
-    PlyModel modelTrain2;
+//    PlyModel modelTrain2;
 };
 
 #endif 

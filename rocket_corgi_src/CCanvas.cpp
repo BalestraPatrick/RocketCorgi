@@ -45,8 +45,14 @@ void CCanvas::initializeGL()
      * Before you can use OBJ/PLY model, you need to initialize it by calling init() method.
      */
     textureTrain.setTexture();
-    modelTrain.init();
-    modelTrain2.init();
+	corgiFront.init();
+	corgiBack.init();
+	goggles.init();
+	harness.init();
+	topRocketRight.init();
+	bottomRocketRight.init();
+	topRocketLeft.init();
+	bottomRocketLeft.init();
 }
 
 //-----------------------------------------------------------------------------
@@ -261,7 +267,16 @@ void CCanvas::paintGL()
     // Look at the ObjModel class to see how the drawing is done
     glScalef(0.05f, 0.05f, 0.05f);
 //    glTranslatef(-7.0, -15.0, 0.0);
-    modelTrain.draw();
+	corgiFront.draw();
+	corgiBack.draw();
+	goggles.draw();
+	harness.draw();
+	topRocketRight.draw();
+	bottomRocketRight.draw();
+	topRocketLeft.draw();
+	bottomRocketLeft.draw();
+
+
     // Look at the PlyModel class to see how the drawing is done
     /*
      * The models you load can have different scales. If you are drawing a proper model but nothing
