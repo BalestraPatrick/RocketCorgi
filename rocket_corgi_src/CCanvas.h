@@ -16,7 +16,7 @@
 #include "PlyModel.h"
 
 using namespace std;
-
+const string PROJECT_FOLDER = "/Users/lara/Documents/USI/5th/ComputerGraphics/Project";
 /************************************************************************/
 /* Canvas to draw                                                       */
 /************************************************************************/
@@ -26,9 +26,9 @@ class CCanvas : public QGLWidget
 
 public:
     explicit CCanvas(QWidget *parent = 0) : QGLWidget(parent),
-        textureTrain("/Users/luca/Documents/USI/FS_2017/ComputerGraphics/project/RocketCorgi/rocket_corgi_src/train.jpg"),
-        modelTrain("/Users/luca/Documents/USI/FS_2017/ComputerGraphics/project/RocketCorgi/rocket_corgi_src/train.obj"),
-        modelTrain2("/Users/luca/Documents/USI/FS_2017/ComputerGraphics/project/RocketCorgi/rocket_corgi_src/train.ply")
+        textureTrain(PROJECT_FOLDER + "/rocket_corgi_src/train.jpg"),
+        modelTrain(PROJECT_FOLDER + "/rocket_corgi_src/train.obj"),
+        modelTrain2(PROJECT_FOLDER + "/rocket_corgi_src/train.ply")
     {
         QTimer *timer = new QTimer(this);
         connect(timer, SIGNAL(timeout()), this, SLOT(updateGL()));

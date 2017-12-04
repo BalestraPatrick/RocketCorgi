@@ -2,28 +2,26 @@
 #define TERRAIN_H
 
 
-#include "noise.h"
+
 #include "Base.h"
+#include "PerlinNoise.hpp"
+#include "noise.h"
+
 namespace Terrain {
+
+
 
 void drawTerrain()
 {
 
-    int world_dim = 100;
-    // **** Generation parameters (tweak these)***
+    int world_dim = 600;
 
-    int octaves = 6;
-    float persistence = 0.5;
-    float exponent = 2.15;
-    float heigth_range = 500.0;
-
-    // ******************************
 
     float cur_x,z;
     float x[2]; //keeps last and next x
 
-    glPolygonMode(GL_FRONT_AND_BACK ,GL_LINE);
-    glShadeModel(GL_FLAT);
+    glPolygonMode(GL_FRONT_AND_BACK ,GL_SMOOTH);
+    glShadeModel(GL_SMOOTH);
 
     // 1000 strips, 1000 triangles long
     x[0] = -world_dim/2.0;
@@ -31,22 +29,27 @@ void drawTerrain()
     cur_x = x[0];
     for(int i=0; i<world_dim; i++)
     {
-        glNormal3f(0.0, 1.0, 0.0);
+        //glNormal3f(1.0, 1.0, 1.0);
+
         glBegin(GL_TRIANGLE_STRIP);
             z=0.0;
+            Point3d off = Point3d(1.0, 1.0, 0.0);
+            siv::PerlinNoise perlinNoise(42);
             for(int j=0; j<world_dim; j++)
             {
-                // **** Parameters form elevation
-                float nx = (float)i/(float)world_dim - 0.5;
-                float ny = (float)j/(float)world_dim - 0.5;
-//                float elevation = noise(nx, ny);
-                float elevation = perlin_noise_2D(nx, ny, octaves, persistence);
-                elevation = pow(elevation, exponent);
+                Point3d p = Point3d(cur_x, noise(cur_x, z) , z + 100);
+                Point2d p_xy = Point2d(p.x(), p.y());
+                Point2d off_xz = Point2d(off.x(), off.z());
+                Point2d off_zy = Point2d(off.z(), off.y());
+                float hL = noise((p_xy - off_xz).x(), (p_xy - off_xz).y());
+                float hR = noise((p_xy + off_xz).x(), (p_xy + off_xz).y());
+                float hD = noise((p_xy - off_zy).x(), (p_xy - off_zy).y());
+                float hU = noise((p_xy + off_zy).x(), (p_xy + off_zy).y());
 
-                elevation = elevation*heigth_range;
-                // ****
-//                std::cout << elevation << " " << endl;
-                glVertex3f(cur_x, elevation, z);
+                // deduce terrain normal
+                Point3d n = Point3d(hL - hR, hD - hU, 2.0).normalized();
+                glNormal3f(n.x(), n.y(), n.z());
+                glVertex3f(p.x(), p.y(), p.z());
                 z = z - (j%2); //once every 2 triangles
                 cur_x = x[(j+1)%2]; //alternate between two points
             }

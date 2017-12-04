@@ -24,7 +24,8 @@ HEADERS += ./Base.h \
            ./objloader.hpp \
            ./tinyply.h \
     noise.h \
-    terrain.h
+    terrain.h \
+    PerlinNoise.hpp
 
 # Source files
 SOURCES += ./CCanvas.cpp \
