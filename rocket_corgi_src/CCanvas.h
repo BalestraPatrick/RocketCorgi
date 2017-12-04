@@ -26,9 +26,9 @@ class CCanvas : public QGLWidget
 
 public:
     explicit CCanvas(QWidget *parent = 0) : QGLWidget(parent),
-        textureTrain("/Users/gabrielerovi/Desktop/computergraphics/project_base_code/train.jpg"),
-        modelTrain("/Users/gabrielerovi/Desktop/computergraphics/project_base_code/train.obj"),
-        modelTrain2("/Users/gabrielerovi/Desktop/computergraphics/project_base_code/train.ply")
+        textureTrain("/Users/luca/Documents/USI/FS_2017/ComputerGraphics/project/RocketCorgi/rocket_corgi_src/train.jpg"),
+        modelTrain("/Users/luca/Documents/USI/FS_2017/ComputerGraphics/project/RocketCorgi/rocket_corgi_src/train.obj"),
+        modelTrain2("/Users/luca/Documents/USI/FS_2017/ComputerGraphics/project/RocketCorgi/rocket_corgi_src/train.ply")
     {
         QTimer *timer = new QTimer(this);
         connect(timer, SIGNAL(timeout()), this, SLOT(updateGL()));
@@ -63,6 +63,7 @@ private:
     };
 
     void setView(View _view);
+
 
     // Models and textures
     Texture textureTrain;
