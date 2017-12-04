@@ -28,15 +28,15 @@ class CCanvas : public QGLWidget
 
 public:
     explicit CCanvas(QWidget *parent = 0) : QGLWidget(parent),
-        textureTrain(PROJECT_FOLDER + "/rocket_corgi_src/train.jpg"),
-		corgiFront(PROJECT_FOLDER + "/rocket_corgi_src/corgi_front.obj"),
-		corgiBack(PROJECT_FOLDER + "/rocket_corgi_src/corgi_front.obj"),
-		harness(PROJECT_FOLDER + "/rocket_corgi_src/corgi_front.obj"),
-		goggles(PROJECT_FOLDER + "/rocket_corgi_src/corgi_front.obj"),
-		topRocketLeft(PROJECT_FOLDER + "/rocket_corgi_src/corgi_front.obj"),
-		bottomRocketLeft(PROJECT_FOLDER + "/rocket_corgi_src/corgi_front.obj"),
-		topRocketRight(PROJECT_FOLDER + "/rocket_corgi_src/corgi_front.obj"),
-		bottomRocketRight(PROJECT_FOLDER + "/rocket_corgi_src/corgi_front.obj")
+		textureTrain(PROJECT_FOLDER + "/rocket_corgi_src/train.jpg"),
+		corgiFront(PROJECT_FOLDER + "/models/RocketCorgiOBJ/Corgi_Front.obj"),
+		corgiBack(PROJECT_FOLDER + "/models/RocketCorgiOBJ/Corgi_Rear.obj"),
+		harness(PROJECT_FOLDER + "/models/RocketCorgiOBJ/Harness.obj"),
+		goggles(PROJECT_FOLDER + "/models/RocketCorgiOBJ/Goggles.obj"),
+		topRocketLeft(PROJECT_FOLDER + "/models/RocketCorgiOBJ/Engine_Front.obj"),
+		bottomRocketLeft(PROJECT_FOLDER + "/models/RocketCorgiOBJ/Engine_Rear.obj"),
+		topRocketRight(PROJECT_FOLDER + "/models/RocketCorgiOBJ/Engine_Front.obj"),
+		bottomRocketRight(PROJECT_FOLDER + "/models/RocketCorgiOBJ/Engine_Rear.obj")
 
 //        modelTrain2(PROJECT_FOLDER + "/rocket_corgi_src/train.ply")
     {
