@@ -27,57 +27,57 @@ class CCanvas : public QGLWidget
   Q_OBJECT
 
 public:
-    explicit CCanvas(QWidget *parent = 0) : QGLWidget(parent),
+	explicit CCanvas(QWidget *parent = 0) : QGLWidget(parent),
 		textureTrain(PROJECT_FOLDER + "/rocket_corgi_src/train.jpg"),
 		corgiFront(PROJECT_FOLDER + "/models/RocketCorgiOBJ/Corgi_Front.obj"),
 		corgiBack(PROJECT_FOLDER + "/models/RocketCorgiOBJ/Corgi_Rear.obj"),
 		harness(PROJECT_FOLDER + "/models/RocketCorgiOBJ/Harness.obj"),
 		goggles(PROJECT_FOLDER + "/models/RocketCorgiOBJ/Goggles.obj"),
-		topRocketLeft(PROJECT_FOLDER + "/models/RocketCorgiOBJ/Engine_Front.obj"),
-		bottomRocketLeft(PROJECT_FOLDER + "/models/RocketCorgiOBJ/Engine_Rear.obj"),
+		topRocketLeft(PROJECT_FOLDER + "/models/RocketCorgiOBJ/Engine_Front1.obj"),
+		bottomRocketLeft(PROJECT_FOLDER + "/models/RocketCorgiOBJ/Engine_Rear1.obj"),
 		topRocketRight(PROJECT_FOLDER + "/models/RocketCorgiOBJ/Engine_Front.obj"),
 		bottomRocketRight(PROJECT_FOLDER + "/models/RocketCorgiOBJ/Engine_Rear.obj")
 
 //        modelTrain2(PROJECT_FOLDER + "/rocket_corgi_src/train.ply")
-    {
-        QTimer *timer = new QTimer(this);
-        connect(timer, SIGNAL(timeout()), this, SLOT(updateGL()));
-        timer->start(10);
-    }
+	{
+		QTimer *timer = new QTimer(this);
+		connect(timer, SIGNAL(timeout()), this, SLOT(updateGL()));
+		timer->start(10);
+	}
 
 protected:
-    void initializeGL();
-    void resizeGL(int width, int height);
-    void paintGL();
+	void initializeGL();
+	void resizeGL(int width, int height);
+	void paintGL();
 
 private:
-    void lookAt(const GLdouble eyex,
-                const GLdouble eyey,
-                const GLdouble eyez,
-                const GLdouble centerx,
-                const GLdouble centery,
-                const GLdouble centerz,
-                const GLdouble upx,
-                const GLdouble upy,
-                const GLdouble upz);
+	void lookAt(const GLdouble eyex,
+				const GLdouble eyey,
+				const GLdouble eyez,
+				const GLdouble centerx,
+				const GLdouble centery,
+				const GLdouble centerz,
+				const GLdouble upx,
+				const GLdouble upy,
+				const GLdouble upz);
 
-    void glPerspective(const GLdouble fovy,
-                       const GLdouble aspect,
-                       const GLdouble zNear,
-                       const GLdouble zFar);
-
-
-    enum View {
-        Perspective = 0,    // View the scene from a perspective (from above, from a side, or whatever)
-        Cockpit             // View the scene from the train cockpit (if you want, or whatever other view)
-    };
-
-    void setView(View _view);
+	void glPerspective(const GLdouble fovy,
+					   const GLdouble aspect,
+					   const GLdouble zNear,
+					   const GLdouble zFar);
 
 
-    // Models and textures
-    Texture textureTrain;
-    // Model loaded from .obj format
+	enum View {
+		Perspective = 0,    // View the scene from a perspective (from above, from a side, or whatever)
+		Cockpit             // View the scene from the train cockpit (if you want, or whatever other view)
+	};
+
+	void setView(View _view);
+
+
+	// Models and textures
+	Texture textureTrain;
+	// Model loaded from .obj format
 	ObjModel corgiFront;
 	ObjModel corgiBack;
 	ObjModel goggles;
@@ -88,8 +88,8 @@ private:
 	ObjModel bottomRocketLeft;
 
 
-    // Model loaded from .ply format
+	// Model loaded from .ply format
 //    PlyModel modelTrain2;
 };
 
-#endif 
+#endif
