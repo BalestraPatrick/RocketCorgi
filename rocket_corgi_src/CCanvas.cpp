@@ -185,6 +185,7 @@ void CCanvas::setView(View _view) {
     }
 }
 
+
 void CCanvas::paintGL()
 {
     // clear screen and depth buffer
@@ -208,18 +209,18 @@ void CCanvas::paintGL()
     glDisable(GL_LIGHTING);
     glColor3f(1.0f, 0.0f, 0.0f);
     glBegin(GL_LINES);
-        glVertex3f(-6.0f, 0.0f, 0.0f);
-        glVertex3f(6.0f, 0.0f, 0.0f);
+    glVertex3f(-6.0f, 0.0f, 0.0f);
+    glVertex3f(6.0f, 0.0f, 0.0f);
     glEnd();
     glColor3f(0.0f, 1.0f, 0.0f);
     glBegin(GL_LINES);
-        glVertex3f(0.0f, -6.0f, 0.0f);
-        glVertex3f(0.0f, 6.0f, 0.0f);
+    glVertex3f(0.0f, -6.0f, 0.0f);
+    glVertex3f(0.0f, 6.0f, 0.0f);
     glEnd();
     glColor3f(0.0f, 0.0f, 1.0f);
     glBegin(GL_LINES);
-        glVertex3f(0.0f, 0.0f, -6.0f);
-        glVertex3f(0.0f, 0.0f, 6.0f);
+    glVertex3f(0.0f, 0.0f, -6.0f);
+    glVertex3f(0.0f, 0.0f, 6.0f);
     glEnd();
     glEnable(GL_LIGHTING);
 
@@ -258,16 +259,20 @@ void CCanvas::paintGL()
     glGetFloatv (GL_MODELVIEW_MATRIX, matrix);
 
     // Look at the ObjModel class to see how the drawing is done
-//    modelTrain.draw();
+    glScalef(0.05f, 0.05f, 0.05f);
+//    glTranslatef(-7.0, -15.0, 0.0);
+    modelTrain.draw();
     // Look at the PlyModel class to see how the drawing is done
     /*
      * The models you load can have different scales. If you are drawing a proper model but nothing
      * is shown, check the scale of the model, your camera could be for example inside of it.
      */
-//    glScalef(0.02f, 0.02f, 0.02f);
+
 //    modelTrain2.draw();
     // Remove the last transformation matrix from the stack - you have drawn your last
     // object with a new transformation and now you go back to the previous one
     glPopMatrix();
     textureTrain.unbind();
+
+
 }

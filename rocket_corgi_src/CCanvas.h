@@ -16,7 +16,7 @@
 #include "PlyModel.h"
 
 using namespace std;
-const string PROJECT_FOLDER = "/Users/lara/Documents/USI/5th/ComputerGraphics/Project";
+const string PROJECT_FOLDER = "/Users/patrickbalestra/Documents/Github/RocketCorgi";
 /************************************************************************/
 /* Canvas to draw                                                       */
 /************************************************************************/
@@ -27,7 +27,7 @@ class CCanvas : public QGLWidget
 public:
     explicit CCanvas(QWidget *parent = 0) : QGLWidget(parent),
         textureTrain(PROJECT_FOLDER + "/rocket_corgi_src/train.jpg"),
-        modelTrain(PROJECT_FOLDER + "/rocket_corgi_src/train.obj"),
+        modelTrain(PROJECT_FOLDER + "/rocket_corgi_src/corgi_front.obj"),
         modelTrain2(PROJECT_FOLDER + "/rocket_corgi_src/train.ply")
     {
         QTimer *timer = new QTimer(this);
