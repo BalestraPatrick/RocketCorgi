@@ -22,7 +22,9 @@ HEADERS += ./Base.h \
            ./ObjModel.h \
            ./PlyModel.h \
            ./objloader.hpp \
-           ./tinyply.h
+           ./tinyply.h \
+    noise.h \
+    terrain.h
 
 # Source files
 SOURCES += ./CCanvas.cpp \
