@@ -1,6 +1,7 @@
 #include "CCanvas.h"
 #include "Base.h"
 #include "Sphere.h"
+#include "terrain.h"
 
 using namespace std;
 
@@ -28,7 +29,7 @@ void CCanvas::initializeGL()
      * light in eye coordinates, and attenuation is enabled. The default position is (0,0,1,0); thus,
      * the default light source is directional, parallel to, and in the direction of the -z axis.
      */
-    GLfloat lightpos[] = {0.0, 0.0, 1.0, 0.0};
+    GLfloat lightpos[] = {0.0, 0.0, 10.0, 0.0};
     glLightfv(GL_LIGHT0, GL_POSITION, lightpos);
 
     GLfloat lightAmb[]  = {0.3, 0.3, 0.3};
@@ -172,7 +173,6 @@ void CCanvas::resizeGL(int width, int height)
 }
 
 //-----------------------------------------------------------------------------
-
 void CCanvas::setView(View _view) {
     switch(_view) {
     case Perspective:
@@ -200,11 +200,11 @@ void CCanvas::paintGL()
     setView(View::Perspective);
 
     // You can always change the light position here if you want
-    GLfloat lightpos[] = {0.0f, 0.0f, 10.0f, 0.0f};
+    GLfloat lightpos[] = {0.0f, 0.0f, 1.0f, 0.0f};
     glLightfv(GL_LIGHT0, GL_POSITION, lightpos);
 
     /**** Axes in the global coordinate system ****/
-    /*
+
     glDisable(GL_LIGHTING);
     glColor3f(1.0f, 0.0f, 0.0f);
     glBegin(GL_LINES);
@@ -222,24 +222,27 @@ void CCanvas::paintGL()
         glVertex3f(0.0f, 0.0f, 6.0f);
     glEnd();
     glEnable(GL_LIGHTING);
-    */
+
+    /**** Draw the terrain ***/
+    Terrain::drawTerrain();
+
     /**** Setup and draw your objects ****/
 
     // You can freely enable/disable some of the lights in the scene as you wish
-    //glEnable(GL_LIGHT0);
-    //glDisable(GL_LIGHT1);
+    glEnable(GL_LIGHT0);
+    glDisable(GL_LIGHT1);
     // Before drawing an object, you can set its material properties
-    /*
-    glColor3f(0.5f, 0.5f, 0.5f);
-    GLfloat amb[]  = {0.1f, 0.1f, 0.1f};
-    GLfloat diff[] = {0.7f, 0.7f, 0.7f};
-    GLfloat spec[] = {0.1f, 0.1f, 0.1f};
-    GLfloat shin = 0.0001;
-    glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, amb);
-    glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, diff);
-    glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, spec);
-    glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, &shin);
-    */
+
+//    glColor3f(0.5f, 0.5f, 0.5f);
+//    GLfloat amb[]  = {0.1f, 0.1f, 0.1f};
+//    GLfloat diff[] = {0.7f, 0.7f, 0.7f};
+//    GLfloat spec[] = {0.1f, 0.1f, 0.1f};
+//    GLfloat shin = 0.0001;
+//    glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, amb);
+//    glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, diff);
+//    glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, spec);
+//    glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, &shin);
+
 
     // Drawing the object with texture
     textureTrain.bind();
@@ -251,16 +254,18 @@ void CCanvas::paintGL()
      *  GLfloat matrix[16];
      *  glGetFloatv (GL_MODELVIEW_MATRIX, matrix);
     */
+    GLfloat matrix[16];
+    glGetFloatv (GL_MODELVIEW_MATRIX, matrix);
 
     // Look at the ObjModel class to see how the drawing is done
-    modelTrain.draw();
+//    modelTrain.draw();
     // Look at the PlyModel class to see how the drawing is done
     /*
      * The models you load can have different scales. If you are drawing a proper model but nothing
      * is shown, check the scale of the model, your camera could be for example inside of it.
      */
-    //glScalef(0.02f, 0.02f, 0.02f);
-    //modelTrain2.draw();
+//    glScalef(0.02f, 0.02f, 0.02f);
+//    modelTrain2.draw();
     // Remove the last transformation matrix from the stack - you have drawn your last
     // object with a new transformation and now you go back to the previous one
     glPopMatrix();

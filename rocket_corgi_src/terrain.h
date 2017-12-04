@@ -3,11 +3,22 @@
 
 
 #include "noise.h"
+#include "Base.h"
 namespace Terrain {
 
-void drawTerrain() {
+void drawTerrain()
+{
 
-    int world_dim = 1000;
+    int world_dim = 100;
+    // **** Generation parameters (tweak these)***
+
+    int octaves = 6;
+    float persistence = 0.5;
+    float exponent = 2.15;
+    float heigth_range = 500.0;
+
+    // ******************************
+
     float cur_x,z;
     float x[2]; //keeps last and next x
 
@@ -29,12 +40,12 @@ void drawTerrain() {
                 float nx = (float)i/(float)world_dim - 0.5;
                 float ny = (float)j/(float)world_dim - 0.5;
 //                float elevation = noise(nx, ny);
-                float elevation = perlin_noise_2D(nx, ny, 4, 0.5);
-                elevation = pow(elevation, 4.0);
+                float elevation = perlin_noise_2D(nx, ny, octaves, persistence);
+                elevation = pow(elevation, exponent);
 
-                elevation = elevation*100;
+                elevation = elevation*heigth_range;
                 // ****
-                cout << elevation << endl();
+//                std::cout << elevation << " " << endl;
                 glVertex3f(cur_x, elevation, z);
                 z = z - (j%2); //once every 2 triangles
                 cur_x = x[(j+1)%2]; //alternate between two points
