@@ -17,7 +17,8 @@
 
 using namespace std;
 //const string PROJECT_FOLDER = "/Users/patrickbalestra/Documents/Github/RocketCorgi";
-const string PROJECT_FOLDER = "/Users/BMW/Documents/Git/RocketCorgi";
+//const string PROJECT_FOLDER = "/Users/BMW/Documents/Git/RocketCorgi";
+const string PROJECT_FOLDER = "/Users/luca/Documents/USI/FS_2017/ComputerGraphics/project/RocketCorgi";
 
 /************************************************************************/
 /* Canvas to draw                                                       */
