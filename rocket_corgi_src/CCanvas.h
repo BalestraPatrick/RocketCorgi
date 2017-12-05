@@ -30,6 +30,8 @@ public:
 	explicit CCanvas(QWidget *parent = 0) : QGLWidget(parent),
         textureTrain(PROJECT_FOLDER + "/rocket_corgi_src/textures/train.jpg"),
         textureCorgiFur(PROJECT_FOLDER + "/rocket_corgi_src/textures/fur1.jpg"),
+        textureEngine(PROJECT_FOLDER + "/rocket_corgi_src/textures/steel1.jpg"),
+        textureGoggles(PROJECT_FOLDER + "/rocket_corgi_src/textures/greenglass1.jpg"),
 		corgiFront(PROJECT_FOLDER + "/models/RocketCorgiOBJ/Corgi_Front.obj"),
 		corgiBack(PROJECT_FOLDER + "/models/RocketCorgiOBJ/Corgi_Rear.obj"),
 		harness(PROJECT_FOLDER + "/models/RocketCorgiOBJ/Harness.obj"),
@@ -77,6 +79,8 @@ private:
 	// Models and textures
 	Texture textureTrain;
     Texture textureCorgiFur;
+    Texture textureEngine;
+    Texture textureGoggles;
 	// Model loaded from .obj format
 	ObjModel corgiFront;
 	ObjModel corgiBack;

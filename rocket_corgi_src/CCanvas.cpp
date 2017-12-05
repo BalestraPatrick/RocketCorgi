@@ -46,6 +46,9 @@ void CCanvas::initializeGL()
 	 */
 	textureTrain.setTexture();
     textureCorgiFur.setTexture();
+    textureEngine.setTexture();
+    textureGoggles.setTexture();
+
 	corgiFront.init();
 	corgiBack.init();
 	goggles.init();
@@ -252,11 +255,9 @@ void CCanvas::paintGL()
 //    glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, &shin);
 
 
-	// Drawing the object with texture
-    textureCorgiFur.bind();
 	// You can stack new transformation matrix if you don't want
 	// the previous transformations to apply on this object
-	glPushMatrix();
+    //glPushMatrix();
 	/*
 	 * Obtaining the values of the current modelview matrix
 	 *  GLfloat matrix[16];
@@ -270,16 +271,23 @@ void CCanvas::paintGL()
 	glPushMatrix();
 
 	glRotatef(90.0f, 0.0f, 0.0f, 0.0f);
+    // Drawing the object with texture
+    textureCorgiFur.bind();
 	corgiFront.draw();
 	corgiBack.draw();
+    textureCorgiFur.unbind();
+    textureGoggles.bind();
 	goggles.draw();
+    textureGoggles.unbind();
+    textureEngine.bind();
 	harness.draw();
 	topRocketRight.draw();
 	bottomRocketRight.draw();
 	topRocketLeft.draw();
 	bottomRocketLeft.draw();
-	glPopMatrix();
-    textureCorgiFur.unbind();
+    textureEngine.unbind();
+
+    glPopMatrix();
 
 	// Remove the last transformation matrix from the stack - you have drawn your last
 	// object with a new transformation and now you go back to the previous one
