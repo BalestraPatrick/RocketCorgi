@@ -32,6 +32,7 @@ public:
         textureCorgiFur(PROJECT_FOLDER + "/rocket_corgi_src/textures/fur1.jpg"),
         textureEngine(PROJECT_FOLDER + "/rocket_corgi_src/textures/steel1.jpg"),
         textureGoggles(PROJECT_FOLDER + "/rocket_corgi_src/textures/greenglass1.jpg"),
+        textureTerrain(PROJECT_FOLDER + "/rocket_corgi_src/textures/beach.jpg"),
 		corgiFront(PROJECT_FOLDER + "/models/RocketCorgiOBJ/Corgi_Front.obj"),
 		corgiBack(PROJECT_FOLDER + "/models/RocketCorgiOBJ/Corgi_Rear.obj"),
 		harness(PROJECT_FOLDER + "/models/RocketCorgiOBJ/Harness.obj"),
@@ -81,6 +82,7 @@ private:
     Texture textureCorgiFur;
     Texture textureEngine;
     Texture textureGoggles;
+    Texture textureTerrain;
 	// Model loaded from .obj format
 	ObjModel corgiFront;
 	ObjModel corgiBack;

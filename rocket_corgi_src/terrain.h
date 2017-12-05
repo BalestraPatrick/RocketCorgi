@@ -2,7 +2,8 @@
 #define TERRAIN_H
 
 
-
+#include <QtOpenGL>
+#include <QGLWidget>
 #include "Base.h"
 #include "PerlinNoise.hpp"
 #include "noise.h"
@@ -62,6 +63,7 @@ void drawTerrain()
                 // deduce terrain normal
                 Point3d n = Point3d(hL - hR, hD - hU, 2.0).normalized();
                 glNormal3f(n.x(), n.y(), n.z());
+                glTexCoord2f(((int)z+1)%2,j%2);
                 glVertex3f(p.x(), p.y(), p.z());
                 z = z - (j%2); //once every 2 triangles
                 cur_x = x[(j+1)%2]; //alternate between two points

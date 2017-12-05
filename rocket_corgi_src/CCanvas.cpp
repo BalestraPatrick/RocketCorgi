@@ -48,6 +48,7 @@ void CCanvas::initializeGL()
     textureCorgiFur.setTexture();
     textureEngine.setTexture();
     textureGoggles.setTexture();
+    textureTerrain.setTexture();
 
 	corgiFront.init();
 	corgiBack.init();
@@ -235,7 +236,9 @@ void CCanvas::paintGL()
 	glEnable(GL_LIGHTING);
 
 	/**** Draw the terrain ***/
+    textureTerrain.bind();
 	Terrain::drawTerrain();
+    textureTrain.unbind();
 
 	/**** Setup and draw your objects ****/
 
