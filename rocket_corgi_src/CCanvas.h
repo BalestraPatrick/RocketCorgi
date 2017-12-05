@@ -17,7 +17,7 @@
 
 using namespace std;
 //const string PROJECT_FOLDER = "/Users/patrickbalestra/Documents/Github/RocketCorgi";
-const string PROJECT_FOLDER = "/Users/BMW/Documents/Git/RocketCorgi";
+const string PROJECT_FOLDER = "/Users/luca/Documents/USI/FS_2017/ComputerGraphics/project/RocketCorgi";
 
 /************************************************************************/
 /* Canvas to draw                                                       */
@@ -28,7 +28,8 @@ class CCanvas : public QGLWidget
 
 public:
 	explicit CCanvas(QWidget *parent = 0) : QGLWidget(parent),
-		textureTrain(PROJECT_FOLDER + "/rocket_corgi_src/train.jpg"),
+        textureTrain(PROJECT_FOLDER + "/rocket_corgi_src/textures/train.jpg"),
+        textureCorgiFur(PROJECT_FOLDER + "/rocket_corgi_src/textures/fur1.jpg"),
 		corgiFront(PROJECT_FOLDER + "/models/RocketCorgiOBJ/Corgi_Front.obj"),
 		corgiBack(PROJECT_FOLDER + "/models/RocketCorgiOBJ/Corgi_Rear.obj"),
 		harness(PROJECT_FOLDER + "/models/RocketCorgiOBJ/Harness.obj"),
@@ -37,8 +38,6 @@ public:
 		bottomRocketLeft(PROJECT_FOLDER + "/models/RocketCorgiOBJ/Engine_Rear1.obj"),
 		topRocketRight(PROJECT_FOLDER + "/models/RocketCorgiOBJ/Engine_Front.obj"),
 		bottomRocketRight(PROJECT_FOLDER + "/models/RocketCorgiOBJ/Engine_Rear.obj")
-
-//        modelTrain2(PROJECT_FOLDER + "/rocket_corgi_src/train.ply")
 	{
 		QTimer *timer = new QTimer(this);
 		connect(timer, SIGNAL(timeout()), this, SLOT(updateGL()));
@@ -77,6 +76,7 @@ private:
 
 	// Models and textures
 	Texture textureTrain;
+    Texture textureCorgiFur;
 	// Model loaded from .obj format
 	ObjModel corgiFront;
 	ObjModel corgiBack;

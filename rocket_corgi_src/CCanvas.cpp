@@ -45,6 +45,7 @@ void CCanvas::initializeGL()
 	 * Before you can use OBJ/PLY model, you need to initialize it by calling init() method.
 	 */
 	textureTrain.setTexture();
+    textureCorgiFur.setTexture();
 	corgiFront.init();
 	corgiBack.init();
 	goggles.init();
@@ -252,7 +253,7 @@ void CCanvas::paintGL()
 
 
 	// Drawing the object with texture
-	textureTrain.bind();
+    textureCorgiFur.bind();
 	// You can stack new transformation matrix if you don't want
 	// the previous transformations to apply on this object
 	glPushMatrix();
@@ -265,10 +266,9 @@ void CCanvas::paintGL()
 	glGetFloatv (GL_MODELVIEW_MATRIX, matrix);
 
 	// Look at the ObjModel class to see how the drawing is done
-	glScalef(0.05f, 0.05f, 0.05f);
-//    glTranslatef(-7.0, -15.0, 0.0);
-
+    glScalef(0.05f, 0.05f, 0.05f);
 	glPushMatrix();
+
 	glRotatef(90.0f, 0.0f, 0.0f, 0.0f);
 	corgiFront.draw();
 	corgiBack.draw();
@@ -279,17 +279,11 @@ void CCanvas::paintGL()
 	topRocketLeft.draw();
 	bottomRocketLeft.draw();
 	glPopMatrix();
+    textureCorgiFur.unbind();
 
-
-
-
-
-
-//    modelTrain2.draw();
 	// Remove the last transformation matrix from the stack - you have drawn your last
 	// object with a new transformation and now you go back to the previous one
-	glPopMatrix();
-	textureTrain.unbind();
+    glPopMatrix();
 
 
 }
