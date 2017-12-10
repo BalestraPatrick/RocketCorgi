@@ -17,6 +17,7 @@
 
 using namespace std;
 //const string PROJECT_FOLDER = "/Users/patrickbalestra/Documents/Github/RocketCorgi";
+//const string PROJECT_FOLDER = "/Users/BMW/Documents/Git/RocketCorgi";
 const string PROJECT_FOLDER = "/Users/luca/Documents/USI/FS_2017/ComputerGraphics/project/RocketCorgi";
 
 /************************************************************************/
@@ -33,6 +34,7 @@ public:
         textureEngine(PROJECT_FOLDER + "/rocket_corgi_src/textures/steel1.jpg"),
         textureGoggles(PROJECT_FOLDER + "/rocket_corgi_src/textures/greenglass1.jpg"),
         textureTerrain(PROJECT_FOLDER + "/rocket_corgi_src/textures/beach.jpg"),
+
 		corgiFront(PROJECT_FOLDER + "/models/RocketCorgiOBJ/Corgi_Front.obj"),
 		corgiBack(PROJECT_FOLDER + "/models/RocketCorgiOBJ/Corgi_Rear.obj"),
 		harness(PROJECT_FOLDER + "/models/RocketCorgiOBJ/Harness.obj"),
@@ -41,6 +43,8 @@ public:
 		bottomRocketLeft(PROJECT_FOLDER + "/models/RocketCorgiOBJ/Engine_Rear1.obj"),
 		topRocketRight(PROJECT_FOLDER + "/models/RocketCorgiOBJ/Engine_Front.obj"),
 		bottomRocketRight(PROJECT_FOLDER + "/models/RocketCorgiOBJ/Engine_Rear.obj")
+
+//        modelTrain2(PROJECT_FOLDER + "/rocket_corgi_src/train.ply")
 	{
 		QTimer *timer = new QTimer(this);
 		connect(timer, SIGNAL(timeout()), this, SLOT(updateGL()));
@@ -83,6 +87,7 @@ private:
     Texture textureEngine;
     Texture textureGoggles;
     Texture textureTerrain;
+
 	// Model loaded from .obj format
 	ObjModel corgiFront;
 	ObjModel corgiBack;
