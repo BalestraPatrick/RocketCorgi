@@ -3,12 +3,11 @@
 
 #include <QtOpenGL>
 #include <string>
+#include "Base.h"
 #include "Point3.h"
 #include "Point2.h"
 
 using namespace std;
-
-const string PROJECT_FOLDER = "/Users/luca/Documents/USI/FS_2017/ComputerGraphics/project/RocketCorgi";
 
 class Skybox
 {

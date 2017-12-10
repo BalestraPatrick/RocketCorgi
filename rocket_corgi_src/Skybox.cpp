@@ -1,5 +1,6 @@
 #include "Base.h"
 #include <math.h>
+#include <QtOpenGL>
 #include "Skybox.h"
 
 Skybox::Skybox(const std::string &path)
@@ -11,7 +12,6 @@ Skybox::Skybox(const std::string &path)
     faces.push_back(PROJECT_FOLDER + "/skyboxes/"+ path +"/bottom.png");
     faces.push_back(PROJECT_FOLDER + "/skyboxes/"+ path +"/back.png");
     faces.push_back(PROJECT_FOLDER + "/skyboxes/"+ path +"/front.png");
-
 }
 
 void Skybox::init(){
@@ -27,6 +27,7 @@ void Skybox::init(){
             QImageReader reader(faces[i].c_str());
             QImage img;
             const bool read = reader.read(&img);
+
             if(!read) {
                 std::cout << "Failed to read: " << faces[i].c_str() << " with message:" << reader.errorString().toStdString().c_str() << "; " << std::endl;
                 assert(read);
@@ -119,6 +120,7 @@ void Skybox::draw(){
 
         //bind texture object to cube-map target on texture unit 0
         glActiveTexture(GL_TEXTURE0);
+        glEnable(GL_TEXTURE_CUBE_MAP);
         glBindTexture(GL_TEXTURE_CUBE_MAP, box);
 
         //tell OpenGL to fill polygons
@@ -127,6 +129,7 @@ void Skybox::draw(){
         //draw the sky box
         glDrawArrays(GL_TRIANGLES, 0, fvertices.size() / 3);
 
+        glDisable(GL_TEXTURE_CUBE_MAP);
         //turn depth writing on again
         glDepthMask(GL_TRUE);
 
