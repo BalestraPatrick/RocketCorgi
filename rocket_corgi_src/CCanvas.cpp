@@ -195,7 +195,8 @@ void CCanvas::setView(View _view) {
 	}
 }
 
-
+float engineRotation = 0;
+float corgiElevation = 0;
 void CCanvas::paintGL()
 {
 	// clear screen and depth buffer
@@ -271,20 +272,41 @@ void CCanvas::paintGL()
 	glPushMatrix();
 
 	glRotatef(90.0f, 0.0f, 0.0f, 0.0f);
+    glTranslatef(0.0f, 0.0f, -corgiElevation);
     // Drawing the object with texture
     textureCorgiFur.bind();
-	corgiFront.draw();
-	corgiBack.draw();
+    corgiFront.draw();
+    corgiBack.draw();
     textureCorgiFur.unbind();
     textureGoggles.bind();
-	goggles.draw();
+    goggles.draw();
     textureGoggles.unbind();
     textureEngine.bind();
-	harness.draw();
+    harness.draw();
+    glPushMatrix();
+    // too make object rotate on its axis, we move it back to the origin, rotate and translate to final position
+    // note: transformations applied bottom up
+    glTranslatef(engineRightFromOrigin.x(),
+                 engineRightFromOrigin.y(),
+                 engineRightFromOrigin.z());
+    glRotatef(-engineRotation, 0.0f, 0.0f, 0.0f);
+    glTranslatef(-engineRightFromOrigin.x(),
+                 -engineRightFromOrigin.y(),
+                 -engineRightFromOrigin.z());
 	topRocketRight.draw();
 	bottomRocketRight.draw();
+    glPopMatrix();
+    glPushMatrix();
+    glTranslatef(engineLeftFromOrigin.x(),
+                 engineLeftFromOrigin.y(),
+                 engineLeftFromOrigin.z());
+    glRotatef(-engineRotation, 0.0f, 0.0f, 0.0f);
+    glTranslatef(-engineLeftFromOrigin.x(),
+                 -engineLeftFromOrigin.y(),
+                 -engineLeftFromOrigin.z());
 	topRocketLeft.draw();
 	bottomRocketLeft.draw();
+    glPopMatrix();
     textureEngine.unbind();
 
     glPopMatrix();
@@ -292,6 +314,11 @@ void CCanvas::paintGL()
 	// Remove the last transformation matrix from the stack - you have drawn your last
 	// object with a new transformation and now you go back to the previous one
     glPopMatrix();
+
+    if(engineRotation < 90)
+        engineRotation += 10;
+    else if(corgiElevation < 100)
+        corgiElevation += 10;
 
 
 }

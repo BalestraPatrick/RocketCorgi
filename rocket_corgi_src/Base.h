@@ -45,4 +45,6 @@ enum ColorMode {
     PerFace
 };
 
+static Point3d engineRightFromOrigin(25.41f, 16.68f, -33.92f);
+static Point3d engineLeftFromOrigin(-25.41f, 16.68f, -33.92f);
 #endif
