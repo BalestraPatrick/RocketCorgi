@@ -16,9 +16,9 @@
 #include "PlyModel.h"
 
 using namespace std;
-//const string PROJECT_FOLDER = "/Users/patrickbalestra/Documents/Github/RocketCorgi";
+const string PROJECT_FOLDER = "/Users/patrickbalestra/Documents/Github/RocketCorgi";
 //const string PROJECT_FOLDER = "/Users/luca/Documents/USI/FS_2017/ComputerGraphics/project/RocketCorgi";
-const string PROJECT_FOLDER = "/Users/lara/Documents/USI/5th/ComputerGraphics/Project";
+//const string PROJECT_FOLDER = "/Users/lara/Documents/USI/5th/ComputerGraphics/Project";
 /************************************************************************/
 /* Canvas to draw                                                       */
 /************************************************************************/
@@ -32,14 +32,14 @@ public:
         textureCorgiFur(PROJECT_FOLDER + "/rocket_corgi_src/textures/fur1.jpg"),
         textureEngine(PROJECT_FOLDER + "/rocket_corgi_src/textures/steel1.jpg"),
         textureGoggles(PROJECT_FOLDER + "/rocket_corgi_src/textures/greenglass1.jpg"),
-		corgiFront(PROJECT_FOLDER + "/models/RocketCorgiOBJ/Corgi_Front.obj"),
-		corgiBack(PROJECT_FOLDER + "/models/RocketCorgiOBJ/Corgi_Rear.obj"),
-		harness(PROJECT_FOLDER + "/models/RocketCorgiOBJ/Harness.obj"),
-		goggles(PROJECT_FOLDER + "/models/RocketCorgiOBJ/Goggles.obj"),
-		topRocketLeft(PROJECT_FOLDER + "/models/RocketCorgiOBJ/Engine_Front1.obj"),
-		bottomRocketLeft(PROJECT_FOLDER + "/models/RocketCorgiOBJ/Engine_Rear1.obj"),
-		topRocketRight(PROJECT_FOLDER + "/models/RocketCorgiOBJ/Engine_Front.obj"),
-		bottomRocketRight(PROJECT_FOLDER + "/models/RocketCorgiOBJ/Engine_Rear.obj")
+        corgiFront(PROJECT_FOLDER + "/models/RocketCorgiOBJ/downsampled/Corgi_Front.obj"),
+        corgiBack(PROJECT_FOLDER + "/models/RocketCorgiOBJ/downsampled/Corgi_Rear.obj"),
+        harness(PROJECT_FOLDER + "/models/RocketCorgiOBJ/downsampled/Harness.obj"),
+        goggles(PROJECT_FOLDER + "/models/RocketCorgiOBJ/downsampled/Goggles.obj"),
+        topRocketLeft(PROJECT_FOLDER + "/models/RocketCorgiOBJ/downsampled/Engine_Front1.obj"),
+        bottomRocketLeft(PROJECT_FOLDER + "/models/RocketCorgiOBJ/downsampled/Engine_Rear1.obj"),
+        topRocketRight(PROJECT_FOLDER + "/models/RocketCorgiOBJ/downsampled/Engine_Front.obj"),
+        bottomRocketRight(PROJECT_FOLDER + "/models/RocketCorgiOBJ/downsampled/Engine_Rear.obj")
 	{
 		QTimer *timer = new QTimer(this);
 		connect(timer, SIGNAL(timeout()), this, SLOT(updateGL()));
