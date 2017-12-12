@@ -57,6 +57,8 @@ void CCanvas::initializeGL()
 	bottomRocketRight.init();
 	topRocketLeft.init();
 	bottomRocketLeft.init();
+
+    Terrain::generateTerrain(600);
 }
 
 //-----------------------------------------------------------------------------
@@ -186,7 +188,7 @@ void CCanvas::resizeGL(int width, int height)
 void CCanvas::setView(View _view) {
 	switch(_view) {
 	case Perspective:
-		glTranslatef(1.0, -2.5, -10.0);
+        glTranslatef(1.0, -2.5, -10.0);
 		glRotatef(45.0f, 0.0f, 1.0f, 0.0f);
 		break;
 	case Cockpit:
@@ -196,7 +198,7 @@ void CCanvas::setView(View _view) {
 }
 
 float engineRotation = 0;
-float corgiElevation = 0;
+float corgiElevation = 1;
 void CCanvas::paintGL()
 {
 	// clear screen and depth buffer
@@ -217,26 +219,26 @@ void CCanvas::paintGL()
 
 	/**** Axes in the global coordinate system ****/
 
-	glDisable(GL_LIGHTING);
-	glColor3f(1.0f, 0.0f, 0.0f);
-	glBegin(GL_LINES);
-	glVertex3f(-6.0f, 0.0f, 0.0f);
-	glVertex3f(6.0f, 0.0f, 0.0f);
-	glEnd();
-	glColor3f(0.0f, 1.0f, 0.0f);
-	glBegin(GL_LINES);
-	glVertex3f(0.0f, -6.0f, 0.0f);
-	glVertex3f(0.0f, 6.0f, 0.0f);
-	glEnd();
-	glColor3f(0.0f, 0.0f, 1.0f);
-	glBegin(GL_LINES);
-	glVertex3f(0.0f, 0.0f, -6.0f);
-	glVertex3f(0.0f, 0.0f, 6.0f);
-	glEnd();
-	glEnable(GL_LIGHTING);
+    glDisable(GL_LIGHTING);
+    glColor3f(1.0f, 0.0f, 0.0f);
+    glBegin(GL_LINES);
+    glVertex3f(-6.0f, 0.0f, 0.0f);
+    glVertex3f(6.0f, 0.0f, 0.0f);
+    glEnd();
+    glColor3f(0.0f, 1.0f, 0.0f);
+    glBegin(GL_LINES);
+    glVertex3f(0.0f, -6.0f, 0.0f);
+    glVertex3f(0.0f, 6.0f, 0.0f);
+    glEnd();
+    glColor3f(0.0f, 0.0f, 1.0f);
+    glBegin(GL_LINES);
+    glVertex3f(0.0f, 0.0f, -6.0f);
+    glVertex3f(0.0f, 0.0f, 6.0f);
+    glEnd();
+    glEnable(GL_LIGHTING);
 
 	/**** Draw the terrain ***/
-	Terrain::drawTerrain();
+    Terrain::drawTerrain();
 
 	/**** Setup and draw your objects ****/
 
@@ -294,7 +296,7 @@ void CCanvas::paintGL()
                  -engineRightFromOrigin.y(),
                  -engineRightFromOrigin.z());
 	topRocketRight.draw();
-	bottomRocketRight.draw();
+    bottomRocketRight.draw();
     glPopMatrix();
     glPushMatrix();
     glTranslatef(engineLeftFromOrigin.x(),
@@ -316,9 +318,9 @@ void CCanvas::paintGL()
     glPopMatrix();
 
     if(engineRotation < 90)
-        engineRotation += 10;
-    else if(corgiElevation < 100)
-        corgiElevation += 10;
+        engineRotation += 1;
+    else if(corgiElevation < 10000)
+        corgiElevation = corgiElevation*1.06;
 
 
 }

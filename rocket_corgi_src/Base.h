@@ -45,6 +45,8 @@ enum ColorMode {
     PerFace
 };
 
+typedef std::vector<Point3d> PointArray;
+
 static Point3d engineRightFromOrigin(25.41f, 16.68f, -33.92f);
 static Point3d engineLeftFromOrigin(-25.41f, 16.68f, -33.92f);
 #endif

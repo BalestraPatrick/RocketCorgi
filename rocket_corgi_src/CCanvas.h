@@ -16,9 +16,9 @@
 #include "PlyModel.h"
 
 using namespace std;
-const string PROJECT_FOLDER = "/Users/patrickbalestra/Documents/Github/RocketCorgi";
+//const string PROJECT_FOLDER = "/Users/patrickbalestra/Documents/Github/RocketCorgi";
 //const string PROJECT_FOLDER = "/Users/luca/Documents/USI/FS_2017/ComputerGraphics/project/RocketCorgi";
-//const string PROJECT_FOLDER = "/Users/lara/Documents/USI/5th/ComputerGraphics/Project";
+const string PROJECT_FOLDER = "/Users/lara/Documents/USI/5th/ComputerGraphics/Project";
 /************************************************************************/
 /* Canvas to draw                                                       */
 /************************************************************************/
