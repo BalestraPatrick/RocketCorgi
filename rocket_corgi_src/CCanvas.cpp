@@ -44,7 +44,6 @@ void CCanvas::initializeGL()
 	 * Before you can use the texture you need to initialize it by calling the setTexture() method.
 	 * Before you can use OBJ/PLY model, you need to initialize it by calling init() method.
 	 */
-	textureTrain.setTexture();
     textureCorgiFur.setTexture();
     textureEngine.setTexture();
     textureGoggles.setTexture();
@@ -189,7 +188,7 @@ void CCanvas::setView(View _view) {
 	switch(_view) {
 	case Perspective:
         glTranslatef(1.0, -2.5, -10.0);
-		glRotatef(45.0f, 0.0f, 1.0f, 0.0f);
+//		glRotatef(45.0f, 0.0f, 1.0f, 0.0f);
 		break;
 	case Cockpit:
 		// Maybe you want to have an option to view the scene from the train cockpit, up to you
@@ -281,7 +280,13 @@ void CCanvas::paintGL()
     corgiBack.draw();
     textureCorgiFur.unbind();
     textureGoggles.bind();
+
+	//we move the googles a bit forward
+	glPushMatrix();
+	glTranslatef(0, 2, 0);
     goggles.draw();
+	glPopMatrix();
+
     textureGoggles.unbind();
     textureEngine.bind();
     harness.draw();
@@ -292,7 +297,7 @@ void CCanvas::paintGL()
                  engineRightFromOrigin.y(),
                  engineRightFromOrigin.z());
     glRotatef(-engineRotation, 0.0f, 0.0f, 0.0f);
-    glTranslatef(-engineRightFromOrigin.x(),
+	glTranslatef(-engineRightFromOrigin.x(),
                  -engineRightFromOrigin.y(),
                  -engineRightFromOrigin.z());
 	topRocketRight.draw();
@@ -307,6 +312,9 @@ void CCanvas::paintGL()
                  -engineLeftFromOrigin.y(),
                  -engineLeftFromOrigin.z());
 	topRocketLeft.draw();
+	//TODO: TEMPORARY FIX
+	//TO REMOVE ONCE THE BOTTOM ROCKET MODEL IS FIXED
+	glTranslatef(-51, 0, 0);
 	bottomRocketLeft.draw();
     glPopMatrix();
     textureEngine.unbind();
