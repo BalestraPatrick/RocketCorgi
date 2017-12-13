@@ -240,9 +240,9 @@ void CCanvas::paintGL()
 
 	/**** Draw the terrain ***/
 	Terrain::drawTerrain();
-    glScalef(500.0, 500.0, 500.0);
+//    glScalef(100.0, 100.0, 100.0);
     skyGalaxy.draw();
-    glScalef(1.0/500.0, 1.0/500.0, 1.0/500.0);
+//    glScalef(1.0/100.0, 1.0/100.0, 1.0/100.0);
 	/**** Setup and draw your objects ****/
 
 	// You can freely enable/disable some of the lights in the scene as you wish
@@ -278,20 +278,20 @@ void CCanvas::paintGL()
 
     glRotatef(90.0f, 0.0f, 0.0f, 0.0f);
     // Drawing the object with texture
-    textureCorgiFur.bind();
-	corgiFront.draw();
-	corgiBack.draw();
-    textureCorgiFur.unbind();
-    textureGoggles.bind();
-	goggles.draw();
-    textureGoggles.unbind();
-    textureEngine.bind();
-	harness.draw();
-	topRocketRight.draw();
-	bottomRocketRight.draw();
-	topRocketLeft.draw();
-	bottomRocketLeft.draw();
-    textureEngine.unbind();
+//    textureCorgiFur.bind();
+//	corgiFront.draw();
+//	corgiBack.draw();
+//    textureCorgiFur.unbind();
+//    textureGoggles.bind();
+//	goggles.draw();
+//    textureGoggles.unbind();
+//    textureEngine.bind();
+//	harness.draw();
+//	topRocketRight.draw();
+//	bottomRocketRight.draw();
+//	topRocketLeft.draw();
+//	bottomRocketLeft.draw();
+//    textureEngine.unbind();
 
     glPopMatrix();
 	// Remove the last transformation matrix from the stack - you have drawn your last

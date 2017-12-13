@@ -101,13 +101,8 @@ void Skybox::init(){
         glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
         glBufferData(GL_ARRAY_BUFFER, fvertices.size() * sizeof(GLfloat), &fvertices[0], GL_STATIC_DRAW);
 
-}
-
-void Skybox::draw(){
-
-        //don't write to Z buffer
-        glDepthMask(GL_FALSE);
-
+        glGenVertexArrays(1, &VAO);
+        glBindVertexArray(VAO);
         //bind the skybox vertexBuffer (sets up all vertex data)
         glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
         glVertexPointer(
@@ -116,6 +111,14 @@ void Skybox::draw(){
                     0,                  // stride
                     (void*)0            // array buffer offset
                 );
+        glBindVertexArray(0);
+}
+
+void Skybox::draw(){
+
+        //don't write to Z buffer
+//        glDepthMask(GL_FALSE);
+
         glEnableClientState(GL_VERTEX_ARRAY);
 
         //bind texture object to cube-map target on texture unit 0
@@ -131,8 +134,31 @@ void Skybox::draw(){
 
         glDisable(GL_TEXTURE_CUBE_MAP);
         //turn depth writing on again
-        glDepthMask(GL_TRUE);
+//        glDepthMask(GL_TRUE);
 
         //unbind vertexBuffer
         glDisableClientState(GL_VERTEX_ARRAY);
+
+//    //don't write to Z buffer
+//    glDepthMask(GL_FALSE);
+
+//    //bind the skybox VAO (sets up all vertex data)
+//    glBindVertexArray(VAO);
+
+//    //bind texture object to cube-map target on texture unit 0
+//    glActiveTexture(GL_TEXTURE0);
+//    glBindTexture(GL_TEXTURE_CUBE_MAP, box);
+
+//    //tell OpenGL to fill polygons
+//    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+
+//    //draw the sky box
+//    glDrawArrays(GL_TRIANGLES, 0, 36);
+
+//    //turn depth writing on again
+//    glDepthMask(GL_TRUE);
+
+//    //unbind VAO
+//    glBindVertexArray(0);
+
 }

@@ -29,6 +29,7 @@ private:
 
     //cube map texture itself
     GLuint box;
+    GLuint VAO;
 
 };
 

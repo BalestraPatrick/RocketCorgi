@@ -42,7 +42,7 @@ public:
         bottomRocketRight(PROJECT_FOLDER + "/models/RocketCorgiOBJ/Engine_Rear.obj"),
 
 //        skyCloud("Clouds"),
-        skyGalaxy("Galaxy")
+        skyGalaxy("Test")
 	{
 		QTimer *timer = new QTimer(this);
 		connect(timer, SIGNAL(timeout()), this, SLOT(updateGL()));
