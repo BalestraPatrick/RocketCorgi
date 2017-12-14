@@ -95,15 +95,89 @@ void Skybox::init(){
             D, -D,  D
         };
         fvertices.insert(fvertices.begin(), vertices, vertices + (36*3));
+        GLfloat cvertices[] = {
+            0.0, 1.0,
+            0.0, 0.0,
+            1.0, 0.0,
+            1.0, 0.0,
+            1.0, 1.0,
+            0.0, 1.0,
+
+            0.0, 1.0,
+            0.0, 0.0,
+            1.0, 0.0,
+            1.0, 0.0,
+            1.0, 1.0,
+            0.0, 1.0,
+
+            0.0, 1.0,
+            0.0, 0.0,
+            1.0, 0.0,
+            1.0, 0.0,
+            1.0, 1.0,
+            0.0, 1.0,
+
+            0.0, 1.0,
+            0.0, 0.0,
+            1.0, 0.0,
+            1.0, 0.0,
+            1.0, 1.0,
+            0.0, 1.0,
+
+            0.0, 1.0,
+            0.0, 0.0,
+            1.0, 0.0,
+            1.0, 0.0,
+            1.0, 1.0,
+            0.0, 1.0,
+
+            0.0, 1.0,
+            0.0, 0.0,
+            1.0, 0.0,
+            1.0, 0.0,
+            1.0, 1.0,
+            0.0, 1.0
+        };
+        fuvs.insert(fuvs.begin(), cvertices, cvertices + (36*2));
 
         // create buffers
         glGenBuffers(1, &vertexBuffer);
         glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
         glBufferData(GL_ARRAY_BUFFER, fvertices.size() * sizeof(GLfloat), &fvertices[0], GL_STATIC_DRAW);
 
-        glGenVertexArrays(1, &VAO);
-        glBindVertexArray(VAO);
+        glGenBuffers(1, &uvBuffer);
+        glBindBuffer(GL_ARRAY_BUFFER, uvBuffer);
+        glBufferData(GL_ARRAY_BUFFER, fuvs.size() * sizeof(GLfloat), &fuvs[0], GL_STATIC_DRAW);
+
+//        glGenVertexArrays(1, &VAO);
+//        glBindVertexArray(VAO);
         //bind the skybox vertexBuffer (sets up all vertex data)
+//        glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
+//        glVertexPointer(
+//                    3,                  // size
+//                    GL_FLOAT,           // type
+//                    0,                  // stride
+//                    (void*)0            // array buffer offset
+//                );
+//        glBindVertexArray(0);
+}
+
+void Skybox::draw(){
+        glColor3f(0.5f, 0.5f, 0.5f);
+        GLfloat emis[] = {0.3f, 0.3f, 0.3f, 0.0f};
+        GLfloat amb[]  = {0.6f, 0.6f, 0.6f};
+        GLfloat diff[] = {0.1f, 0.1f, 0.1f};
+        GLfloat spec[] = {0.1f, 0.1f, 0.1f};
+        GLfloat shin = 0.0001;
+        glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, amb);
+        glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, diff);
+        glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, spec);
+        glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, &shin);
+        glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, emis);
+
+        //don't write to Z buffer
+        glDepthMask(GL_FALSE);
+
         glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
         glVertexPointer(
                     3,                  // size
@@ -111,15 +185,16 @@ void Skybox::init(){
                     0,                  // stride
                     (void*)0            // array buffer offset
                 );
-        glBindVertexArray(0);
-}
-
-void Skybox::draw(){
-
-        //don't write to Z buffer
-//        glDepthMask(GL_FALSE);
-
         glEnableClientState(GL_VERTEX_ARRAY);
+
+        glBindBuffer(GL_ARRAY_BUFFER, uvBuffer);
+        glTexCoordPointer(
+            2,                                // size
+            GL_FLOAT,                         // type
+            0,                                // stride
+            (void*)0                          // array buffer offset
+        );
+        glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 
         //bind texture object to cube-map target on texture unit 0
         glActiveTexture(GL_TEXTURE0);
@@ -134,31 +209,10 @@ void Skybox::draw(){
 
         glDisable(GL_TEXTURE_CUBE_MAP);
         //turn depth writing on again
-//        glDepthMask(GL_TRUE);
+        glDepthMask(GL_TRUE);
 
         //unbind vertexBuffer
         glDisableClientState(GL_VERTEX_ARRAY);
 
-//    //don't write to Z buffer
-//    glDepthMask(GL_FALSE);
-
-//    //bind the skybox VAO (sets up all vertex data)
-//    glBindVertexArray(VAO);
-
-//    //bind texture object to cube-map target on texture unit 0
-//    glActiveTexture(GL_TEXTURE0);
-//    glBindTexture(GL_TEXTURE_CUBE_MAP, box);
-
-//    //tell OpenGL to fill polygons
-//    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-
-//    //draw the sky box
-//    glDrawArrays(GL_TRIANGLES, 0, 36);
-
-//    //turn depth writing on again
-//    glDepthMask(GL_TRUE);
-
-//    //unbind VAO
-//    glBindVertexArray(0);
 
 }
