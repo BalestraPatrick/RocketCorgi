@@ -312,9 +312,6 @@ void CCanvas::paintGL()
                  -engineLeftFromOrigin.y(),
                  -engineLeftFromOrigin.z());
 	topRocketLeft.draw();
-	//TODO: TEMPORARY FIX
-	//TO REMOVE ONCE THE BOTTOM ROCKET MODEL IS FIXED
-	glTranslatef(-51, 0, 0);
 	bottomRocketLeft.draw();
     glPopMatrix();
     textureEngine.unbind();
