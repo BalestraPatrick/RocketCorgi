@@ -94,63 +94,52 @@ void CCanvas::glPerspective(const GLdouble fovy, const GLdouble aspect, const GL
 	delete[] mat;
 }
 
-void CCanvas::lookAt(const GLdouble eyex,
-					 const GLdouble eyey,
-					 const GLdouble eyez,
-					 const GLdouble centerx,
-					 const GLdouble centery,
-					 const GLdouble centerz,
-					 const GLdouble upx,
-					 const GLdouble upy,
-					 const GLdouble upz)
+void CCanvas::lookAt(const GLdouble eyeX,
+                     const GLdouble eyeY,                        // VP on the course slides
+                     const GLdouble eyeZ,
+                     const GLdouble centerX,
+                     const GLdouble centerY,                    // q on the course slides
+                     const GLdouble centerZ,
+                     const GLdouble upX,
+                     const GLdouble upY,                            // VUP on the course slides
+                     const GLdouble upZ )
 {
-	GLdouble *mat = new GLdouble[16];
+    Point3d VP(eyeX, eyeY, eyeZ);
+    Point3d q(centerX, centerY, centerZ);
+    Point3d VUP(upX, upY, upZ);
+    Point3d VPN = VP-q;
 
-	// TODO: add computation for the lookat here!
-	Point3d X, Y, Z;
+    Point3d _z = VPN.normalized();
+    Point3d _x = (VUP^_z).normalized();
+    Point3d _y = _z^_x ;
 
-	// create new coordinate system
-	Z = Point3d(eyex - centerx, eyey - centery, eyez - centerz);
-	Z.normalize();
+    GLdouble *mat = new GLdouble[16];                            // remember: column-major order!
 
-	// compute Y and X
-	Y = Point3d(upx, upy, upz);
-	X = Y ^ Z;
+    // TODO: set up the LookAt matrix correctly!
+    mat[0] = _x[0];
+    mat[1] = _x[1];
+    mat[2] = _x[2];
+    mat[3] = 0;
 
-	// recompute X
-	Y = Z ^ X;
+    mat[4] = _y[0];
+    mat[5] = _y[1];
+    mat[6] = _y[2];
+    mat[7] = 0;
 
-	// normalize
-	X.normalize();
-	Y.normalize();
+    mat[8] = _z[0];
+    mat[9] = _z[1];
+    mat[10] = _z[2];
+    mat[11] = 0;
 
-	Point3d eye(eyex, eyey, eyez);
+    mat[12] = q[0];
+    mat[13] = q[1];
+    mat[14] = q[2];
+    mat[15] = 1;
 
-	mat[0] = X.x();
-	mat[1] = X.y();
-	mat[2] = X.z();
-	mat[3] = -X * eye;
+    glMultMatrixd(mat);
 
-	mat[4] = Y.x();
-	mat[5] = Y.y();
-	mat[6] = Y.z();
-	mat[7] = -Y * eye;
-
-	mat[8]  = Z.x();
-	mat[9]  = Z.y();
-	mat[10] = Z.z();
-	mat[11] = -Z * eye;
-
-	mat[12] = 0.0;
-	mat[13] = 0.0;
-	mat[14] = 0.0;
-	mat[15] = 1.0;
-
-	glMultMatrixd(mat);
-
-	delete[] mat;
+    delete[] mat;
 }
-
 void CCanvas::resizeGL(int width, int height)
 {
 	// set up the window-to-viewport transformation
@@ -196,6 +185,7 @@ void CCanvas::setView(View _view) {
 	}
 }
 
+double t = 90;
 float engineRotation = 0;
 float corgiElevation = 1;
 void CCanvas::paintGL()
@@ -207,14 +197,20 @@ void CCanvas::paintGL()
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 
+//    t+=0.01;
+//    lookAt(0,0,0, //position of cam
+//    10*sin(t), 0, 10*cos(t),
+////    this is a circle function
+//    0,1,0);
+
 	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
 	// Setup the current view
 	setView(View::Perspective);
 
 	// You can always change the light position here if you want
-	GLfloat lightpos[] = {0.0f, 0.0f, 1.0f, 0.0f};
-	glLightfv(GL_LIGHT0, GL_POSITION, lightpos);
+    GLfloat lightpos[] = {0.0f, 100.0f, 100.0f, 0.0f};
+    glLightfv(GL_LIGHT0, GL_POSITION, lightpos);
 
 	/**** Axes in the global coordinate system ****/
 
