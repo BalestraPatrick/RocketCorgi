@@ -149,36 +149,22 @@ void Skybox::init(){
         glGenBuffers(1, &uvBuffer);
         glBindBuffer(GL_ARRAY_BUFFER, uvBuffer);
         glBufferData(GL_ARRAY_BUFFER, fuvs.size() * sizeof(GLfloat), &fuvs[0], GL_STATIC_DRAW);
-
-//        glGenVertexArrays(1, &VAO);
-//        glBindVertexArray(VAO);
-        //bind the skybox vertexBuffer (sets up all vertex data)
-//        glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
-//        glVertexPointer(
-//                    3,                  // size
-//                    GL_FLOAT,           // type
-//                    0,                  // stride
-//                    (void*)0            // array buffer offset
-//                );
-//        glBindVertexArray(0);
 }
 
 void Skybox::draw(){
-//        glColor3f(0.5f, 0.5f, 0.5f);
-//        GLfloat emis[] = {0.3f, 0.3f, 0.3f, 0.0f};
-//        GLfloat amb[]  = {0.6f, 0.6f, 0.6f};
-//        GLfloat diff[] = {0.1f, 0.1f, 0.1f};
-//        GLfloat spec[] = {0.1f, 0.1f, 0.1f};
-//        GLfloat shin = 0.0001;
-//        glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, amb);
-//        glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, diff);
-//        glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, spec);
-//        glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, &shin);
-//        glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, emis);
 
-        Texture testTex(faces[0]);
-        testTex.setTexture();
-        testTex.bind();
+        glPushAttrib(GL_LIGHTING_BIT);
+
+            glColor3f(0.5f, 0.5f, 0.5f);
+            GLfloat amb[]  = {0.7f, 0.7f, 0.7f};
+            GLfloat diff[] = {0.7f, 0.7f, 0.7f};
+            GLfloat spec[] = {0.1f, 0.1f, 0.1f};
+            GLfloat shin = 0.0001;
+            glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, amb);
+            glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, diff);
+            glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, spec);
+            glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, &shin);
+
         //don't write to Z buffer
         glDepthMask(GL_FALSE);
 
@@ -201,9 +187,9 @@ void Skybox::draw(){
         glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 
         //bind texture object to cube-map target on texture unit 0
-//        glActiveTexture(GL_TEXTURE0);
-//        glEnable(GL_TEXTURE_CUBE_MAP);
-//        glBindTexture(GL_TEXTURE_CUBE_MAP, box);
+       glActiveTexture(GL_TEXTURE0);
+       glEnable(GL_TEXTURE_CUBE_MAP);
+       glBindTexture(GL_TEXTURE_CUBE_MAP, box);
 
         //tell OpenGL to fill polygons
         glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
@@ -211,14 +197,14 @@ void Skybox::draw(){
         //draw the sky box
         glDrawArrays(GL_TRIANGLES, 0, fvertices.size() / 3);
 
-//        glDisable(GL_TEXTURE_CUBE_MAP);
+       glDisable(GL_TEXTURE_CUBE_MAP);
         //turn depth writing on again
         glDepthMask(GL_TRUE);
 
         //unbind vertexBuffer
         glDisableClientState(GL_VERTEX_ARRAY);
 
-        testTex.unbind();
+        glPopAttrib();
 
 
 }
