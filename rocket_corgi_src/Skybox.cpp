@@ -1,4 +1,5 @@
 #include "Base.h"
+#include "texture.hpp"
 #include <math.h>
 #include <QtOpenGL>
 #include "Skybox.h"
@@ -163,18 +164,21 @@ void Skybox::init(){
 }
 
 void Skybox::draw(){
-        glColor3f(0.5f, 0.5f, 0.5f);
-        GLfloat emis[] = {0.3f, 0.3f, 0.3f, 0.0f};
-        GLfloat amb[]  = {0.6f, 0.6f, 0.6f};
-        GLfloat diff[] = {0.1f, 0.1f, 0.1f};
-        GLfloat spec[] = {0.1f, 0.1f, 0.1f};
-        GLfloat shin = 0.0001;
-        glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, amb);
-        glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, diff);
-        glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, spec);
-        glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, &shin);
-        glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, emis);
+//        glColor3f(0.5f, 0.5f, 0.5f);
+//        GLfloat emis[] = {0.3f, 0.3f, 0.3f, 0.0f};
+//        GLfloat amb[]  = {0.6f, 0.6f, 0.6f};
+//        GLfloat diff[] = {0.1f, 0.1f, 0.1f};
+//        GLfloat spec[] = {0.1f, 0.1f, 0.1f};
+//        GLfloat shin = 0.0001;
+//        glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, amb);
+//        glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, diff);
+//        glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, spec);
+//        glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, &shin);
+//        glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, emis);
 
+        Texture testTex(faces[0]);
+        testTex.setTexture();
+        testTex.bind();
         //don't write to Z buffer
         glDepthMask(GL_FALSE);
 
@@ -197,9 +201,9 @@ void Skybox::draw(){
         glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 
         //bind texture object to cube-map target on texture unit 0
-        glActiveTexture(GL_TEXTURE0);
-        glEnable(GL_TEXTURE_CUBE_MAP);
-        glBindTexture(GL_TEXTURE_CUBE_MAP, box);
+//        glActiveTexture(GL_TEXTURE0);
+//        glEnable(GL_TEXTURE_CUBE_MAP);
+//        glBindTexture(GL_TEXTURE_CUBE_MAP, box);
 
         //tell OpenGL to fill polygons
         glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
@@ -207,12 +211,14 @@ void Skybox::draw(){
         //draw the sky box
         glDrawArrays(GL_TRIANGLES, 0, fvertices.size() / 3);
 
-        glDisable(GL_TEXTURE_CUBE_MAP);
+//        glDisable(GL_TEXTURE_CUBE_MAP);
         //turn depth writing on again
         glDepthMask(GL_TRUE);
 
         //unbind vertexBuffer
         glDisableClientState(GL_VERTEX_ARRAY);
+
+        testTex.unbind();
 
 
 }
