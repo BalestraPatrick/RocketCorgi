@@ -59,13 +59,21 @@ void generateTerrain(int world_dim) {
 
 void drawTerrain()
 {
-glPushAttrib(GL_LIGHTING_BIT);
+    glPushAttrib(GL_LIGHTING_BIT);
     GLfloat white[] = {0.8f, 0.8f, 0.8f, 1.0f};
     GLfloat cyan[] = {0.f, .8f, .8f, 1.f};
     glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, cyan);
     //glMaterialfv(GL_FRONT, GL_SPECULAR, white);
-    GLfloat shininess[] = {50};
-    glMaterialfv(GL_FRONT, GL_SHININESS, shininess);
+//    GLfloat shininess[] = {50};
+    GLfloat amb[]  = {0.2f, 0.2f, 0.2f};
+    GLfloat diff[] = {0.7f, 0.7f, 0.7f};
+    GLfloat spec[] = {0.1f, 0.1f, 0.1f};
+    GLfloat shin = 0.0001;
+    glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, amb);
+    glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, diff);
+    glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, spec);
+    glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, &shin);
+//    glMaterialfv(GL_FRONT, GL_SHININESS, shininess);
 
     for(int i=0; i<terrainStrips.size(); i++)
     {
