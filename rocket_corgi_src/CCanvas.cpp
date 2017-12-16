@@ -197,16 +197,15 @@ void CCanvas::paintGL()
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 
-//    t+=0.01;
-//    lookAt(0,0,0, //position of cam
-//    10*sin(t), 0, 10*cos(t),
-////    this is a circle function
+    t+=0.01;
+//    lookAt(0,0,10-corgiElevation, //position of cam
+//    0, -corgiElevation, 0,
 //    0,1,0);
 
 	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
 	// Setup the current view
-	setView(View::Perspective);
+    setView(View::Perspective);
 
 	// You can always change the light position here if you want
     GLfloat lightpos[] = {0.0f, 100.0f, 100.0f, 0.0f};
@@ -268,8 +267,9 @@ void CCanvas::paintGL()
     glScalef(0.05f, 0.05f, 0.05f);
 	glPushMatrix();
 
-	glRotatef(90.0f, 0.0f, 0.0f, 0.0f);
-    glTranslatef(0.0f, 0.0f, -corgiElevation);
+
+    glTranslatef(0.0f, corgiElevation, 0);
+    glRotatef(90.0f, 0.0f, 0.0f, 0.0f);
     // Drawing the object with texture
     textureCorgiFur.bind();
     corgiFront.draw();

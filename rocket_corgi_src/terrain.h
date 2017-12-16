@@ -44,7 +44,7 @@ void generateTerrain(int world_dim) {
                 float hU = perlin.octaveNoise((p_xz + off_yz).x() * 0.1, -(p_xz + off_yz).y() * 0.1, 8);
 
                 // deduce terrain normal
-                Point3d n = Point3d(hL - hR, 2.0, hD - hU).normalized();
+                Point3d n = Point3d(hL - hR, 1.0, hD - hU).normalized();
                 terrainNormals[i].push_back(n);
                 terrainStrips[i].push_back(p);
                 z = z - (j%2); //once every 2 triangles
@@ -59,7 +59,7 @@ void generateTerrain(int world_dim) {
 
 void drawTerrain()
 {
-glPushAttrib(GL_LIGHTING_BIT);
+    glPushAttrib(GL_LIGHTING_BIT);
     GLfloat white[] = {0.8f, 0.8f, 0.8f, 1.0f};
     GLfloat cyan[] = {0.f, .8f, .8f, 1.f};
     glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, cyan);
