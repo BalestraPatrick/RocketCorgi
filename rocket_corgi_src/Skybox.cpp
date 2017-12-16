@@ -4,15 +4,26 @@
 #include <QtOpenGL>
 #include "Skybox.h"
 
-Skybox::Skybox(const std::string &path)
+Skybox::Skybox(const std::string &path, const std::string &fmt)
 {
-    //Load the cube map, paint each side
-    faces.push_back(path +"/right.png");
-    faces.push_back(path +"/left.png");
-    faces.push_back(path +"/top.png");
-    faces.push_back(path +"/bottom.png");
-    faces.push_back(path +"/back.png");
-    faces.push_back(path +"/front.png");
+    if(!fmt.compare("png")){
+        //Load the cube map, paint each side
+        faces.push_back(path +"/right.png");
+        faces.push_back(path +"/left.png");
+        faces.push_back(path +"/top.png");
+        faces.push_back(path +"/bottom.png");
+        faces.push_back(path +"/back.png");
+        faces.push_back(path +"/front.png");
+    } else if (!fmt.compare("bmp")) {
+        //Load the cube map, paint each side
+        faces.push_back(path +"/right.bmp");
+        faces.push_back(path +"/left.bmp");
+        faces.push_back(path +"/top.bmp");
+        faces.push_back(path +"/bottom.bmp");
+        faces.push_back(path +"/back.bmp");
+        faces.push_back(path +"/front.bmp");
+    }
+
 }
 
 void Skybox::init(){
