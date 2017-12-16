@@ -2,6 +2,7 @@
 #include "Base.h"
 #include "Sphere.h"
 #include "terrain.h"
+#include "materials.h"
 
 using namespace std;
 
@@ -19,7 +20,7 @@ void CCanvas::initializeGL()
 	// One light source
 	glEnable(GL_LIGHTING);
 
-	glEnable(GL_LIGHT0);
+    glEnable(GL_LIGHT0);
 	/*
 	 * The position is transformed by the modelview matrix when glLightfv is called (just as if it were
 	 * a point), and it is stored in eye coordinates. If the w component of the position is 0.0,
@@ -28,13 +29,16 @@ void CCanvas::initializeGL()
 	 * Otherwise, diffuse and specular lighting calculations are based on the actual location of the
 	 * light in eye coordinates, and attenuation is enabled. The default position is (0,0,1,0); thus,
 	 * the default light source is directional, parallel to, and in the direction of the -z axis.
-	 */
-	GLfloat lightpos[] = {0.0, 0.0, 10.0, 0.0};
-	glLightfv(GL_LIGHT0, GL_POSITION, lightpos);
+     */
 
-	GLfloat lightAmb[]  = {0.3, 0.3, 0.3};
-	GLfloat lightDiff[] = {0.4, 0.4, 0.4};
-	GLfloat lightSpec[] = {0.5, 0.5, 0.5};
+    lightpos[0] = 0.0;
+    lightpos[1] = 150.0;
+    lightpos[2] = 10.0;
+    lightpos[3] = 1.0;
+    glLightfv(GL_LIGHT0, GL_POSITION, lightpos);
+    GLfloat lightAmb[]  = {0.2, 0.2, 0.2};
+    GLfloat lightDiff[] = {0.6, 0.6, 0.6};
+    GLfloat lightSpec[] = {0.8, 0.8, 0.8};
 
 	glLightfv(GL_LIGHT0, GL_SPECULAR, lightSpec);
 	glLightfv(GL_LIGHT0, GL_AMBIENT,  lightAmb);
@@ -58,6 +62,9 @@ void CCanvas::initializeGL()
 	bottomRocketLeft.init();
 
     Terrain::generateTerrain(600);
+    // Setup the skybox(es)
+    skyCloud.init();
+    skyGalaxy.init();
 }
 
 //-----------------------------------------------------------------------------
@@ -181,10 +188,13 @@ void CCanvas::renderCorgi() {
     glTranslatef(0.0f, corgiElevation, 0);
     glRotatef(90.0f, 0.0f, 0.0f, 0.0f);
     // Drawing the object with texture
+    glPushAttrib(GL_LIGHTING_BIT);
+    Materials::setCorgiMat();
     textureCorgiFur.bind();
     corgiFront.draw();
     corgiBack.draw();
     textureCorgiFur.unbind();
+    glPopAttrib();
     textureGoggles.bind();
 
     //we move the googles a bit forward
@@ -194,6 +204,8 @@ void CCanvas::renderCorgi() {
     glPopMatrix();
 
     textureGoggles.unbind();
+    glPushAttrib(GL_LIGHTING_BIT);
+    Materials::setRocketsMats();
     textureEngine.bind();
     harness.draw();
     glPushMatrix();
@@ -221,6 +233,7 @@ void CCanvas::renderCorgi() {
         bottomRocketLeft.draw();
     glPopMatrix();
     textureEngine.unbind();
+    glPopAttrib();
     glPopMatrix();
     if(engineRotation < 90)
         engineRotation += 1;
@@ -280,10 +293,13 @@ void QWidget::keyPressEvent( QKeyEvent *evt ) {
     freeCameraDirection = Point3d(cos(freeCameraAngleVertical) * sin(freeCameraAngleHorizontal),
                         sin(freeCameraAngleVertical),
                         cos(freeCameraAngleVertical) * cos(freeCameraAngleHorizontal));
+    freeCameraDirection.normalize();
     freeCameraRight = Point3d(sin(freeCameraAngleHorizontal - 3.14f/2.0f),
                           0,
                           cos(freeCameraAngleHorizontal - 3.14f/2.0f));
+    freeCameraRight.normalize();
     freeCameraUp = freeCameraRight ^ freeCameraDirection;
+    freeCameraUp.normalize();
 }
 
 
@@ -320,8 +336,8 @@ void CCanvas::paintGL()
     setView(View::Perspective);
 
 	// You can always change the light position here if you want
-    GLfloat lightpos[] = {0.0f, 100.0f, 100.0f, 0.0f};
-    glLightfv(GL_LIGHT0, GL_POSITION, lightpos);
+//    GLfloat lightpos[] = {0.0f, 100.0f, 100.0f, 0.0f};
+//    glLightfv(GL_LIGHT0, GL_POSITION, lightpos);
 
 	/**** Axes in the global coordinate system ****/
 
@@ -344,14 +360,38 @@ void CCanvas::paintGL()
     glEnable(GL_LIGHTING);
 
 	/**** Draw the terrain ***/
-    Terrain::drawTerrain();
+    glPushAttrib(GL_LIGHTING_BIT);
+        Materials::setTerrainMat();
+        Terrain::drawTerrain();
+    glPopAttrib();
+    /**** Draw the sky ***/
+    glPushAttrib(GL_LIGHTING_BIT);
+        glColor3f(0.5f, 0.5f, 0.5f);
+        Materials::setSkyMat();
+        glScalef(600.0, 600.0, 600.0);
+            skyGalaxy.draw();
+        //    skyCloud.draw();
+        glScalef(1.0/600.0, 1.0/600.0, 1.0/600.0);
+    glPopAttrib();
+
+    // Draw the sun
+    // PRAISE THE SUN
+    glPushAttrib(GL_LIGHTING_BIT);
+        glColor3f(0.7f, 0.6f, 0.2f);
+        Materials::setSunMat();
+        //don't write to Z buffer
+        glDepthMask(GL_FALSE);
+        glTranslatef(lightpos[0], lightpos[1], lightpos[2]);
+        glScalef(15.0,15.0,15.0);
+        sun.draw();
+        glScalef(1/15.0,1/15.0,1/15.0);
+        glTranslatef(-lightpos[0], -lightpos[1], -lightpos[2]);
+
+        //turn depth writing on again
+        glDepthMask(GL_TRUE);
+    glPopAttrib();
 
 	/**** Setup and draw your objects ****/
-
-	// You can freely enable/disable some of the lights in the scene as you wish
-	glEnable(GL_LIGHT0);
-	glDisable(GL_LIGHT1);
-
 
 	// You can stack new transformation matrix if you don't want
 	// the previous transformations to apply on this object
@@ -368,9 +408,51 @@ void CCanvas::paintGL()
     glScalef(0.05f, 0.05f, 0.05f);
     renderCorgi();
 
+    glTranslatef(0.0f, corgiElevation, 0);
+    glRotatef(90.0f, 0.0f, 0.0f, 0.0f);
+    // Drawing the object with texture
+    textureCorgiFur.bind();
+    corgiFront.draw();
+    corgiBack.draw();
+    textureCorgiFur.unbind();
+    textureGoggles.bind();
 
+	//we move the googles a bit forward
+	glPushMatrix();
+	glTranslatef(0, 2, 0);
+    goggles.draw();
+	glPopMatrix();
 
+    textureGoggles.unbind();
+    textureEngine.bind();
+    harness.draw();
+    glPushMatrix();
+    // too make object rotate on its axis, we move it back to the origin, rotate and translate to final position
+    // note: transformations applied bottom up
+    glTranslatef(engineRightFromOrigin.x(),
+                 engineRightFromOrigin.y(),
+                 engineRightFromOrigin.z());
+    glRotatef(-engineRotation, 0.0f, 0.0f, 0.0f);
+	glTranslatef(-engineRightFromOrigin.x(),
+                 -engineRightFromOrigin.y(),
+                 -engineRightFromOrigin.z());
+	topRocketRight.draw();
+    bottomRocketRight.draw();
+    glPopMatrix();
+    glPushMatrix();
+    glTranslatef(engineLeftFromOrigin.x(),
+                 engineLeftFromOrigin.y(),
+                 engineLeftFromOrigin.z());
+    glRotatef(-engineRotation, 0.0f, 0.0f, 0.0f);
+    glTranslatef(-engineLeftFromOrigin.x(),
+                 -engineLeftFromOrigin.y(),
+                 -engineLeftFromOrigin.z());
+	topRocketLeft.draw();
+	bottomRocketLeft.draw();
+    glPopMatrix();
+    textureEngine.unbind();
 
+    glPopMatrix();
 	// Remove the last transformation matrix from the stack - you have drawn your last
 	// object with a new transformation and now you go back to the previous one
 

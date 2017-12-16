@@ -25,7 +25,9 @@ HEADERS += ./Base.h \
            ./tinyply.h \
     noise.h \
     terrain.h \
-    PerlinNoise.hpp
+    PerlinNoise.hpp \
+    Skybox.h \
+    materials.h
 
 # Source files
 SOURCES += ./CCanvas.cpp \
@@ -35,7 +37,8 @@ SOURCES += ./CCanvas.cpp \
            ./ObjModel.cpp \
            ./PlyModel.cpp \
            ./objloader.cpp \
-           ./tinyply.cpp
+           ./tinyply.cpp \
+           ./Skybox.cpp
 
 # Forms
 FORMS += ./GLRender.ui

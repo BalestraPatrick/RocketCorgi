@@ -14,8 +14,11 @@
 
 #include "ObjModel.h"
 #include "PlyModel.h"
+#include "Skybox.h"
+#include "Sphere.h"
 
 using namespace std;
+
 //const string PROJECT_FOLDER = "/Users/patrickbalestra/Documents/Github/RocketCorgi";
 const string PROJECT_FOLDER = "/Users/luca/Documents/USI/FS_2017/ComputerGraphics/project/RocketCorgi";
 //const string PROJECT_FOLDER = "/Users/BMW/Documents/Git/RocketCorgi";
@@ -33,6 +36,7 @@ public:
         textureCorgiFur(PROJECT_FOLDER + "/rocket_corgi_src/textures/fur2.jpg"),
         textureEngine(PROJECT_FOLDER + "/rocket_corgi_src/textures/steel2.jpg"),
         textureGoggles(PROJECT_FOLDER + "/rocket_corgi_src/textures/glass.jpg"),
+
         corgiFront(PROJECT_FOLDER + "/models/RocketCorgiOBJ/downsampled/Corgi_Front.obj"),
         corgiBack(PROJECT_FOLDER + "/models/RocketCorgiOBJ/downsampled/Corgi_Rear.obj"),
         harness(PROJECT_FOLDER + "/models/RocketCorgiOBJ/downsampled/Harness.obj"),
@@ -40,7 +44,11 @@ public:
         topRocketLeft(PROJECT_FOLDER + "/models/RocketCorgiOBJ/downsampled/Engine_Front1.obj"),
         bottomRocketLeft(PROJECT_FOLDER + "/models/RocketCorgiOBJ/downsampled/Engine_Rear1.obj"),
         topRocketRight(PROJECT_FOLDER + "/models/RocketCorgiOBJ/downsampled/Engine_Front.obj"),
-        bottomRocketRight(PROJECT_FOLDER + "/models/RocketCorgiOBJ/downsampled/Engine_Rear.obj")
+        bottomRocketRight(PROJECT_FOLDER + "/models/RocketCorgiOBJ/downsampled/Engine_Rear.obj"),
+
+        skyCloud(PROJECT_FOLDER + "/skyboxes/Clouds2", "bmp"),
+        skyGalaxy(PROJECT_FOLDER + "/skyboxes/Galaxy", "png"),
+        sun(20,20)
 	{
 		QTimer *timer = new QTimer(this);
 		connect(timer, SIGNAL(timeout()), this, SLOT(updateGL()));
@@ -93,6 +101,14 @@ private:
 	ObjModel bottomRocketRight;
 	ObjModel topRocketLeft;
 	ObjModel bottomRocketLeft;
+    // Skybox(es)
+    Skybox skyCloud;
+    Skybox skyGalaxy;
+
+    // primary light position
+    GLfloat lightpos[4];
+    // The Sun
+    Sphere sun;
 
 
 	// Model loaded from .ply format
