@@ -16,11 +16,11 @@
 #include "PlyModel.h"
 
 using namespace std;
-//const string PROJECT_FOLDER = "/Users/patrickbalestra/Documents/Github/RocketCorgi";
+const string PROJECT_FOLDER = "/Users/patrickbalestra/Documents/Github/RocketCorgi";
 //const string PROJECT_FOLDER = "/Users/luca/Documents/USI/FS_2017/ComputerGraphics/project/RocketCorgi";
 //const string PROJECT_FOLDER = "/Users/BMW/Documents/Git/RocketCorgi";
 
-const string PROJECT_FOLDER = "/Users/lara/Documents/USI/5th/ComputerGraphics/Project";
+//const string PROJECT_FOLDER = "/Users/lara/Documents/USI/5th/ComputerGraphics/Project";
 /************************************************************************/
 /* Canvas to draw                                                       */
 /************************************************************************/
@@ -30,9 +30,9 @@ class CCanvas : public QGLWidget
 
 public:
 	explicit CCanvas(QWidget *parent = 0) : QGLWidget(parent),
-		textureCorgiFur(PROJECT_FOLDER + "/rocket_corgi_src/textures/fur2.jpg"),
-		textureEngine(PROJECT_FOLDER + "/rocket_corgi_src/textures/steel2.jpg"),
-		textureGoggles(PROJECT_FOLDER + "/rocket_corgi_src/textures/greenglass1.jpg"),
+        textureCorgiFur(PROJECT_FOLDER + "/rocket_corgi_src/textures/fur2.jpg"),
+        textureEngine(PROJECT_FOLDER + "/rocket_corgi_src/textures/steel2.jpg"),
+        textureGoggles(PROJECT_FOLDER + "/rocket_corgi_src/textures/glass.jpg"),
         corgiFront(PROJECT_FOLDER + "/models/RocketCorgiOBJ/downsampled/Corgi_Front.obj"),
         corgiBack(PROJECT_FOLDER + "/models/RocketCorgiOBJ/downsampled/Corgi_Rear.obj"),
         harness(PROJECT_FOLDER + "/models/RocketCorgiOBJ/downsampled/Harness.obj"),
