@@ -30,9 +30,9 @@ class CCanvas : public QGLWidget
 
 public:
 	explicit CCanvas(QWidget *parent = 0) : QGLWidget(parent),
-		textureCorgiFur(PROJECT_FOLDER + "/rocket_corgi_src/textures/fur2.jpg"),
-		textureEngine(PROJECT_FOLDER + "/rocket_corgi_src/textures/steel2.jpg"),
-		textureGoggles(PROJECT_FOLDER + "/rocket_corgi_src/textures/greenglass1.jpg"),
+        textureCorgiFur(PROJECT_FOLDER + "/rocket_corgi_src/textures/fur2.jpg"),
+        textureEngine(PROJECT_FOLDER + "/rocket_corgi_src/textures/steel2.jpg"),
+        textureGoggles(PROJECT_FOLDER + "/rocket_corgi_src/textures/glass.jpg"),
         corgiFront(PROJECT_FOLDER + "/models/RocketCorgiOBJ/downsampled/Corgi_Front.obj"),
         corgiBack(PROJECT_FOLDER + "/models/RocketCorgiOBJ/downsampled/Corgi_Rear.obj"),
         harness(PROJECT_FOLDER + "/models/RocketCorgiOBJ/downsampled/Harness.obj"),

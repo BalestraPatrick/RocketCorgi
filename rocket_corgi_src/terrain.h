@@ -63,9 +63,6 @@ void drawTerrain()
     GLfloat white[] = {0.8f, 0.8f, 0.8f, 1.0f};
     GLfloat cyan[] = {0.f, .8f, .8f, 1.f};
     glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, cyan);
-    //glMaterialfv(GL_FRONT, GL_SPECULAR, white);
-    GLfloat shininess[] = {50};
-    glMaterialfv(GL_FRONT, GL_SHININESS, shininess);
 
     for(int i=0; i<terrainStrips.size(); i++)
     {

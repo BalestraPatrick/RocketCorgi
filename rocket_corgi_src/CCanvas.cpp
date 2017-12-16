@@ -198,9 +198,9 @@ void CCanvas::paintGL()
 	glLoadIdentity();
 
     t+=0.01;
-//    lookAt(0,0,10-corgiElevation, //position of cam
-//    0, -corgiElevation, 0,
-//    0,1,0);
+    lookAt(0,0,10-corgiElevation, //position of cam
+    sin(t), 0, cos(t),
+    0,1,0);
 
 	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
