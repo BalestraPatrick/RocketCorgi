@@ -15,7 +15,7 @@ GLfloat defaultShin = 0.0;
 
 /* Corgi body material */
 GLfloat corgiAmb[] = {0.4, 0.2, 0.2, 1.0};
-GLfloat corgiDiff[] = {0.8, 0.7, 0.7, 1.0};
+GLfloat corgiDiff[] = {0.9, 0.8, 0.8, 1.0};
 GLfloat corgiSpec[] = {0.3, 0.3, 0.3, 1.0};
 GLfloat corgiEmis[] = {0.0, 0.0, 0.0, 1.0};
 GLfloat corgiShin = 0.01;
