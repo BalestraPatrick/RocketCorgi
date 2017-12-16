@@ -2,6 +2,7 @@
 #include "Base.h"
 #include "Sphere.h"
 #include "terrain.h"
+#include "Particle.h"
 
 using namespace std;
 
@@ -198,9 +199,9 @@ void CCanvas::paintGL()
 	glLoadIdentity();
 
     t+=0.01;
-    lookAt(0,0,10-corgiElevation, //position of cam
-    sin(t), 0, cos(t),
-    0,1,0);
+//    lookAt(0,0,10-corgiElevation, //position of cam
+//    sin(t), 0, cos(t),
+//    0,1,0);
 
 	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
@@ -260,6 +261,7 @@ void CCanvas::paintGL()
 	 *  GLfloat matrix[16];
 	 *  glGetFloatv (GL_MODELVIEW_MATRIX, matrix);
 	*/
+
 	GLfloat matrix[16];
 	glGetFloatv (GL_MODELVIEW_MATRIX, matrix);
 
@@ -287,6 +289,18 @@ void CCanvas::paintGL()
     textureEngine.bind();
     harness.draw();
     glPushMatrix();
+	static Particle test1 = Particle(engineRightFromOrigin);
+	static Particle test2 = Particle(engineRightFromOrigin);
+	static Particle test3 = Particle(engineRightFromOrigin);
+	static Particle test4 = Particle(engineRightFromOrigin);
+	static Particle test5 = Particle(engineRightFromOrigin);
+	static Particle test6 = Particle(engineRightFromOrigin);
+	static Particle test7 = Particle(engineRightFromOrigin);
+	static Particle test8 = Particle(engineRightFromOrigin);
+	static Particle test9 = Particle(engineRightFromOrigin);
+
+
+
     // too make object rotate on its axis, we move it back to the origin, rotate and translate to final position
     // note: transformations applied bottom up
     glTranslatef(engineRightFromOrigin.x(),
@@ -298,6 +312,18 @@ void CCanvas::paintGL()
                  -engineRightFromOrigin.z());
 	topRocketRight.draw();
     bottomRocketRight.draw();
+	test1.drawParticle();
+	test2.drawParticle();
+	test3.drawParticle();
+	test4.drawParticle();
+	test5.drawParticle();
+	test6.drawParticle();
+	test7.drawParticle();
+	test8.drawParticle();
+	test9.drawParticle();
+
+
+
     glPopMatrix();
     glPushMatrix();
     glTranslatef(engineLeftFromOrigin.x(),
