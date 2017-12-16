@@ -23,9 +23,6 @@ Comment: This file contains all basic definitions.
 
 #define round(x) floor(x+0.5)
 
-//--------------------------------------------------------------------------
-//const string PROJECT_FOLDER = "/Users/patrickbalestra/Documents/Github/RocketCorgi";
-const std::string PROJECT_FOLDER = "/Users/luca/Documents/USI/FS_2017/ComputerGraphics/project/RocketCorgi";
 
 //--------------------------------------------------------------------------
 /** draw modes */

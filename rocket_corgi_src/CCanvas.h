@@ -18,6 +18,9 @@
 
 using namespace std;
 
+//const string PROJECT_FOLDER = "/Users/patrickbalestra/Documents/Github/RocketCorgi";
+const std::string PROJECT_FOLDER = "/Users/luca/Documents/USI/FS_2017/ComputerGraphics/project/RocketCorgi";
+
 /************************************************************************/
 /* Canvas to draw                                                       */
 /************************************************************************/
@@ -42,7 +45,7 @@ public:
         bottomRocketRight(PROJECT_FOLDER + "/models/RocketCorgiOBJ/Engine_Rear.obj"),
 
 //        skyCloud("Clouds"),
-        skyGalaxy("Galaxy")
+        skyGalaxy(PROJECT_FOLDER + "/skyboxes/Galaxy")
 	{
 		QTimer *timer = new QTimer(this);
 		connect(timer, SIGNAL(timeout()), this, SLOT(updateGL()));

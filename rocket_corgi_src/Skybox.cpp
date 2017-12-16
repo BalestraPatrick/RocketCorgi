@@ -7,12 +7,12 @@
 Skybox::Skybox(const std::string &path)
 {
     //Load the cube map, paint each side
-    faces.push_back(PROJECT_FOLDER + "/skyboxes/"+ path +"/right.png");
-    faces.push_back(PROJECT_FOLDER + "/skyboxes/"+ path +"/left.png");
-    faces.push_back(PROJECT_FOLDER + "/skyboxes/"+ path +"/top.png");
-    faces.push_back(PROJECT_FOLDER + "/skyboxes/"+ path +"/bottom.png");
-    faces.push_back(PROJECT_FOLDER + "/skyboxes/"+ path +"/back.png");
-    faces.push_back(PROJECT_FOLDER + "/skyboxes/"+ path +"/front.png");
+    faces.push_back(path +"/right.png");
+    faces.push_back(path +"/left.png");
+    faces.push_back(path +"/top.png");
+    faces.push_back(path +"/bottom.png");
+    faces.push_back(path +"/back.png");
+    faces.push_back(path +"/front.png");
 }
 
 void Skybox::init(){
