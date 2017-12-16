@@ -32,9 +32,9 @@ class CCanvas : public QGLWidget
 
 public:
 	explicit CCanvas(QWidget *parent = 0) : QGLWidget(parent),
-        textureCorgiFur(PROJECT_FOLDER + "/rocket_corgi_src/textures/fur2.jpg"),
+        textureCorgiFur(PROJECT_FOLDER + "/rocket_corgi_src/textures/dog.jpg"),
         textureEngine(PROJECT_FOLDER + "/rocket_corgi_src/textures/steel2.jpg"),
-        textureGoggles(PROJECT_FOLDER + "/rocket_corgi_src/textures/glass.jpg"),
+        textureGoggles(PROJECT_FOLDER + "/rocket_corgi_src/textures/glass2.jpg"),
         textureCandyCane(PROJECT_FOLDER + "/rocket_corgi_src/textures/candy_cane.png"),
 
         corgiFront(PROJECT_FOLDER + "/models/RocketCorgiOBJ/downsampled/Corgi_Front.obj"),
@@ -45,7 +45,7 @@ public:
         bottomRocketLeft(PROJECT_FOLDER + "/models/RocketCorgiOBJ/downsampled/Engine_Rear1.obj"),
         topRocketRight(PROJECT_FOLDER + "/models/RocketCorgiOBJ/downsampled/Engine_Front.obj"),
         bottomRocketRight(PROJECT_FOLDER + "/models/RocketCorgiOBJ/downsampled/Engine_Rear.obj"),
-        candyCane(PROJECT_FOLDER + "/models/CandyCaneOBJ/CandyCane.obj")
+        candyCane(PROJECT_FOLDER + "/models/CandyCaneOBJ/CandyCane.obj"),
         skyCloud(PROJECT_FOLDER + "/skyboxes/Clouds2", "bmp"),
         skyGalaxy(PROJECT_FOLDER + "/skyboxes/Galaxy", "png")
 	{
