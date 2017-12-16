@@ -10,13 +10,13 @@
 class ParticleEmitter {
 	public:
 		ParticleEmitter(Point3d pos);
-		void emit_particles();
+        void emitParticles();
 		void init();
 
 	private:
 		Point3d position;
 		std::vector<Particle> particles;
-		int n_particles;
+        int nParticles;
 };
 
 #endif
