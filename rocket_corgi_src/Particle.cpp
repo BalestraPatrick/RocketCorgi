@@ -6,6 +6,7 @@
 
 Particle::Particle(Point3d startPosition){
 	this->life = this->start_life;
+	this->size = 1;
 	this->position = startPosition;
 
 	float neg = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
@@ -69,7 +70,7 @@ void Particle::drawParticle() {
 
 
 		// Bottom face
-		glNormal3d(0, 0, 1);    // Normal of the face
+//		glNormal3d(0, 0, -1);    // Normal of the face
 		glVertex3d(sizeMinusX, sizeMinusY, sizeZ);  // Triangle
 		glVertex3d(sizeX, sizeMinusY, sizeZ);
 		glVertex3d(sizeX, sizeMinusY, sizeMinusZ);
@@ -79,7 +80,7 @@ void Particle::drawParticle() {
 		glVertex3d(sizeX, sizeMinusY, sizeMinusZ);
 
 		// Top face
-		glNormal3d(0, 0, 1);    // Normal of the face
+//		glNormal3d(0, 0, 1);    // Normal of the face
 		glVertex3d(sizeMinusX, sizeY, sizeZ);   // Triangle
 		glVertex3d(sizeX, sizeY, sizeZ);
 		glVertex3d(sizeX, sizeY, sizeMinusZ);
@@ -89,7 +90,7 @@ void Particle::drawParticle() {
 		glVertex3d(sizeX, sizeY, sizeMinusZ);
 
 		// Right face
-		glNormal3d(-1, 0, 0);   // Normal of the face
+//		glNormal3d(1, 0, 0);   // Normal of the face
 		glVertex3d(sizeX, sizeMinusY, sizeZ);   // Triangle
 		glVertex3d(sizeX, sizeMinusY, sizeMinusZ);
 		glVertex3d(sizeX, sizeY, sizeZ);
@@ -99,7 +100,7 @@ void Particle::drawParticle() {
 		glVertex3d(sizeX, sizeY, sizeMinusZ);
 
 		// Left face
-		glNormal3d(-1, 0, 0);   // Normal of the face
+//		glNormal3d(-1, 0, 0);   // Normal of the face
 		glVertex3d(sizeMinusX, sizeMinusY, sizeZ);  // Triangle
 		glVertex3d(sizeMinusX, sizeMinusY, sizeMinusZ);
 		glVertex3d(sizeMinusX, sizeY, sizeZ);
@@ -109,7 +110,7 @@ void Particle::drawParticle() {
 		glVertex3d(sizeMinusX, sizeY, sizeMinusZ);
 
 		// Front face
-		glNormal3d(0, 0, 1);    // Normal of the face
+//		glNormal3d(0, 0, -1);    // Normal of the face
 		glVertex3d(sizeMinusX, sizeMinusY, sizeZ);  // Triangle
 		glVertex3d(sizeX, sizeMinusY, sizeZ);
 		glVertex3d(sizeMinusX, sizeY, sizeZ);
@@ -119,7 +120,7 @@ void Particle::drawParticle() {
 		glVertex3d(sizeX, sizeY, sizeZ);
 
 		// Back face
-		glNormal3d(0, 0, 1);    // Normal of the face
+//		glNormal3d(0, 0, 1);    // Normal of the face
 		glVertex3d(sizeMinusX, sizeMinusY, sizeMinusZ); // Triangle
 		glVertex3d(sizeX, sizeMinusY, sizeMinusZ);
 		glVertex3d(sizeMinusX, sizeY, sizeMinusZ);

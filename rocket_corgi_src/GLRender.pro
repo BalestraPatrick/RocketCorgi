@@ -25,9 +25,10 @@ HEADERS += ./Base.h \
            ./tinyply.h \
     noise.h \
     terrain.h \
-    PerlinNoise.hpp \
-    Particle.h \
-    Particle_emitter.h
+	PerlinNoise.hpp \
+	Particle.h \
+	Particle_emitter.h \
+	Skybox.h
 
 # Source files
 SOURCES += ./CCanvas.cpp \
@@ -38,8 +39,9 @@ SOURCES += ./CCanvas.cpp \
            ./PlyModel.cpp \
            ./objloader.cpp \
            ./tinyply.cpp \
-    Particle.cpp \
-    Particle_emitter.cpp
+	Particle.cpp \
+	Particle_emitter.cpp \
+		   ./Skybox.cpp
 
 # Forms
 FORMS += ./GLRender.ui
