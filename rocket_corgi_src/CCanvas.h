@@ -19,8 +19,8 @@
 
 using namespace std;
 
-const string PROJECT_FOLDER = "/Users/patrickbalestra/Documents/Github/RocketCorgi";
-// const string PROJECT_FOLDER = "/Users/luca/Documents/USI/FS_2017/ComputerGraphics/project/RocketCorgi";
+//const string PROJECT_FOLDER = "/Users/patrickbalestra/Documents/Github/RocketCorgi";
+ const string PROJECT_FOLDER = "/Users/luca/Documents/USI/FS_2017/ComputerGraphics/project/RocketCorgi";
 //const string PROJECT_FOLDER = "/Users/BMW/Documents/Git/RocketCorgi";
 //const string PROJECT_FOLDER = "/Users/SusannaChuck/Documents/computer_graphics";
 //const string PROJECT_FOLDER = "/Users/lara/Documents/USI/5th/ComputerGraphics/Project";
@@ -89,16 +89,11 @@ private:
 
 	void setView(View _view);
 
-<<<<<<< HEAD
     void renderCorgi(void);
 
 
 
-	// Models and textures
-=======
-    /* Textures */
-    // Textures for Corgi
->>>>>>> develop
+    // Models and textures
     Texture textureCorgiFur;
     Texture textureEngine;
     Texture textureGoggles;
@@ -131,7 +126,6 @@ private:
     // Skybox(es)
     Skybox skyCloud;
     Skybox skyGalaxy;
-<<<<<<< HEAD
 
     // primary light position
     GLfloat lightpos[4];
@@ -141,8 +135,6 @@ private:
 
 	// Model loaded from .ply format
 //    PlyModel modelTrain2;
-=======
->>>>>>> develop
 };
 
 #endif

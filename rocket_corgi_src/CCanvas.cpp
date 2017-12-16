@@ -3,6 +3,8 @@
 #include "Sphere.h"
 #include "terrain.h"
 #include "materials.h"
+#include "Particle.h"
+#include "Particle_emitter.h"
 
 using namespace std;
 
@@ -32,7 +34,7 @@ void CCanvas::initializeGL()
      */
 
     lightpos[0] = 0.0;
-    lightpos[1] = 350.0;
+    lightpos[1] = 50.0;
     lightpos[2] = 1.0;
     lightpos[3] = 1.0;
     glLightfv(GL_LIGHT0, GL_POSITION, lightpos);
@@ -51,6 +53,9 @@ void CCanvas::initializeGL()
     textureCorgiFur.setTexture();
     textureEngine.setTexture();
     textureGoggles.setTexture();
+    textureCandyCane.setTexture();
+    textureEarth.setTexture();
+    textureOcean.setTexture();
 
 	corgiFront.init();
 	corgiBack.init();
@@ -59,7 +64,10 @@ void CCanvas::initializeGL()
 	topRocketRight.init();
 	bottomRocketRight.init();
 	topRocketLeft.init();
-	bottomRocketLeft.init();
+    bottomRocketLeft.init();
+    candyCane.init();
+    earth.init();
+    ocean.init();
 
     Terrain::generateTerrain(600);
     // Setup the skybox(es)
@@ -183,6 +191,8 @@ void CCanvas::resizeGL(int width, int height)
 double t = 90;
 float engineRotation = 0;
 float corgiElevation = 1;
+float earthRotation = 1;
+int candyRotation = 1;
 void CCanvas::renderCorgi() {
     glPushMatrix();
     glTranslatef(0.0f, corgiElevation, 0);
@@ -322,6 +332,7 @@ void CCanvas::setView(View _view) {
 	}
 }
 
+
 void CCanvas::paintGL()
 {
 	// clear screen and depth buffer
@@ -334,14 +345,19 @@ void CCanvas::paintGL()
     lookAt(	freeCameraPosition.x(), freeCameraPosition.y(), freeCameraPosition.z(),
             freeCameraPosition.x() + freeCameraDirection.x(), freeCameraDirection.y()+freeCameraPosition.y(),  freeCameraPosition.z()+freeCameraDirection.z(),
             freeCameraUp.x(), freeCameraUp.y(),  freeCameraUp.z());
+
+    /****************************************************************
+    * Light position should be called here, after the lookAt to have a global light position (i.e. it does not move with camera)
+    * The position is set in initialiyzeGL and stored in global variable so that also other functions can access it.
+    * It is instead not necessary to redefine the values of the light (ambient, diffuse, specular) as those are state variables of GL_LIGHT0
+    */
+     glLightfv(GL_LIGHT0, GL_POSITION, lightpos);
+    /****************************************************************/
+
 	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
 	// Setup the current view
     setView(View::Perspective);
-
-	// You can always change the light position here if you want
-//    GLfloat lightpos[] = {0.0f, 100.0f, 100.0f, 0.0f};
-//    glLightfv(GL_LIGHT0, GL_POSITION, lightpos);
 
 	/**** Axes in the global coordinate system ****/
 
@@ -364,13 +380,13 @@ void CCanvas::paintGL()
     glEnable(GL_LIGHTING);
 
 	/**** Draw the terrain ***/
-//    glPushAttrib(GL_LIGHTING_BIT);
-//        Materials::setTerrainMat();
+    glPushAttrib(GL_LIGHTING_BIT);
+        Materials::setTerrainMat();
         Terrain::drawTerrain();
-//    glPopAttrib();
+    glPopAttrib();
     /**** Draw the sky ***/
     glPushAttrib(GL_LIGHTING_BIT);
-        glColor3f(0.5f, 0.5f, 0.5f);
+        glColor3f(1.0f, 1.0f, 1.0f);
         Materials::setSkyMat();
         glPushMatrix();
             glScalef(450.0, 450.0, 450.0);
@@ -384,15 +400,11 @@ void CCanvas::paintGL()
     glPushAttrib(GL_LIGHTING_BIT);
         glColor3f(0.7f, 0.6f, 0.2f);
         Materials::setSunMat();
-        //don't write to Z buffer
-        glDepthMask(GL_FALSE);
         glPushMatrix();
             glTranslatef(lightpos[0], lightpos[1], lightpos[2]);
             glScalef(15.0,15.0,15.0);
             sun.draw();
         glPopMatrix();
-        //turn depth writing on again
-        glDepthMask(GL_TRUE);
     glPopAttrib();
 
 	/**** Setup and draw your objects ****/
@@ -405,10 +417,43 @@ void CCanvas::paintGL()
 	 *  GLfloat matrix[16];
 	 *  glGetFloatv (GL_MODELVIEW_MATRIX, matrix);
 	*/
+
 	GLfloat matrix[16];
 	glGetFloatv (GL_MODELVIEW_MATRIX, matrix);
 
-	// Look at the ObjModel class to see how the drawing is done
+    // Draw the objects
+    // Draw candy canes
+    glPushAttrib(GL_LIGHTING_BIT);
+    Materials::resetDefault();
+    for (int i = -100; i < 100; i += 20) {
+        for (int j = -100; j < 100; j += 20) {
+            glPushMatrix();
+            glTranslatef(j, 0, i);
+            glRotatef(((i * j) + candyRotation % 360), 0.0f, 1.0f, 0.0f);
+            textureCandyCane.bind();
+            candyCane.draw();
+            textureCandyCane.unbind();
+            glPopMatrix();
+        }
+    }
+    candyRotation++;
+    glPopAttrib();
+
+    // Draw the Earth
+    glPushMatrix();
+    glScalef(1.0f, 1.00f, 1.00f);
+    glTranslatef(-5, 7, 0);
+    glRotatef(earthRotation, 0.0f, 1.0f, 0.0f);
+    textureEarth.bind();
+    earth.draw();
+    textureEarth.unbind();
+
+    textureOcean.bind();
+    ocean.draw();
+    textureOcean.unbind();
+    glPopMatrix();
+
+    // Draw the Corgi
     glScalef(0.05f, 0.05f, 0.05f);
     renderCorgi();
 
@@ -431,6 +476,16 @@ void CCanvas::paintGL()
     textureEngine.bind();
     harness.draw();
     glPushMatrix();
+
+	Point3d left_engine = Point3d(engineLeftFromOrigin.x(), engineLeftFromOrigin.y()-25, engineLeftFromOrigin.z());
+	Point3d right_engine = Point3d(engineRightFromOrigin.x(), engineRightFromOrigin.y()-25, engineRightFromOrigin.z());
+
+	static ParticleEmitter right_particles(right_engine);
+	static ParticleEmitter left_particles(left_engine);
+
+
+
+
     // too make object rotate on its axis, we move it back to the origin, rotate and translate to final position
     // note: transformations applied bottom up
     glTranslatef(engineRightFromOrigin.x(),
@@ -442,6 +497,12 @@ void CCanvas::paintGL()
                  -engineRightFromOrigin.z());
 	topRocketRight.draw();
     bottomRocketRight.draw();
+	glPushMatrix();
+	right_particles.emit_particles();
+	left_particles.emit_particles();
+	glPopMatrix();
+
+
     glPopMatrix();
     glPushMatrix();
     glTranslatef(engineLeftFromOrigin.x(),
@@ -463,5 +524,5 @@ void CCanvas::paintGL()
     glPopMatrix();
 
 
-
+    earthRotation += 0.20;
 }

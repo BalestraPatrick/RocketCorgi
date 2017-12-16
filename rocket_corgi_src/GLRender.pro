@@ -28,7 +28,8 @@ HEADERS += ./Base.h \
 	PerlinNoise.hpp \
 	Particle.h \
 	Particle_emitter.h \
-	Skybox.h
+        Skybox.h\
+        materials.h
 
 # Source files
 SOURCES += ./CCanvas.cpp \
