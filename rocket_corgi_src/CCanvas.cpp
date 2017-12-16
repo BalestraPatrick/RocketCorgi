@@ -32,12 +32,12 @@ void CCanvas::initializeGL()
      */
 
     lightpos[0] = 0.0;
-    lightpos[1] = 150.0;
-    lightpos[2] = 10.0;
+    lightpos[1] = 450.0;
+    lightpos[2] = -10.0;
     lightpos[3] = 1.0;
     glLightfv(GL_LIGHT0, GL_POSITION, lightpos);
-    GLfloat lightAmb[]  = {0.2, 0.2, 0.2};
-    GLfloat lightDiff[] = {0.6, 0.6, 0.6};
+    GLfloat lightAmb[]  = {0.3, 0.3, 0.3};
+    GLfloat lightDiff[] = {0.8, 0.8, 0.8};
     GLfloat lightSpec[] = {0.8, 0.8, 0.8};
 
 	glLightfv(GL_LIGHT0, GL_SPECULAR, lightSpec);
