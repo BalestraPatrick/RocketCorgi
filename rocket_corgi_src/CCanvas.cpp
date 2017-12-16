@@ -236,9 +236,8 @@ Point3d freeCameraDirection(cos(freeCameraAngleVertical) * sin(freeCameraAngleHo
                             sin(freeCameraAngleVertical),
                             cos(freeCameraAngleVertical) * cos(freeCameraAngleHorizontal));
 Point3d freeCameraPosition(0, 1, 5);
-Point3d freeCameraRight(sin(freeCameraAngleHorizontal - 3.14f/2.0f),
-                      0,
-                      cos(freeCameraAngleHorizontal - 3.14f/2.0f));
+Point3d freeCameraRight(1,0,0);
+Point3d freeCameraForward(0, 0, 1);
 Point3d freeCameraUp = freeCameraRight ^ freeCameraDirection;
 
 float speed = 3.0f;
@@ -246,6 +245,9 @@ double deltaTime = 1.0f;
 
 void QWidget::keyPressEvent( QKeyEvent *evt ) {
 
+    freeCameraDirection = Point3d(cos(freeCameraAngleVertical) * sin(freeCameraAngleHorizontal),
+                        sin(freeCameraAngleVertical),
+                        cos(freeCameraAngleVertical) * cos(freeCameraAngleHorizontal));
 
     switch (evt->key()) {
         case Qt::Key_Left:
@@ -254,19 +256,17 @@ void QWidget::keyPressEvent( QKeyEvent *evt ) {
         case Qt::Key_Right:
             freeCameraPosition -= freeCameraRight * deltaTime * speed;
             break;
-        case Qt::Key_Down:
-            freeCameraPosition += freeCameraDirection * deltaTime * speed;
-            break;
         case Qt::Key_Up:
-            freeCameraPosition -= freeCameraDirection * deltaTime * speed;
+            freeCameraPosition += freeCameraForward * deltaTime * speed;
+            break;
+        case Qt::Key_Down:
+            freeCameraPosition -= freeCameraForward * deltaTime * speed;
             break;
         case Qt::Key_S:
-            if(freeCameraAngleVertical - speed * deltaTime * 0.01f < 0) break;
 
             freeCameraAngleVertical -= speed * deltaTime * 0.01f;
             break;
         case Qt::Key_W:
-            if(freeCameraAngleVertical + speed * deltaTime * 0.01f > 1.3) break;
 
             freeCameraAngleVertical += speed * deltaTime * 0.01f;
             break;
@@ -280,10 +280,8 @@ void QWidget::keyPressEvent( QKeyEvent *evt ) {
     freeCameraDirection = Point3d(cos(freeCameraAngleVertical) * sin(freeCameraAngleHorizontal),
                         sin(freeCameraAngleVertical),
                         cos(freeCameraAngleVertical) * cos(freeCameraAngleHorizontal));
-    freeCameraRight = Point3d(sin(freeCameraAngleHorizontal - 3.14f/2.0f),
-                          0,
-                          cos(freeCameraAngleHorizontal - 3.14f/2.0f));
-    freeCameraUp = freeCameraRight ^ freeCameraDirection;
+    //freeCameraUp = freeCameraRight ^ freeCameraDirection;
+    freeCameraUp.normalize();
 }
 
 
@@ -310,7 +308,6 @@ void CCanvas::paintGL()
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 
-    t+=0.01;
     lookAt(	freeCameraPosition.x(), freeCameraPosition.y(), freeCameraPosition.z(),
             freeCameraPosition.x() + freeCameraDirection.x(), freeCameraDirection.y()+freeCameraPosition.y(),  freeCameraPosition.z()+freeCameraDirection.z(),
             freeCameraUp.x(), freeCameraUp.y(),  freeCameraUp.z());
