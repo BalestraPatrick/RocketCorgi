@@ -2,6 +2,8 @@
 #include "Base.h"
 #include "Sphere.h"
 #include "terrain.h"
+#include "Particle.h"
+#include "ParticleEmitter.h"
 
 using namespace std;
 
@@ -47,6 +49,9 @@ void CCanvas::initializeGL()
     textureCorgiFur.setTexture();
     textureEngine.setTexture();
     textureGoggles.setTexture();
+    textureCandyCane.setTexture();
+    textureEarth.setTexture();
+    textureOcean.setTexture();
 
 	corgiFront.init();
 	corgiBack.init();
@@ -55,9 +60,15 @@ void CCanvas::initializeGL()
 	topRocketRight.init();
 	bottomRocketRight.init();
 	topRocketLeft.init();
-	bottomRocketLeft.init();
+    bottomRocketLeft.init();
+    candyCane.init();
+    earth.init();
+    ocean.init();
 
     Terrain::generateTerrain(600);
+    // Setup the skybox(es)
+    skyCloud.init();
+    skyGalaxy.init();
 }
 
 //-----------------------------------------------------------------------------
@@ -173,11 +184,10 @@ void CCanvas::resizeGL(int width, int height)
 }
 
 
-double t = 90;
 float engineRotation = 0;
 float corgiElevation = 1;
 void CCanvas::renderCorgi() {
-    glPushMatrix();
+  glPushMatrix();
     glTranslatef(0.0f, corgiElevation, 0);
     glRotatef(90.0f, 0.0f, 0.0f, 0.0f);
     // Drawing the object with texture
@@ -185,15 +195,16 @@ void CCanvas::renderCorgi() {
     corgiFront.draw();
     corgiBack.draw();
     textureCorgiFur.unbind();
-    textureGoggles.bind();
+
 
     //we move the googles a bit forward
     glPushMatrix();
         glTranslatef(0, 2, 0);
+        textureGoggles.bind();
         goggles.draw();
+        textureGoggles.unbind();
     glPopMatrix();
 
-    textureGoggles.unbind();
     textureEngine.bind();
     harness.draw();
     glPushMatrix();
@@ -208,7 +219,14 @@ void CCanvas::renderCorgi() {
                      -engineRightFromOrigin.z());
         topRocketRight.draw();
         bottomRocketRight.draw();
+
+        // fire
+        Point3d rightEngine = engineRightFromOrigin;
+        rightEngine.y() -= 25;
+        static ParticleEmitter rightParticles(rightEngine);
+        rightParticles.emitParticles();
     glPopMatrix();
+
     glPushMatrix();
         glTranslatef(engineLeftFromOrigin.x(),
                      engineLeftFromOrigin.y(),
@@ -219,9 +237,16 @@ void CCanvas::renderCorgi() {
                      -engineLeftFromOrigin.z());
         topRocketLeft.draw();
         bottomRocketLeft.draw();
+        Point3d leftEngine = engineLeftFromOrigin;
+        leftEngine.y() -= 25;
+        static ParticleEmitter left_particles(leftEngine);
+        left_particles.emitParticles();
     glPopMatrix();
     textureEngine.unbind();
-    glPopMatrix();
+
+
+  glPopMatrix();
+
     if(engineRotation < 90)
         engineRotation += 1;
     else if(corgiElevation < 10000)
@@ -308,6 +333,7 @@ void CCanvas::setView(View _view) {
 	}
 }
 
+float earthRotation = 1;
 void CCanvas::paintGL()
 {
 	// clear screen and depth buffer
@@ -320,6 +346,7 @@ void CCanvas::paintGL()
     lookAt(	freeCameraPosition.x(), freeCameraPosition.y(), freeCameraPosition.z(),
             freeCameraPosition.x() + freeCameraDirection.x(), freeCameraDirection.y()+freeCameraPosition.y(),  freeCameraPosition.z()+freeCameraDirection.z(),
             freeCameraUp.x(), freeCameraUp.y(),  freeCameraUp.z());
+
 	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
 	// Setup the current view
@@ -351,7 +378,10 @@ void CCanvas::paintGL()
 
 	/**** Draw the terrain ***/
     Terrain::drawTerrain();
-
+    glScalef(100.0, 100.0, 100.0);
+    skyGalaxy.draw();
+//    skyCloud.draw();
+    glScalef(1.0/100.0, 1.0/100.0, 1.0/100.0);
 	/**** Setup and draw your objects ****/
 
 	// You can freely enable/disable some of the lights in the scene as you wish
@@ -367,21 +397,52 @@ void CCanvas::paintGL()
 	 *  GLfloat matrix[16];
 	 *  glGetFloatv (GL_MODELVIEW_MATRIX, matrix);
 	*/
+
 	GLfloat matrix[16];
 	glGetFloatv (GL_MODELVIEW_MATRIX, matrix);
 
-	// Look at the ObjModel class to see how the drawing is done
+    // Draw the objects
+    // Draw candy canes
+    glPushMatrix();
+        glRotatef(45.0f, 0.0f, 1.0f, 0.0f);
+        glTranslatef(0, 0, -15);
+        textureCandyCane.bind();
+        candyCane.draw();
+        textureCandyCane.unbind();
+    glPopMatrix();
+
+    glPushMatrix();
+        glScalef(0.60f, 0.60f, 0.60f);
+        glRotatef(90.0f, 0.0f, 1.0f, 0.0f);
+        glTranslatef(0, 0, 10);
+        textureCandyCane.bind();
+        candyCane.draw();
+        textureCandyCane.unbind();
+    glPopMatrix();
+
+    // Draw the Earth
+    glPushMatrix();
+        glScalef(1.0f, 1.00f, 1.00f);
+        glTranslatef(-5, 7, 0);
+        glRotatef(earthRotation, 0.0f, 1.0f, 0.0f);
+        textureEarth.bind();
+        earth.draw();
+        textureEarth.unbind();
+
+        textureOcean.bind();
+        ocean.draw();
+        textureOcean.unbind();
+    glPopMatrix();
+
+    // Draw the Corgi
     glScalef(0.05f, 0.05f, 0.05f);
     renderCorgi();
-
-
-
-
+    glPopMatrix();
 	// Remove the last transformation matrix from the stack - you have drawn your last
 	// object with a new transformation and now you go back to the previous one
 
     glPopMatrix();
 
 
-
+    earthRotation += 0.20;
 }
