@@ -38,7 +38,7 @@ void CCanvas::initializeGL()
     glLightfv(GL_LIGHT0, GL_POSITION, lightpos);
     GLfloat lightAmb[]  = {0.3, 0.3, 0.3, 1.0};
     GLfloat lightDiff[] = { 1.0, 1.0, 1.0, 1.0 };
-    GLfloat lightSpec[] = {0.01, 0.01, 0.01, 1.0};
+    GLfloat lightSpec[] = {1.0, 1.0, 1.0, 1.0};
 
 	glLightfv(GL_LIGHT0, GL_SPECULAR, lightSpec);
 	glLightfv(GL_LIGHT0, GL_AMBIENT,  lightAmb);
@@ -364,18 +364,18 @@ void CCanvas::paintGL()
     glEnable(GL_LIGHTING);
 
 	/**** Draw the terrain ***/
-    glPushAttrib(GL_LIGHTING_BIT);
-        Materials::setTerrainMat();
+//    glPushAttrib(GL_LIGHTING_BIT);
+//        Materials::setTerrainMat();
         Terrain::drawTerrain();
-    glPopAttrib();
+//    glPopAttrib();
     /**** Draw the sky ***/
     glPushAttrib(GL_LIGHTING_BIT);
         glColor3f(0.5f, 0.5f, 0.5f);
         Materials::setSkyMat();
         glPushMatrix();
-        glScalef(450.0, 450.0, 450.0);
-            skyGalaxy.draw();
-        //    skyCloud.draw();
+            glScalef(450.0, 450.0, 450.0);
+                skyGalaxy.draw();
+            //    skyCloud.draw();
         glPopMatrix();
     glPopAttrib();
 
@@ -386,12 +386,11 @@ void CCanvas::paintGL()
         Materials::setSunMat();
         //don't write to Z buffer
         glDepthMask(GL_FALSE);
-        glTranslatef(lightpos[0], lightpos[1], lightpos[2]);
-        glScalef(15.0,15.0,15.0);
-        sun.draw();
-        glScalef(1/15.0,1/15.0,1/15.0);
-        glTranslatef(-lightpos[0], -lightpos[1], -lightpos[2]);
-
+        glPushMatrix();
+            glTranslatef(lightpos[0], lightpos[1], lightpos[2]);
+            glScalef(15.0,15.0,15.0);
+            sun.draw();
+        glPopMatrix();
         //turn depth writing on again
         glDepthMask(GL_TRUE);
     glPopAttrib();

@@ -59,6 +59,10 @@ void generateTerrain(int world_dim) {
 
 void drawTerrain()
 {
+    glPushAttrib(GL_LIGHTING_BIT);
+    GLfloat white[] = {0.8f, 0.8f, 0.8f, 1.0f};
+    GLfloat cyan[] = {0.f, .4f, .4f, 1.f};
+    glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, cyan);
 
     for(int i=0; i<terrainStrips.size(); i++)
     {
@@ -73,6 +77,7 @@ void drawTerrain()
             }
         glEnd();
     }
+    glPopAttrib();
 
 }
 
