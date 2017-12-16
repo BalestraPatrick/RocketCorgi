@@ -200,6 +200,8 @@ double t = 90;
 float engineRotation = 0;
 float corgiElevation = 1;
 float earthRotation = 1;
+int candyRotation = 1;
+
 void CCanvas::paintGL()
 {
 	// clear screen and depth buffer
@@ -281,22 +283,18 @@ void CCanvas::paintGL()
 
     // Draw the objects
     // Draw candy canes
-    glPushMatrix();
-    glRotatef(45.0f, 0.0f, 1.0f, 0.0f);
-    glTranslatef(0, 0, -15);
-    textureCandyCane.bind();
-    candyCane.draw();
-    textureCandyCane.unbind();
-    glPopMatrix();
-
-    glPushMatrix();
-    glScalef(0.60f, 0.60f, 0.60f);
-    glRotatef(90.0f, 0.0f, 1.0f, 0.0f);
-    glTranslatef(0, 0, 10);
-    textureCandyCane.bind();
-    candyCane.draw();
-    textureCandyCane.unbind();
-    glPopMatrix();
+    for (int i = -100; i < 100; i += 20) {
+        for (int j = -100; j < 100; j += 20) {
+            glPushMatrix();
+            glTranslatef(j, 0, i);
+            glRotatef(((i * j) + candyRotation % 360), 0.0f, 1.0f, 0.0f);
+            textureCandyCane.bind();
+            candyCane.draw();
+            textureCandyCane.unbind();
+            glPopMatrix();
+        }
+    }
+    candyRotation++;
 
     // Draw the Earth
     glPushMatrix();
