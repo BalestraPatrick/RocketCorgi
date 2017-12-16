@@ -2,6 +2,8 @@
 #include "Base.h"
 #include "Sphere.h"
 #include "terrain.h"
+#include "Particle.h"
+#include "Particle_emitter.h"
 
 using namespace std;
 
@@ -207,9 +209,9 @@ void CCanvas::paintGL()
 	glLoadIdentity();
 
     t+=0.01;
-    lookAt(0,0,10-corgiElevation, //position of cam
-    sin(t), 0, cos(t),
-    0,1,0);
+//    lookAt(0,0,10-corgiElevation, //position of cam
+//    sin(t), 0, cos(t),
+//    0,1,0);
 
 	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
@@ -272,6 +274,7 @@ void CCanvas::paintGL()
 	 *  GLfloat matrix[16];
 	 *  glGetFloatv (GL_MODELVIEW_MATRIX, matrix);
 	*/
+
 	GLfloat matrix[16];
 	glGetFloatv (GL_MODELVIEW_MATRIX, matrix);
 
@@ -329,6 +332,16 @@ void CCanvas::paintGL()
     textureEngine.bind();
     harness.draw();
     glPushMatrix();
+
+	Point3d left_engine = Point3d(engineLeftFromOrigin.x(), engineLeftFromOrigin.y()-25, engineLeftFromOrigin.z());
+	Point3d right_engine = Point3d(engineRightFromOrigin.x(), engineRightFromOrigin.y()-25, engineRightFromOrigin.z());
+
+	static ParticleEmitter right_particles(right_engine);
+	static ParticleEmitter left_particles(left_engine);
+
+
+
+
     // too make object rotate on its axis, we move it back to the origin, rotate and translate to final position
     // note: transformations applied bottom up
     glTranslatef(engineRightFromOrigin.x(),
@@ -340,6 +353,12 @@ void CCanvas::paintGL()
                  -engineRightFromOrigin.z());
 	topRocketRight.draw();
     bottomRocketRight.draw();
+	glPushMatrix();
+	right_particles.emit_particles();
+	left_particles.emit_particles();
+	glPopMatrix();
+
+
     glPopMatrix();
     glPushMatrix();
     glTranslatef(engineLeftFromOrigin.x(),
