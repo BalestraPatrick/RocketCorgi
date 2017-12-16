@@ -76,6 +76,9 @@ private:
 
 	void setView(View _view);
 
+    void renderCorgi(void);
+
+
 
 	// Models and textures
     Texture textureCorgiFur;

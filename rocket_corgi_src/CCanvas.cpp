@@ -172,6 +172,122 @@ void CCanvas::resizeGL(int width, int height)
 	glPerspective(beta, gamma, -n, -f);
 }
 
+
+double t = 90;
+float engineRotation = 0;
+float corgiElevation = 1;
+void CCanvas::renderCorgi() {
+    glPushMatrix();
+    glTranslatef(0.0f, corgiElevation, 0);
+    glRotatef(90.0f, 0.0f, 0.0f, 0.0f);
+    // Drawing the object with texture
+    textureCorgiFur.bind();
+    corgiFront.draw();
+    corgiBack.draw();
+    textureCorgiFur.unbind();
+    textureGoggles.bind();
+
+    //we move the googles a bit forward
+    glPushMatrix();
+        glTranslatef(0, 2, 0);
+        goggles.draw();
+    glPopMatrix();
+
+    textureGoggles.unbind();
+    textureEngine.bind();
+    harness.draw();
+    glPushMatrix();
+        // too make object rotate on its axis, we move it back to the origin, rotate and translate to final position
+        // note: transformations applied bottom up
+        glTranslatef(engineRightFromOrigin.x(),
+                     engineRightFromOrigin.y(),
+                     engineRightFromOrigin.z());
+        glRotatef(-engineRotation, 0.0f, 0.0f, 0.0f);
+        glTranslatef(-engineRightFromOrigin.x(),
+                     -engineRightFromOrigin.y(),
+                     -engineRightFromOrigin.z());
+        topRocketRight.draw();
+        bottomRocketRight.draw();
+    glPopMatrix();
+    glPushMatrix();
+        glTranslatef(engineLeftFromOrigin.x(),
+                     engineLeftFromOrigin.y(),
+                     engineLeftFromOrigin.z());
+        glRotatef(-engineRotation, 0.0f, 0.0f, 0.0f);
+        glTranslatef(-engineLeftFromOrigin.x(),
+                     -engineLeftFromOrigin.y(),
+                     -engineLeftFromOrigin.z());
+        topRocketLeft.draw();
+        bottomRocketLeft.draw();
+    glPopMatrix();
+    textureEngine.unbind();
+    glPopMatrix();
+    if(engineRotation < 90)
+        engineRotation += 1;
+    else if(corgiElevation < 10000)
+        corgiElevation = corgiElevation*1.06;
+
+}
+
+bool freeCamera = true;
+double freeCameraAngleHorizontal=3.14f;
+double freeCameraAngleVertical=0.0;
+Point3d freeCameraDirection(cos(freeCameraAngleVertical) * sin(freeCameraAngleHorizontal),
+                            sin(freeCameraAngleVertical),
+                            cos(freeCameraAngleVertical) * cos(freeCameraAngleHorizontal));
+Point3d freeCameraPosition(0, 1, 5);
+Point3d freeCameraRight(sin(freeCameraAngleHorizontal - 3.14f/2.0f),
+                      0,
+                      cos(freeCameraAngleHorizontal - 3.14f/2.0f));
+Point3d freeCameraUp = freeCameraRight ^ freeCameraDirection;
+
+float speed = 3.0f;
+double deltaTime = 1.0f;
+
+void QWidget::keyPressEvent( QKeyEvent *evt ) {
+
+
+    switch (evt->key()) {
+        case Qt::Key_Left:
+            freeCameraPosition += freeCameraRight * deltaTime * speed;
+            break;
+        case Qt::Key_Right:
+            freeCameraPosition -= freeCameraRight * deltaTime * speed;
+            break;
+        case Qt::Key_Down:
+            freeCameraPosition += freeCameraDirection * deltaTime * speed;
+            break;
+        case Qt::Key_Up:
+            freeCameraPosition -= freeCameraDirection * deltaTime * speed;
+            break;
+        case Qt::Key_S:
+            if(freeCameraAngleVertical - speed * deltaTime * 0.01f < 0) break;
+
+            freeCameraAngleVertical -= speed * deltaTime * 0.01f;
+            break;
+        case Qt::Key_W:
+            if(freeCameraAngleVertical + speed * deltaTime * 0.01f > 1.3) break;
+
+            freeCameraAngleVertical += speed * deltaTime * 0.01f;
+            break;
+        case Qt::Key_A:
+            freeCameraAngleHorizontal -= speed * deltaTime * 0.01f;
+            break;
+        case Qt::Key_D:
+            freeCameraAngleHorizontal += speed * deltaTime * 0.01f;
+            break;
+    }
+    freeCameraDirection = Point3d(cos(freeCameraAngleVertical) * sin(freeCameraAngleHorizontal),
+                        sin(freeCameraAngleVertical),
+                        cos(freeCameraAngleVertical) * cos(freeCameraAngleHorizontal));
+    freeCameraRight = Point3d(sin(freeCameraAngleHorizontal - 3.14f/2.0f),
+                          0,
+                          cos(freeCameraAngleHorizontal - 3.14f/2.0f));
+    freeCameraUp = freeCameraRight ^ freeCameraDirection;
+}
+
+
+
 //-----------------------------------------------------------------------------
 void CCanvas::setView(View _view) {
 	switch(_view) {
@@ -185,9 +301,6 @@ void CCanvas::setView(View _view) {
 	}
 }
 
-double t = 90;
-float engineRotation = 0;
-float corgiElevation = 1;
 void CCanvas::paintGL()
 {
 	// clear screen and depth buffer
@@ -198,10 +311,9 @@ void CCanvas::paintGL()
 	glLoadIdentity();
 
     t+=0.01;
-    lookAt(0,0,10-corgiElevation, //position of cam
-    sin(t), 0, cos(t),
-    0,1,0);
-
+    lookAt(	freeCameraPosition.x(), freeCameraPosition.y(), freeCameraPosition.z(),
+            freeCameraPosition.x() + freeCameraDirection.x(), freeCameraDirection.y()+freeCameraPosition.y(),  freeCameraPosition.z()+freeCameraDirection.z(),
+            freeCameraUp.x(), freeCameraUp.y(),  freeCameraUp.z());
 	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
 	// Setup the current view
@@ -239,22 +351,11 @@ void CCanvas::paintGL()
 	// You can freely enable/disable some of the lights in the scene as you wish
 	glEnable(GL_LIGHT0);
 	glDisable(GL_LIGHT1);
-	// Before drawing an object, you can set its material properties
-
-//    glColor3f(0.5f, 0.5f, 0.5f);
-//    GLfloat amb[]  = {0.1f, 0.1f, 0.1f};
-//    GLfloat diff[] = {0.7f, 0.7f, 0.7f};
-//    GLfloat spec[] = {0.1f, 0.1f, 0.1f};
-//    GLfloat shin = 0.0001;
-//    glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, amb);
-//    glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, diff);
-//    glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, spec);
-//    glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, &shin);
 
 
 	// You can stack new transformation matrix if you don't want
 	// the previous transformations to apply on this object
-    //glPushMatrix();
+    glPushMatrix();
 	/*
 	 * Obtaining the values of the current modelview matrix
 	 *  GLfloat matrix[16];
@@ -265,63 +366,16 @@ void CCanvas::paintGL()
 
 	// Look at the ObjModel class to see how the drawing is done
     glScalef(0.05f, 0.05f, 0.05f);
-	glPushMatrix();
+    renderCorgi();
 
 
-    glTranslatef(0.0f, corgiElevation, 0);
-    glRotatef(90.0f, 0.0f, 0.0f, 0.0f);
-    // Drawing the object with texture
-    textureCorgiFur.bind();
-    corgiFront.draw();
-    corgiBack.draw();
-    textureCorgiFur.unbind();
-    textureGoggles.bind();
 
-	//we move the googles a bit forward
-	glPushMatrix();
-	glTranslatef(0, 2, 0);
-    goggles.draw();
-	glPopMatrix();
-
-    textureGoggles.unbind();
-    textureEngine.bind();
-    harness.draw();
-    glPushMatrix();
-    // too make object rotate on its axis, we move it back to the origin, rotate and translate to final position
-    // note: transformations applied bottom up
-    glTranslatef(engineRightFromOrigin.x(),
-                 engineRightFromOrigin.y(),
-                 engineRightFromOrigin.z());
-    glRotatef(-engineRotation, 0.0f, 0.0f, 0.0f);
-	glTranslatef(-engineRightFromOrigin.x(),
-                 -engineRightFromOrigin.y(),
-                 -engineRightFromOrigin.z());
-	topRocketRight.draw();
-    bottomRocketRight.draw();
-    glPopMatrix();
-    glPushMatrix();
-    glTranslatef(engineLeftFromOrigin.x(),
-                 engineLeftFromOrigin.y(),
-                 engineLeftFromOrigin.z());
-    glRotatef(-engineRotation, 0.0f, 0.0f, 0.0f);
-    glTranslatef(-engineLeftFromOrigin.x(),
-                 -engineLeftFromOrigin.y(),
-                 -engineLeftFromOrigin.z());
-	topRocketLeft.draw();
-	bottomRocketLeft.draw();
-    glPopMatrix();
-    textureEngine.unbind();
-
-    glPopMatrix();
 
 	// Remove the last transformation matrix from the stack - you have drawn your last
 	// object with a new transformation and now you go back to the previous one
+
     glPopMatrix();
 
-    if(engineRotation < 90)
-        engineRotation += 1;
-    else if(corgiElevation < 10000)
-        corgiElevation = corgiElevation*1.06;
 
 
 }
