@@ -48,6 +48,8 @@ void CCanvas::initializeGL()
     textureEngine.setTexture();
     textureGoggles.setTexture();
     textureCandyCane.setTexture();
+    textureEarth.setTexture();
+    textureOcean.setTexture();
 
 	corgiFront.init();
 	corgiBack.init();
@@ -58,6 +60,8 @@ void CCanvas::initializeGL()
 	topRocketLeft.init();
     bottomRocketLeft.init();
     candyCane.init();
+    earth.init();
+    ocean.init();
 
     Terrain::generateTerrain(600);
     // Setup the skybox(es)
@@ -288,6 +292,18 @@ void CCanvas::paintGL()
     textureCandyCane.bind();
     candyCane.draw();
     textureCandyCane.unbind();
+    glPopMatrix();
+
+    // Draw the Earth
+    glPushMatrix();
+    glTranslatef(0, 5, 0);
+    textureEarth.bind();
+    earth.draw();
+    textureEarth.unbind();
+
+    textureOcean.bind();
+    ocean.draw();
+    textureOcean.unbind();
     glPopMatrix();
 
     // Draw the Corgi

@@ -36,6 +36,8 @@ public:
         textureEngine(PROJECT_FOLDER + "/rocket_corgi_src/textures/steel2.jpg"),
         textureGoggles(PROJECT_FOLDER + "/rocket_corgi_src/textures/glass2.jpg"),
         textureCandyCane(PROJECT_FOLDER + "/rocket_corgi_src/textures/candy_cane.png"),
+        textureEarth(PROJECT_FOLDER + "/rocket_corgi_src/textures/earth.jpg"),
+        textureOcean(PROJECT_FOLDER + "/rocket_corgi_src/textures/ocean.jpeg"),
 
         corgiFront(PROJECT_FOLDER + "/models/RocketCorgiOBJ/downsampled/Corgi_Front.obj"),
         corgiBack(PROJECT_FOLDER + "/models/RocketCorgiOBJ/downsampled/Corgi_Rear.obj"),
@@ -46,6 +48,8 @@ public:
         topRocketRight(PROJECT_FOLDER + "/models/RocketCorgiOBJ/downsampled/Engine_Front.obj"),
         bottomRocketRight(PROJECT_FOLDER + "/models/RocketCorgiOBJ/downsampled/Engine_Rear.obj"),
         candyCane(PROJECT_FOLDER + "/models/CandyCaneOBJ/CandyCane.obj"),
+        earth(PROJECT_FOLDER + "/models/EarthOBJ/earth.obj"),
+        ocean(PROJECT_FOLDER + "/models/EarthOBJ/ocean.obj"),
         skyCloud(PROJECT_FOLDER + "/skyboxes/Clouds2", "bmp"),
         skyGalaxy(PROJECT_FOLDER + "/skyboxes/Galaxy", "png")
 	{
@@ -88,8 +92,13 @@ private:
     Texture textureCorgiFur;
     Texture textureEngine;
     Texture textureGoggles;
+
     // Textures for CandyCane
     Texture textureCandyCane;
+
+    // Textures for Earth
+    Texture textureEarth;
+    Texture textureOcean;
 
     /* Models loaded from .obj format */
     // Models for Corgi
@@ -104,6 +113,10 @@ private:
     
     // Models for CandyCane
     ObjModel candyCane;
+
+    // Models for Earth
+    ObjModel earth;
+    ObjModel ocean;
 
     // Skybox(es)
     Skybox skyCloud;
