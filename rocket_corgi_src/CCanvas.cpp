@@ -32,7 +32,7 @@ void CCanvas::initializeGL()
 	GLfloat lightpos[] = {0.0, 0.0, 10.0, 0.0};
 	glLightfv(GL_LIGHT0, GL_POSITION, lightpos);
 
-	GLfloat lightAmb[]  = {0.3, 0.3, 0.3};
+    GLfloat lightAmb[]  = {0.3, 0.3, 0.3};
 	GLfloat lightDiff[] = {0.4, 0.4, 0.4};
 	GLfloat lightSpec[] = {0.5, 0.5, 0.5};
 
@@ -238,6 +238,7 @@ Point3d freeCameraDirection(cos(freeCameraAngleVertical) * sin(freeCameraAngleHo
 Point3d freeCameraPosition(0, 1, 5);
 Point3d freeCameraRight(1,0,0);
 Point3d freeCameraForward(0, 0, 1);
+Point3d freeCameraUpward(0, 1, 0);
 Point3d freeCameraUp = freeCameraRight ^ freeCameraDirection;
 
 float speed = 3.0f;
@@ -250,20 +251,28 @@ void QWidget::keyPressEvent( QKeyEvent *evt ) {
                         cos(freeCameraAngleVertical) * cos(freeCameraAngleHorizontal));
 
     switch (evt->key()) {
-        case Qt::Key_Left:
+        // move camera position
+        case Qt::Key_J:
             freeCameraPosition += freeCameraRight * deltaTime * speed;
             break;
-        case Qt::Key_Right:
+        case Qt::Key_L:
             freeCameraPosition -= freeCameraRight * deltaTime * speed;
             break;
-        case Qt::Key_Up:
+        case Qt::Key_I:
             freeCameraPosition += freeCameraForward * deltaTime * speed;
             break;
-        case Qt::Key_Down:
+        case Qt::Key_K:
             freeCameraPosition -= freeCameraForward * deltaTime * speed;
             break;
-        case Qt::Key_S:
+        case Qt::Key_U:
+            freeCameraPosition += freeCameraUpward * deltaTime * speed;
+            break;
+        case Qt::Key_O:
+            freeCameraPosition -= freeCameraUpward * deltaTime * speed;
+            break;
 
+        // change camera direction
+        case Qt::Key_S:
             freeCameraAngleVertical -= speed * deltaTime * 0.01f;
             break;
         case Qt::Key_W:
@@ -278,9 +287,9 @@ void QWidget::keyPressEvent( QKeyEvent *evt ) {
             break;
     }
     freeCameraDirection = Point3d(cos(freeCameraAngleVertical) * sin(freeCameraAngleHorizontal),
-                        sin(freeCameraAngleVertical),
-                        cos(freeCameraAngleVertical) * cos(freeCameraAngleHorizontal));
-    //freeCameraUp = freeCameraRight ^ freeCameraDirection;
+                                 sin(freeCameraAngleVertical),
+                                 cos(freeCameraAngleVertical) * cos(freeCameraAngleHorizontal));
+    freeCameraUp = freeCameraRight ^ freeCameraDirection;
     freeCameraUp.normalize();
 }
 
