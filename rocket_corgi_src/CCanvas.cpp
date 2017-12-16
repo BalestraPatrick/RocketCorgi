@@ -294,8 +294,8 @@ void CCanvas::paintGL()
 	Point3d left_engine = Point3d(engineLeftFromOrigin.x(), engineLeftFromOrigin.y()-25, engineLeftFromOrigin.z());
 	Point3d right_engine = Point3d(engineRightFromOrigin.x(), engineRightFromOrigin.y()-25, engineRightFromOrigin.z());
 
-	static ParticleEmitter right_particles(left_engine);
-	static ParticleEmitter left_particles(right_engine);
+	static ParticleEmitter right_particles(right_engine);
+	static ParticleEmitter left_particles(left_engine);
 
 
 

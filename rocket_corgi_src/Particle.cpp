@@ -6,12 +6,11 @@
 
 Particle::Particle(Point3d startPosition){
 	this->life = this->start_life;
-	this->size = 1;
 	this->position = startPosition;
-//	this->direction = Point3d(1, 0, 0);
 
 	float neg = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
-	float randomX = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+	float randomX = static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(0.7f)));
+
 	if(neg < 0.5){
 		randomX = -randomX;
 	}
@@ -23,9 +22,7 @@ Particle::Particle(Point3d startPosition){
 		randomZ = -randomZ;
 	}
 
-
 	this->direction = Point3d(randomX, randomY, randomZ);
-//	this->position.setCoords(0, 2, 5);
 	this->original_position = this->position;
 }
 
@@ -34,16 +31,32 @@ void Particle::drawParticle() {
 	moveParticle();
 	glPushAttrib(GL_LIGHTING_BIT);
 
-	float red = 0.4 + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(1.0-0.4)));
-	float green = 0.2 + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(0.4-0.2)));
-
+	float colour = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
 	float transparency = this->life/this->start_life;
 
 
-	GLfloat orange[] = {red, green, 0.0f, transparency};
-	glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, orange);
+	GLfloat red[] = {1.0f, 0.2, 0.0f, transparency};
+	GLfloat orange[] = {0.7, 0.3, 0.0f, transparency};
+	GLfloat yellow[] = {0.5, 0.4, 0.0f, transparency};
 
-	glShadeModel(GL_FLAT);
+	if(colour < 0.2){
+		glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE, red);
+//		glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, red);
+//		glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, red);
+	} else if (colour < 0.4){
+		glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE, orange);
+//		glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, orange);
+//		glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, orange);
+	} else {
+		glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE, yellow);
+//		glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, yellow);
+//		glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, yellow);
+	}
+
+
+
+
+	glShadeModel(GL_SMOOTH);
 	glBegin(GL_TRIANGLES);
 
 

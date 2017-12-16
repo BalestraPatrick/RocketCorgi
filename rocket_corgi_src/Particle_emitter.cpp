@@ -10,9 +10,7 @@ ParticleEmitter::ParticleEmitter(Point3d pos){
 }
 
 void ParticleEmitter::init(){
-//	this->particles.resize(this->n_particles);
 	for(int i = 0; i < this->n_particles; i++){
-//		Particle *temp = new Particle(this->position);
 		this->particles.push_back(Particle(this->position));
 	}
 }
