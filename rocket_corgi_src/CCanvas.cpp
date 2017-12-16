@@ -47,6 +47,7 @@ void CCanvas::initializeGL()
     textureCorgiFur.setTexture();
     textureEngine.setTexture();
     textureGoggles.setTexture();
+    textureCandyCane.setTexture();
 
 	corgiFront.init();
 	corgiBack.init();
@@ -55,7 +56,8 @@ void CCanvas::initializeGL()
 	topRocketRight.init();
 	bottomRocketRight.init();
 	topRocketLeft.init();
-	bottomRocketLeft.init();
+    bottomRocketLeft.init();
+    candyCane.init();
 
     Terrain::generateTerrain(600);
 }
@@ -263,10 +265,28 @@ void CCanvas::paintGL()
 	GLfloat matrix[16];
 	glGetFloatv (GL_MODELVIEW_MATRIX, matrix);
 
-	// Look at the ObjModel class to see how the drawing is done
+    // Draw the objects
+    // Draw candy canes
+    glPushMatrix();
+    glRotatef(45.0f, 0.0f, 1.0f, 0.0f);
+    glTranslatef(0, 0, -15);
+    textureCandyCane.bind();
+    candyCane.draw();
+    textureCandyCane.unbind();
+    glPopMatrix();
+
+    glPushMatrix();
+    glScalef(0.60f, 0.60f, 0.60f);
+    glRotatef(90.0f, 0.0f, 1.0f, 0.0f);
+    glTranslatef(0, 0, 10);
+    textureCandyCane.bind();
+    candyCane.draw();
+    textureCandyCane.unbind();
+    glPopMatrix();
+
+    // Draw the Corgi
     glScalef(0.05f, 0.05f, 0.05f);
 	glPushMatrix();
-
 
     glTranslatef(0.0f, corgiElevation, 0);
     glRotatef(90.0f, 0.0f, 0.0f, 0.0f);

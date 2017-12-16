@@ -19,8 +19,8 @@ using namespace std;
 //const string PROJECT_FOLDER = "/Users/patrickbalestra/Documents/Github/RocketCorgi";
 //const string PROJECT_FOLDER = "/Users/luca/Documents/USI/FS_2017/ComputerGraphics/project/RocketCorgi";
 //const string PROJECT_FOLDER = "/Users/BMW/Documents/Git/RocketCorgi";
-
-const string PROJECT_FOLDER = "/Users/lara/Documents/USI/5th/ComputerGraphics/Project";
+const string PROJECT_FOLDER = "/Users/SusannaChuck/Documents/computer_graphics";
+//const string PROJECT_FOLDER = "/Users/lara/Documents/USI/5th/ComputerGraphics/Project";
 /************************************************************************/
 /* Canvas to draw                                                       */
 /************************************************************************/
@@ -33,6 +33,7 @@ public:
         textureCorgiFur(PROJECT_FOLDER + "/rocket_corgi_src/textures/fur2.jpg"),
         textureEngine(PROJECT_FOLDER + "/rocket_corgi_src/textures/steel2.jpg"),
         textureGoggles(PROJECT_FOLDER + "/rocket_corgi_src/textures/glass.jpg"),
+        textureCandyCane(PROJECT_FOLDER + "/rocket_corgi_src/textures/candy_cane.png"),
         corgiFront(PROJECT_FOLDER + "/models/RocketCorgiOBJ/downsampled/Corgi_Front.obj"),
         corgiBack(PROJECT_FOLDER + "/models/RocketCorgiOBJ/downsampled/Corgi_Rear.obj"),
         harness(PROJECT_FOLDER + "/models/RocketCorgiOBJ/downsampled/Harness.obj"),
@@ -40,7 +41,8 @@ public:
         topRocketLeft(PROJECT_FOLDER + "/models/RocketCorgiOBJ/downsampled/Engine_Front1.obj"),
         bottomRocketLeft(PROJECT_FOLDER + "/models/RocketCorgiOBJ/downsampled/Engine_Rear1.obj"),
         topRocketRight(PROJECT_FOLDER + "/models/RocketCorgiOBJ/downsampled/Engine_Front.obj"),
-        bottomRocketRight(PROJECT_FOLDER + "/models/RocketCorgiOBJ/downsampled/Engine_Rear.obj")
+        bottomRocketRight(PROJECT_FOLDER + "/models/RocketCorgiOBJ/downsampled/Engine_Rear.obj"),
+        candyCane(PROJECT_FOLDER + "/models/CandyCaneOBJ/CandyCane.obj")
 	{
 		QTimer *timer = new QTimer(this);
 		connect(timer, SIGNAL(timeout()), this, SLOT(updateGL()));
@@ -76,12 +78,16 @@ private:
 
 	void setView(View _view);
 
-
-	// Models and textures
+    /* Textures */
+    // Textures for Corgi
     Texture textureCorgiFur;
     Texture textureEngine;
     Texture textureGoggles;
-	// Model loaded from .obj format
+    // Textures for CandyCane
+    Texture textureCandyCane;
+
+    /* Models loaded from .obj format */
+    // Models for Corgi
 	ObjModel corgiFront;
 	ObjModel corgiBack;
 	ObjModel goggles;
@@ -90,10 +96,8 @@ private:
 	ObjModel bottomRocketRight;
 	ObjModel topRocketLeft;
 	ObjModel bottomRocketLeft;
-
-
-	// Model loaded from .ply format
-//    PlyModel modelTrain2;
+    // Models for CandyCane
+    ObjModel candyCane;
 };
 
 #endif
