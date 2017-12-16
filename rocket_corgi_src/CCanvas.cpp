@@ -199,6 +199,7 @@ void CCanvas::setView(View _view) {
 double t = 90;
 float engineRotation = 0;
 float corgiElevation = 1;
+float earthRotation = 1;
 void CCanvas::paintGL()
 {
 	// clear screen and depth buffer
@@ -299,7 +300,9 @@ void CCanvas::paintGL()
 
     // Draw the Earth
     glPushMatrix();
-    glTranslatef(0, 5, 0);
+    glScalef(1.0f, 1.00f, 1.00f);
+    glTranslatef(-5, 7, 0);
+    glRotatef(earthRotation, 0.0f, 1.0f, 0.0f);
     textureEarth.bind();
     earth.draw();
     textureEarth.unbind();
@@ -384,5 +387,5 @@ void CCanvas::paintGL()
     else if(corgiElevation < 10000)
         corgiElevation = corgiElevation*1.06;
 
-
+    earthRotation += 0.20;
 }
