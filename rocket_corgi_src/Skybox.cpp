@@ -18,9 +18,16 @@ Skybox::Skybox(const std::string &path)
 void Skybox::init(){
 
         glGenTextures(1, &box);
+
+        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+
         glBindTexture(GL_TEXTURE_CUBE_MAP, box);
 
-        // we can not use the TExture class here
+        // we can not use the Texture class here
         // since we are creating a 3D cubic texture
         // Construct the 3D texture (equivalent to Texture::setTexture)
         for(int i = 0; i < faces.size(); i++)
@@ -39,13 +46,8 @@ void Skybox::init(){
             img = QGLWidget::convertToGLFormat(img);
             glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGBA, img.width(), img.height(), 0, GL_RGBA, GL_UNSIGNED_BYTE, img.bits());
         }
-
-        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-
-        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+        glGenerateMipmap(GL_TEXTURE_CUBE_MAP);
+        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 
         glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
 
@@ -58,88 +60,51 @@ void Skybox::init(){
             D, -D, -D,
             D, -D, -D,
             D,  D, -D,
-           -D,  D, -D,
+           -D,  D, -D, // Negative z
 
            -D, -D,  D,
            -D, -D, -D,
            -D,  D, -D,
            -D,  D, -D,
            -D,  D,  D,
-           -D, -D,  D,
+           -D, -D,  D, // Negative x
 
             D, -D, -D,
             D, -D,  D,
             D,  D,  D,
             D,  D,  D,
             D,  D, -D,
-            D, -D, -D,
+            D, -D, -D, // Positive x
 
            -D, -D,  D,
            -D,  D,  D,
             D,  D,  D,
             D,  D,  D,
             D, -D,  D,
-           -D, -D,  D,
+           -D, -D,  D, // Positive z
 
            -D,  D, -D,
             D,  D, -D,
             D,  D,  D,
             D,  D,  D,
            -D,  D,  D,
-           -D,  D, -D,
+           -D,  D, -D, // Positive y
 
            -D, -D, -D,
            -D, -D,  D,
             D, -D, -D,
             D, -D, -D,
            -D, -D,  D,
-            D, -D,  D
+            D, -D,  D // Negative y
         };
         fvertices.insert(fvertices.begin(), vertices, vertices + (36*3));
-        GLfloat cvertices[] = {
-            0.0, 1.0,
-            0.0, 0.0,
-            1.0, 0.0,
-            1.0, 0.0,
-            1.0, 1.0,
-            0.0, 1.0,
 
-            0.0, 1.0,
-            0.0, 0.0,
-            1.0, 0.0,
-            1.0, 0.0,
-            1.0, 1.0,
-            0.0, 1.0,
-
-            0.0, 1.0,
-            0.0, 0.0,
-            1.0, 0.0,
-            1.0, 0.0,
-            1.0, 1.0,
-            0.0, 1.0,
-
-            0.0, 1.0,
-            0.0, 0.0,
-            1.0, 0.0,
-            1.0, 0.0,
-            1.0, 1.0,
-            0.0, 1.0,
-
-            0.0, 1.0,
-            0.0, 0.0,
-            1.0, 0.0,
-            1.0, 0.0,
-            1.0, 1.0,
-            0.0, 1.0,
-
-            0.0, 1.0,
-            0.0, 0.0,
-            1.0, 0.0,
-            1.0, 0.0,
-            1.0, 1.0,
-            0.0, 1.0
-        };
-        fuvs.insert(fuvs.begin(), cvertices, cvertices + (36*2));
+        // Texture coordinates in 3D are the normalized vertices of the cube
+        GLfloat N = 1.0 / sqrt(3.0);
+        for(int i=0; i<36*3; i++){
+            vertices[i] *= N;
+        }
+        fuvs.insert(fuvs.begin(), vertices, vertices + (36*3));
 
         // create buffers
         glGenBuffers(1, &vertexBuffer);
@@ -179,7 +144,7 @@ void Skybox::draw(){
 
         glBindBuffer(GL_ARRAY_BUFFER, uvBuffer);
         glTexCoordPointer(
-            2,                                // size
+            3,                                // size
             GL_FLOAT,                         // type
             0,                                // stride
             (void*)0                          // array buffer offset
