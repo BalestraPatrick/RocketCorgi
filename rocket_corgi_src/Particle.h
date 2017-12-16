@@ -15,6 +15,7 @@ class Particle {
 		Point3d position;
 		Point3d original_position;
 		int life;
+		int start_life = 30;
 		float size;
 		Point3d direction;
 };

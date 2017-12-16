@@ -3,6 +3,7 @@
 #include "Sphere.h"
 #include "terrain.h"
 #include "Particle.h"
+#include "Particle_emitter.h"
 
 using namespace std;
 
@@ -289,15 +290,13 @@ void CCanvas::paintGL()
     textureEngine.bind();
     harness.draw();
     glPushMatrix();
-	static Particle test1 = Particle(engineRightFromOrigin);
-	static Particle test2 = Particle(engineRightFromOrigin);
-	static Particle test3 = Particle(engineRightFromOrigin);
-	static Particle test4 = Particle(engineRightFromOrigin);
-	static Particle test5 = Particle(engineRightFromOrigin);
-	static Particle test6 = Particle(engineRightFromOrigin);
-	static Particle test7 = Particle(engineRightFromOrigin);
-	static Particle test8 = Particle(engineRightFromOrigin);
-	static Particle test9 = Particle(engineRightFromOrigin);
+
+	Point3d left_engine = Point3d(engineLeftFromOrigin.x(), engineLeftFromOrigin.y()-25, engineLeftFromOrigin.z());
+	Point3d right_engine = Point3d(engineRightFromOrigin.x(), engineRightFromOrigin.y()-25, engineRightFromOrigin.z());
+
+	static ParticleEmitter right_particles(left_engine);
+	static ParticleEmitter left_particles(right_engine);
+
 
 
 
@@ -312,16 +311,8 @@ void CCanvas::paintGL()
                  -engineRightFromOrigin.z());
 	topRocketRight.draw();
     bottomRocketRight.draw();
-	test1.drawParticle();
-	test2.drawParticle();
-	test3.drawParticle();
-	test4.drawParticle();
-	test5.drawParticle();
-	test6.drawParticle();
-	test7.drawParticle();
-	test8.drawParticle();
-	test9.drawParticle();
-
+	right_particles.emit_particles();
+	left_particles.emit_particles();
 
 
     glPopMatrix();
