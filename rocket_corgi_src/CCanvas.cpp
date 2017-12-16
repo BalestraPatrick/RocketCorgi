@@ -58,6 +58,9 @@ void CCanvas::initializeGL()
 	bottomRocketLeft.init();
 
     Terrain::generateTerrain(600);
+    // Setup the skybox(es)
+    skyCloud.init();
+    skyGalaxy.init();
 }
 
 //-----------------------------------------------------------------------------
@@ -233,7 +236,10 @@ void CCanvas::paintGL()
 
 	/**** Draw the terrain ***/
     Terrain::drawTerrain();
-
+    glScalef(100.0, 100.0, 100.0);
+    skyGalaxy.draw();
+//    skyCloud.draw();
+    glScalef(1.0/100.0, 1.0/100.0, 1.0/100.0);
 	/**** Setup and draw your objects ****/
 
 	// You can freely enable/disable some of the lights in the scene as you wish
@@ -266,7 +272,6 @@ void CCanvas::paintGL()
 	// Look at the ObjModel class to see how the drawing is done
     glScalef(0.05f, 0.05f, 0.05f);
 	glPushMatrix();
-
 
     glTranslatef(0.0f, corgiElevation, 0);
     glRotatef(90.0f, 0.0f, 0.0f, 0.0f);
@@ -312,8 +317,8 @@ void CCanvas::paintGL()
     glPopMatrix();
     textureEngine.unbind();
 
-    glPopMatrix();
 
+    glPopMatrix();
 	// Remove the last transformation matrix from the stack - you have drawn your last
 	// object with a new transformation and now you go back to the previous one
     glPopMatrix();
