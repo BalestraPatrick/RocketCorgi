@@ -60,6 +60,9 @@ void CCanvas::initializeGL()
     candyCane.init();
 
     Terrain::generateTerrain(600);
+    // Setup the skybox(es)
+    skyCloud.init();
+    skyGalaxy.init();
 }
 
 //-----------------------------------------------------------------------------
@@ -235,7 +238,10 @@ void CCanvas::paintGL()
 
 	/**** Draw the terrain ***/
     Terrain::drawTerrain();
-
+    glScalef(100.0, 100.0, 100.0);
+    skyGalaxy.draw();
+//    skyCloud.draw();
+    glScalef(1.0/100.0, 1.0/100.0, 1.0/100.0);
 	/**** Setup and draw your objects ****/
 
 	// You can freely enable/disable some of the lights in the scene as you wish
@@ -332,8 +338,8 @@ void CCanvas::paintGL()
     glPopMatrix();
     textureEngine.unbind();
 
-    glPopMatrix();
 
+    glPopMatrix();
 	// Remove the last transformation matrix from the stack - you have drawn your last
 	// object with a new transformation and now you go back to the previous one
     glPopMatrix();

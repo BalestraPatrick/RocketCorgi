@@ -14,10 +14,12 @@
 
 #include "ObjModel.h"
 #include "PlyModel.h"
+#include "Skybox.h"
 
 using namespace std;
+
 //const string PROJECT_FOLDER = "/Users/patrickbalestra/Documents/Github/RocketCorgi";
-//const string PROJECT_FOLDER = "/Users/luca/Documents/USI/FS_2017/ComputerGraphics/project/RocketCorgi";
+// const string PROJECT_FOLDER = "/Users/luca/Documents/USI/FS_2017/ComputerGraphics/project/RocketCorgi";
 //const string PROJECT_FOLDER = "/Users/BMW/Documents/Git/RocketCorgi";
 const string PROJECT_FOLDER = "/Users/SusannaChuck/Documents/computer_graphics";
 //const string PROJECT_FOLDER = "/Users/lara/Documents/USI/5th/ComputerGraphics/Project";
@@ -34,6 +36,7 @@ public:
         textureEngine(PROJECT_FOLDER + "/rocket_corgi_src/textures/steel2.jpg"),
         textureGoggles(PROJECT_FOLDER + "/rocket_corgi_src/textures/glass.jpg"),
         textureCandyCane(PROJECT_FOLDER + "/rocket_corgi_src/textures/candy_cane.png"),
+
         corgiFront(PROJECT_FOLDER + "/models/RocketCorgiOBJ/downsampled/Corgi_Front.obj"),
         corgiBack(PROJECT_FOLDER + "/models/RocketCorgiOBJ/downsampled/Corgi_Rear.obj"),
         harness(PROJECT_FOLDER + "/models/RocketCorgiOBJ/downsampled/Harness.obj"),
@@ -43,6 +46,8 @@ public:
         topRocketRight(PROJECT_FOLDER + "/models/RocketCorgiOBJ/downsampled/Engine_Front.obj"),
         bottomRocketRight(PROJECT_FOLDER + "/models/RocketCorgiOBJ/downsampled/Engine_Rear.obj"),
         candyCane(PROJECT_FOLDER + "/models/CandyCaneOBJ/CandyCane.obj")
+        skyCloud(PROJECT_FOLDER + "/skyboxes/Clouds2", "bmp"),
+        skyGalaxy(PROJECT_FOLDER + "/skyboxes/Galaxy", "png")
 	{
 		QTimer *timer = new QTimer(this);
 		connect(timer, SIGNAL(timeout()), this, SLOT(updateGL()));
@@ -96,8 +101,13 @@ private:
 	ObjModel bottomRocketRight;
 	ObjModel topRocketLeft;
 	ObjModel bottomRocketLeft;
+    
     // Models for CandyCane
     ObjModel candyCane;
+
+    // Skybox(es)
+    Skybox skyCloud;
+    Skybox skyGalaxy;
 };
 
 #endif

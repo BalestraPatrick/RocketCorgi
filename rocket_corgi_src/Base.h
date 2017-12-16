@@ -23,6 +23,7 @@ Comment: This file contains all basic definitions.
 
 #define round(x) floor(x+0.5)
 
+
 //--------------------------------------------------------------------------
 /** draw modes */
 enum DrawMode {
