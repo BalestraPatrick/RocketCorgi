@@ -132,8 +132,8 @@ void Skybox::draw(){
         glPushAttrib(GL_LIGHTING_BIT);
 
             glColor3f(0.5f, 0.5f, 0.5f);
-            GLfloat amb[]  = {0.7f, 0.7f, 0.7f};
-            GLfloat diff[] = {0.7f, 0.7f, 0.7f};
+            GLfloat amb[]  = {1.0f, 1.0f, 1.0f};
+            GLfloat diff[] = {0.1f, 0.1f, 0.1f};
             GLfloat spec[] = {0.1f, 0.1f, 0.1f};
             GLfloat shin = 0.0001;
             glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, amb);
