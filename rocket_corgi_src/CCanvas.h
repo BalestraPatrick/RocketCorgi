@@ -44,8 +44,8 @@ public:
 		topRocketRight(PROJECT_FOLDER + "/models/RocketCorgiOBJ/Engine_Front.obj"),
         bottomRocketRight(PROJECT_FOLDER + "/models/RocketCorgiOBJ/Engine_Rear.obj"),
 
-//        skyCloud("Clouds"),
-        skyGalaxy(PROJECT_FOLDER + "/skyboxes/Galaxy")
+        skyCloud(PROJECT_FOLDER + "/skyboxes/Clouds2", "bmp"),
+        skyGalaxy(PROJECT_FOLDER + "/skyboxes/Galaxy", "png")
 	{
 		QTimer *timer = new QTimer(this);
 		connect(timer, SIGNAL(timeout()), this, SLOT(updateGL()));
@@ -97,7 +97,7 @@ private:
 	ObjModel topRocketLeft;
 	ObjModel bottomRocketLeft;
     // Skybox(es)
-//    Skybox skyCloud;
+    Skybox skyCloud;
     Skybox skyGalaxy;
 
 

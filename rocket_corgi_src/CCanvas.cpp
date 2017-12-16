@@ -59,7 +59,7 @@ void CCanvas::initializeGL()
 	bottomRocketLeft.init();
 
     // Setup the skybox(es)
-//    skyCloud.init();
+    skyCloud.init();
     skyGalaxy.init();
 }
 
@@ -240,9 +240,10 @@ void CCanvas::paintGL()
 
 	/**** Draw the terrain ***/
 	Terrain::drawTerrain();
-    glScalef(100.0, 100.0, 100.0);
-    skyGalaxy.draw();
-    glScalef(1.0/100.0, 1.0/100.0, 1.0/100.0);
+//    glScalef(100.0, 100.0, 100.0);
+//    skyGalaxy.draw();
+    skyCloud.draw();
+//    glScalef(1.0/100.0, 1.0/100.0, 1.0/100.0);
 	/**** Setup and draw your objects ****/
 
 	// You can freely enable/disable some of the lights in the scene as you wish

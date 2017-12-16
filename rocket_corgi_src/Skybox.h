@@ -12,7 +12,7 @@ using namespace std;
 class Skybox
 {
 public:
-    Skybox(const std::string &path);
+    Skybox(const std::string &path, const std::string &fmt);
 
     void init();
     void draw();
