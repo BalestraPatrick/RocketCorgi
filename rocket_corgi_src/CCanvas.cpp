@@ -12,7 +12,7 @@ using namespace std;
 
 void CCanvas::initializeGL()
 {
-	glClearColor(0.0f, 0.0f, 0.0f, 0.5f);			   // black background
+    glClearColor(1.0f, 0.0f, 1.0f, 0.5f);			   // black background
 	glClearDepth(1.0f);								   // depth buffer setup
 	glEnable(GL_DEPTH_TEST);						   // enables depth testing
 	glDepthFunc(GL_LEQUAL);							   // the type of depth testing to do
@@ -34,7 +34,7 @@ void CCanvas::initializeGL()
      */
 
     lightpos[0] = 0.0;
-    lightpos[1] = 50.0;
+    lightpos[1] = 850.0;
     lightpos[2] = 1.0;
     lightpos[3] = 1.0;
     glLightfv(GL_LIGHT0, GL_POSITION, lightpos);
@@ -198,13 +198,13 @@ void CCanvas::renderCorgi() {
     glTranslatef(0.0f, corgiElevation, 0);
     glRotatef(90.0f, 0.0f, 0.0f, 0.0f);
     // Drawing the object with texture
-    glPushAttrib(GL_LIGHTING_BIT);
+//    glPushAttrib(GL_LIGHTING_BIT);
     Materials::setCorgiMat();
     textureCorgiFur.bind();
     corgiFront.draw();
     corgiBack.draw();
     textureCorgiFur.unbind();
-    glPopAttrib();
+//    glPopAttrib();
     textureGoggles.bind();
 
     //we move the googles a bit forward
@@ -214,7 +214,7 @@ void CCanvas::renderCorgi() {
     glPopMatrix();
 
     textureGoggles.unbind();
-    glPushAttrib(GL_LIGHTING_BIT);
+//    glPushAttrib(GL_LIGHTING_BIT);
     Materials::setRocketsMats();
     textureEngine.bind();
     harness.draw();
@@ -243,13 +243,13 @@ void CCanvas::renderCorgi() {
         bottomRocketLeft.draw();
     glPopMatrix();
     textureEngine.unbind();
-    glPopAttrib();
+//    glPopAttrib();
     glTranslatef(0.0, 20.0, 0.0);
     glPopMatrix();
-//    if(engineRotation < 90)
-//        engineRotation += 1;
-//    else if(corgiElevation < 10000)
-//        corgiElevation = corgiElevation*1.06;
+    if(engineRotation < 90)
+        engineRotation += 1;
+    else if(corgiElevation < 10000)
+        corgiElevation = corgiElevation*1.06;
 
 }
 
@@ -354,11 +354,13 @@ void CCanvas::paintGL()
      glLightfv(GL_LIGHT0, GL_POSITION, lightpos);
     /****************************************************************/
 
-	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
 	// Setup the current view
     setView(View::Perspective);
 
+    GLfloat matrix[16];
+    glGetFloatv (GL_MODELVIEW_MATRIX, matrix);
 	/**** Axes in the global coordinate system ****/
 
     glDisable(GL_LIGHTING);
@@ -386,7 +388,6 @@ void CCanvas::paintGL()
     glPopAttrib();
     /**** Draw the sky ***/
     glPushAttrib(GL_LIGHTING_BIT);
-        glColor3f(1.0f, 1.0f, 1.0f);
         Materials::setSkyMat();
         glPushMatrix();
             glScalef(450.0, 450.0, 450.0);
@@ -398,7 +399,6 @@ void CCanvas::paintGL()
     // Draw the sun
     // PRAISE THE SUN
     glPushAttrib(GL_LIGHTING_BIT);
-        glColor3f(0.7f, 0.6f, 0.2f);
         Materials::setSunMat();
         glPushMatrix();
             glTranslatef(lightpos[0], lightpos[1], lightpos[2]);
@@ -418,8 +418,6 @@ void CCanvas::paintGL()
 	 *  glGetFloatv (GL_MODELVIEW_MATRIX, matrix);
 	*/
 
-	GLfloat matrix[16];
-	glGetFloatv (GL_MODELVIEW_MATRIX, matrix);
 
     // Draw the objects
     // Draw candy canes
@@ -466,22 +464,22 @@ void CCanvas::paintGL()
     textureCorgiFur.unbind();
     textureGoggles.bind();
 
-	//we move the googles a bit forward
-	glPushMatrix();
-	glTranslatef(0, 2, 0);
+    //we move the googles a bit forward
+    glPushMatrix();
+    glTranslatef(0, 2, 0);
     goggles.draw();
-	glPopMatrix();
+    glPopMatrix();
 
     textureGoggles.unbind();
     textureEngine.bind();
     harness.draw();
     glPushMatrix();
 
-	Point3d left_engine = Point3d(engineLeftFromOrigin.x(), engineLeftFromOrigin.y()-25, engineLeftFromOrigin.z());
-	Point3d right_engine = Point3d(engineRightFromOrigin.x(), engineRightFromOrigin.y()-25, engineRightFromOrigin.z());
+    Point3d left_engine = Point3d(engineLeftFromOrigin.x(), engineLeftFromOrigin.y()-25, engineLeftFromOrigin.z());
+    Point3d right_engine = Point3d(engineRightFromOrigin.x(), engineRightFromOrigin.y()-25, engineRightFromOrigin.z());
 
-	static ParticleEmitter right_particles(right_engine);
-	static ParticleEmitter left_particles(left_engine);
+    static ParticleEmitter right_particles(right_engine);
+    static ParticleEmitter left_particles(left_engine);
 
 
 
@@ -492,15 +490,15 @@ void CCanvas::paintGL()
                  engineRightFromOrigin.y(),
                  engineRightFromOrigin.z());
     glRotatef(-engineRotation, 0.0f, 0.0f, 0.0f);
-	glTranslatef(-engineRightFromOrigin.x(),
+    glTranslatef(-engineRightFromOrigin.x(),
                  -engineRightFromOrigin.y(),
                  -engineRightFromOrigin.z());
-	topRocketRight.draw();
+    topRocketRight.draw();
     bottomRocketRight.draw();
-	glPushMatrix();
-	right_particles.emit_particles();
-	left_particles.emit_particles();
-	glPopMatrix();
+    glPushMatrix();
+    right_particles.emit_particles();
+    left_particles.emit_particles();
+    glPopMatrix();
 
 
     glPopMatrix();
@@ -512,8 +510,8 @@ void CCanvas::paintGL()
     glTranslatef(-engineLeftFromOrigin.x(),
                  -engineLeftFromOrigin.y(),
                  -engineLeftFromOrigin.z());
-	topRocketLeft.draw();
-	bottomRocketLeft.draw();
+    topRocketLeft.draw();
+    bottomRocketLeft.draw();
     glPopMatrix();
     textureEngine.unbind();
 
