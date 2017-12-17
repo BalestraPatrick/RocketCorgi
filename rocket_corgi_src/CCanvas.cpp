@@ -34,7 +34,7 @@ void CCanvas::initializeGL()
      */
 
     lightpos[0] = 0.0;
-    lightpos[1] = 850.0;
+    lightpos[1] = 350.0;
     lightpos[2] = 1.0;
     lightpos[3] = 1.0;
     glLightfv(GL_LIGHT0, GL_POSITION, lightpos);
@@ -455,65 +455,65 @@ void CCanvas::paintGL()
     glScalef(0.05f, 0.05f, 0.05f);
     renderCorgi();
 
-    glTranslatef(0.0f, corgiElevation, 0);
-    glRotatef(90.0f, 0.0f, 0.0f, 0.0f);
-    // Drawing the object with texture
-    textureCorgiFur.bind();
-    corgiFront.draw();
-    corgiBack.draw();
-    textureCorgiFur.unbind();
-    textureGoggles.bind();
+//    glTranslatef(0.0f, corgiElevation, 0);
+//    glRotatef(90.0f, 0.0f, 0.0f, 0.0f);
+//    // Drawing the object with texture
+//    textureCorgiFur.bind();
+//    corgiFront.draw();
+//    corgiBack.draw();
+//    textureCorgiFur.unbind();
+//    textureGoggles.bind();
 
-    //we move the googles a bit forward
-    glPushMatrix();
-    glTranslatef(0, 2, 0);
-    goggles.draw();
-    glPopMatrix();
+//    //we move the googles a bit forward
+//    glPushMatrix();
+//    glTranslatef(0, 2, 0);
+//    goggles.draw();
+//    glPopMatrix();
 
-    textureGoggles.unbind();
-    textureEngine.bind();
-    harness.draw();
-    glPushMatrix();
+//    textureGoggles.unbind();
+//    textureEngine.bind();
+//    harness.draw();
+//    glPushMatrix();
 
-    Point3d left_engine = Point3d(engineLeftFromOrigin.x(), engineLeftFromOrigin.y()-25, engineLeftFromOrigin.z());
-    Point3d right_engine = Point3d(engineRightFromOrigin.x(), engineRightFromOrigin.y()-25, engineRightFromOrigin.z());
+//    Point3d left_engine = Point3d(engineLeftFromOrigin.x(), engineLeftFromOrigin.y()-25, engineLeftFromOrigin.z());
+//    Point3d right_engine = Point3d(engineRightFromOrigin.x(), engineRightFromOrigin.y()-25, engineRightFromOrigin.z());
 
-    static ParticleEmitter right_particles(right_engine);
-    static ParticleEmitter left_particles(left_engine);
-
-
+//    static ParticleEmitter right_particles(right_engine);
+//    static ParticleEmitter left_particles(left_engine);
 
 
-    // too make object rotate on its axis, we move it back to the origin, rotate and translate to final position
-    // note: transformations applied bottom up
-    glTranslatef(engineRightFromOrigin.x(),
-                 engineRightFromOrigin.y(),
-                 engineRightFromOrigin.z());
-    glRotatef(-engineRotation, 0.0f, 0.0f, 0.0f);
-    glTranslatef(-engineRightFromOrigin.x(),
-                 -engineRightFromOrigin.y(),
-                 -engineRightFromOrigin.z());
-    topRocketRight.draw();
-    bottomRocketRight.draw();
-    glPushMatrix();
-    right_particles.emit_particles();
-    left_particles.emit_particles();
-    glPopMatrix();
 
 
-    glPopMatrix();
-    glPushMatrix();
-    glTranslatef(engineLeftFromOrigin.x(),
-                 engineLeftFromOrigin.y(),
-                 engineLeftFromOrigin.z());
-    glRotatef(-engineRotation, 0.0f, 0.0f, 0.0f);
-    glTranslatef(-engineLeftFromOrigin.x(),
-                 -engineLeftFromOrigin.y(),
-                 -engineLeftFromOrigin.z());
-    topRocketLeft.draw();
-    bottomRocketLeft.draw();
-    glPopMatrix();
-    textureEngine.unbind();
+//    // too make object rotate on its axis, we move it back to the origin, rotate and translate to final position
+//    // note: transformations applied bottom up
+//    glTranslatef(engineRightFromOrigin.x(),
+//                 engineRightFromOrigin.y(),
+//                 engineRightFromOrigin.z());
+//    glRotatef(-engineRotation, 0.0f, 0.0f, 0.0f);
+//    glTranslatef(-engineRightFromOrigin.x(),
+//                 -engineRightFromOrigin.y(),
+//                 -engineRightFromOrigin.z());
+//    topRocketRight.draw();
+//    bottomRocketRight.draw();
+//    glPushMatrix();
+//    right_particles.emit_particles();
+//    left_particles.emit_particles();
+//    glPopMatrix();
+
+
+//    glPopMatrix();
+//    glPushMatrix();
+//    glTranslatef(engineLeftFromOrigin.x(),
+//                 engineLeftFromOrigin.y(),
+//                 engineLeftFromOrigin.z());
+//    glRotatef(-engineRotation, 0.0f, 0.0f, 0.0f);
+//    glTranslatef(-engineLeftFromOrigin.x(),
+//                 -engineLeftFromOrigin.y(),
+//                 -engineLeftFromOrigin.z());
+//    topRocketLeft.draw();
+//    bottomRocketLeft.draw();
+//    glPopMatrix();
+//    textureEngine.unbind();
 
     glPopMatrix();
 	// Remove the last transformation matrix from the stack - you have drawn your last
