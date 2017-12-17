@@ -116,11 +116,47 @@ void Skybox::init(){
             vertices[i] *= N;
         }
         fuvs.insert(fuvs.begin(), vertices, vertices + (36*3));
+        // construct the normals
+        for(int i=0; i<6; i++){
+            fnormals.push_back(0.0);
+            fnormals.push_back(0.0);
+            fnormals.push_back(-1.0);
+        } // Negative z
+        for(int i=0; i<6; i++){
+            fnormals.push_back(-1.0);
+            fnormals.push_back(0.0);
+            fnormals.push_back(0.0);
+        } // Negative x
+        for(int i=0; i<6; i++){
+            fnormals.push_back(1.0);
+            fnormals.push_back(0.0);
+            fnormals.push_back(0.0);
+        } // Positive x
+        for(int i=0; i<6; i++){
+            fnormals.push_back(0.0);
+            fnormals.push_back(0.0);
+            fnormals.push_back(1.0);
+        } // Positive z
+        for(int i=0; i<6; i++){
+            fnormals.push_back(0.0);
+            fnormals.push_back(1.0);
+            fnormals.push_back(0.0);
+        } // Positive y
+        for(int i=0; i<6; i++){
+            fnormals.push_back(0.0);
+            fnormals.push_back(-1.0);
+            fnormals.push_back(0.0);
+        } // Negative y
+
 
         // create buffers
         glGenBuffers(1, &vertexBuffer);
         glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
         glBufferData(GL_ARRAY_BUFFER, fvertices.size() * sizeof(GLfloat), &fvertices[0], GL_STATIC_DRAW);
+
+        glGenBuffers(1, &normalsBuffer);
+        glBindBuffer(GL_ARRAY_BUFFER, normalsBuffer);
+        glBufferData(GL_ARRAY_BUFFER, fnormals.size() * sizeof(GLfloat), &fnormals[0], GL_STATIC_DRAW);
 
         glGenBuffers(1, &uvBuffer);
         glBindBuffer(GL_ARRAY_BUFFER, uvBuffer);
@@ -140,6 +176,14 @@ void Skybox::draw(){
                     (void*)0            // array buffer offset
                 );
         glEnableClientState(GL_VERTEX_ARRAY);
+
+        glBindBuffer(GL_ARRAY_BUFFER, normalsBuffer);
+        glNormalPointer(
+                    GL_FLOAT,           // type
+                    0,                  // stride
+                    (void*)0            // array buffer offset
+                );
+        glEnableClientState(GL_NORMAL_ARRAY);
 
         glBindBuffer(GL_ARRAY_BUFFER, uvBuffer);
         glTexCoordPointer(
@@ -167,6 +211,8 @@ void Skybox::draw(){
 
         //unbind vertexBuffer
         glDisableClientState(GL_VERTEX_ARRAY);
+        glDisableClientState(GL_NORMAL_ARRAY);
+        glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 
 
 }

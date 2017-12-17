@@ -26,6 +26,7 @@ private:
 
     GLuint vertexBuffer;
     GLuint uvBuffer;
+    GLuint normalsBuffer;
 
     //cube map texture itself
     GLuint box;
