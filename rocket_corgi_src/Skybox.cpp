@@ -10,16 +10,16 @@ Skybox::Skybox(const std::string &path, const std::string &fmt)
         //Load the cube map, paint each side
         faces.push_back(path +"/right.png");
         faces.push_back(path +"/left.png");
-        faces.push_back(path +"/top.png");
         faces.push_back(path +"/bottom.png");
+        faces.push_back(path +"/top.png");
         faces.push_back(path +"/back.png");
         faces.push_back(path +"/front.png");
     } else if (!fmt.compare("bmp")) {
         //Load the cube map, paint each side
         faces.push_back(path +"/right.bmp");
         faces.push_back(path +"/left.bmp");
-        faces.push_back(path +"/top.bmp");
         faces.push_back(path +"/bottom.bmp");
+        faces.push_back(path +"/top.bmp");
         faces.push_back(path +"/back.bmp");
         faces.push_back(path +"/front.bmp");
     }
@@ -116,11 +116,47 @@ void Skybox::init(){
             vertices[i] *= N;
         }
         fuvs.insert(fuvs.begin(), vertices, vertices + (36*3));
+        // construct the normals
+        for(int i=0; i<6; i++){
+            fnormals.push_back(0.0);
+            fnormals.push_back(0.0);
+            fnormals.push_back(-1.0);
+        } // Negative z
+        for(int i=0; i<6; i++){
+            fnormals.push_back(-1.0);
+            fnormals.push_back(0.0);
+            fnormals.push_back(0.0);
+        } // Negative x
+        for(int i=0; i<6; i++){
+            fnormals.push_back(1.0);
+            fnormals.push_back(0.0);
+            fnormals.push_back(0.0);
+        } // Positive x
+        for(int i=0; i<6; i++){
+            fnormals.push_back(0.0);
+            fnormals.push_back(0.0);
+            fnormals.push_back(1.0);
+        } // Positive z
+        for(int i=0; i<6; i++){
+            fnormals.push_back(0.0);
+            fnormals.push_back(1.0);
+            fnormals.push_back(0.0);
+        } // Positive y
+        for(int i=0; i<6; i++){
+            fnormals.push_back(0.0);
+            fnormals.push_back(-1.0);
+            fnormals.push_back(0.0);
+        } // Negative y
+
 
         // create buffers
         glGenBuffers(1, &vertexBuffer);
         glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
         glBufferData(GL_ARRAY_BUFFER, fvertices.size() * sizeof(GLfloat), &fvertices[0], GL_STATIC_DRAW);
+
+        glGenBuffers(1, &normalsBuffer);
+        glBindBuffer(GL_ARRAY_BUFFER, normalsBuffer);
+        glBufferData(GL_ARRAY_BUFFER, fnormals.size() * sizeof(GLfloat), &fnormals[0], GL_STATIC_DRAW);
 
         glGenBuffers(1, &uvBuffer);
         glBindBuffer(GL_ARRAY_BUFFER, uvBuffer);
@@ -128,18 +164,6 @@ void Skybox::init(){
 }
 
 void Skybox::draw(){
-
-        glPushAttrib(GL_LIGHTING_BIT);
-
-            glColor3f(0.5f, 0.5f, 0.5f);
-            GLfloat amb[]  = {1.0f, 1.0f, 1.0f};
-            GLfloat diff[] = {0.1f, 0.1f, 0.1f};
-            GLfloat spec[] = {0.1f, 0.1f, 0.1f};
-            GLfloat shin = 0.0001;
-            glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, amb);
-            glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, diff);
-            glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, spec);
-            glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, &shin);
 
         //don't write to Z buffer
         glDepthMask(GL_FALSE);
@@ -152,6 +176,14 @@ void Skybox::draw(){
                     (void*)0            // array buffer offset
                 );
         glEnableClientState(GL_VERTEX_ARRAY);
+
+        glBindBuffer(GL_ARRAY_BUFFER, normalsBuffer);
+        glNormalPointer(
+                    GL_FLOAT,           // type
+                    0,                  // stride
+                    (void*)0            // array buffer offset
+                );
+        glEnableClientState(GL_NORMAL_ARRAY);
 
         glBindBuffer(GL_ARRAY_BUFFER, uvBuffer);
         glTexCoordPointer(
@@ -179,8 +211,8 @@ void Skybox::draw(){
 
         //unbind vertexBuffer
         glDisableClientState(GL_VERTEX_ARRAY);
-
-        glPopAttrib();
+        glDisableClientState(GL_NORMAL_ARRAY);
+        glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 
 
 }

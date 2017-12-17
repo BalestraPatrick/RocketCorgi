@@ -2,6 +2,7 @@
 #include "Base.h"
 #include "Sphere.h"
 #include "terrain.h"
+#include "materials.h"
 #include "Particle.h"
 #include "ParticleEmitter.h"
 
@@ -11,7 +12,7 @@ using namespace std;
 
 void CCanvas::initializeGL()
 {
-	glClearColor(0.0f, 0.0f, 0.0f, 0.5f);			   // black background
+    glClearColor(1.0f, 0.0f, 1.0f, 0.5f);			   // black background
 	glClearDepth(1.0f);								   // depth buffer setup
 	glEnable(GL_DEPTH_TEST);						   // enables depth testing
 	glDepthFunc(GL_LEQUAL);							   // the type of depth testing to do
@@ -21,7 +22,7 @@ void CCanvas::initializeGL()
 	// One light source
 	glEnable(GL_LIGHTING);
 
-	glEnable(GL_LIGHT0);
+    glEnable(GL_LIGHT0);
 	/*
 	 * The position is transformed by the modelview matrix when glLightfv is called (just as if it were
 	 * a point), and it is stored in eye coordinates. If the w component of the position is 0.0,
@@ -30,13 +31,16 @@ void CCanvas::initializeGL()
 	 * Otherwise, diffuse and specular lighting calculations are based on the actual location of the
 	 * light in eye coordinates, and attenuation is enabled. The default position is (0,0,1,0); thus,
 	 * the default light source is directional, parallel to, and in the direction of the -z axis.
-	 */
-	GLfloat lightpos[] = {0.0, 0.0, 10.0, 0.0};
-	glLightfv(GL_LIGHT0, GL_POSITION, lightpos);
+     */
 
-    GLfloat lightAmb[]  = {0.3, 0.3, 0.3};
-	GLfloat lightDiff[] = {0.4, 0.4, 0.4};
-	GLfloat lightSpec[] = {0.5, 0.5, 0.5};
+    lightpos[0] = 0.0;
+    lightpos[1] = 350.0;
+    lightpos[2] = 1.0;
+    lightpos[3] = 1.0;
+    glLightfv(GL_LIGHT0, GL_POSITION, lightpos);
+    GLfloat lightAmb[]  = {0.3, 0.3, 0.3, 1.0};
+    GLfloat lightDiff[] = { 1.0, 1.0, 1.0, 1.0 };
+    GLfloat lightSpec[] = {1.0, 1.0, 1.0, 1.0};
 
 	glLightfv(GL_LIGHT0, GL_SPECULAR, lightSpec);
 	glLightfv(GL_LIGHT0, GL_AMBIENT,  lightAmb);
@@ -196,6 +200,7 @@ float corgiElevation = 0.1;
 
 Point3d corgiUltimatePosition = Point3d(0, -corgiElevation-3, 0);
 Point3d corgiUltimateDirection = Point3d(0,0,-1);
+
 void CCanvas::renderCorgi() {
   glPushMatrix();
 
@@ -208,10 +213,14 @@ void CCanvas::renderCorgi() {
     glScalef(0.05f, 0.05f, 0.05f);
 
     // Drawing the object with texture
+//    glPushAttrib(GL_LIGHTING_BIT);
+    Materials::setCorgiMat();
     textureCorgiFur.bind();
     corgiFront.draw();
     corgiBack.draw();
     textureCorgiFur.unbind();
+//    glPopAttrib();
+    textureGoggles.bind();
 
     //we move the googles a bit forward
     glPushMatrix();
@@ -221,6 +230,9 @@ void CCanvas::renderCorgi() {
         textureGoggles.unbind();
     glPopMatrix();
 
+    textureGoggles.unbind();
+//    glPushAttrib(GL_LIGHTING_BIT);
+    Materials::setRocketsMats();
     textureEngine.bind();
     harness.draw();
     glPushMatrix();
@@ -259,7 +271,6 @@ void CCanvas::renderCorgi() {
         left_particles.emitParticles();
     glPopMatrix();
     textureEngine.unbind();
-
 
   glPopMatrix();
 
@@ -374,16 +385,25 @@ void CCanvas::paintGL()
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 
+    lookAt(	freeCameraPosition.x(), freeCameraPosition.y(), freeCameraPosition.z(),
+            freeCameraPosition.x() + freeCameraDirection.x(), freeCameraDirection.y()+freeCameraPosition.y(),  freeCameraPosition.z()+freeCameraDirection.z(),
+            freeCameraUp.x(), freeCameraUp.y(),  freeCameraUp.z());
 
-	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+    /****************************************************************
+    * Light position should be called here, after the lookAt to have a global light position (i.e. it does not move with camera)
+    * The position is set in initialiyzeGL and stored in global variable so that also other functions can access it.
+    * It is instead not necessary to redefine the values of the light (ambient, diffuse, specular) as those are state variables of GL_LIGHT0
+    */
+     glLightfv(GL_LIGHT0, GL_POSITION, lightpos);
+    /****************************************************************/
+
+    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
 	// Setup the current view
     freeCamera ? setView(View::Perspective) : setView(View::Cockpit);
 
-	// You can always change the light position here if you want
-    GLfloat lightpos[] = {0.0f, 100.0f, 100.0f, 0.0f};
-    glLightfv(GL_LIGHT0, GL_POSITION, lightpos);
-
+    GLfloat matrix[16];
+    glGetFloatv (GL_MODELVIEW_MATRIX, matrix);
 	/**** Axes in the global coordinate system ****/
 
     glDisable(GL_LIGHTING);
@@ -405,17 +425,32 @@ void CCanvas::paintGL()
     glEnable(GL_LIGHTING);
 
 	/**** Draw the terrain ***/
-    Terrain::drawTerrain();
-    glScalef(100.0, 100.0, 100.0);
-    skyGalaxy.draw();
-//    skyCloud.draw();
-    glScalef(1.0/100.0, 1.0/100.0, 1.0/100.0);
+    glPushAttrib(GL_LIGHTING_BIT);
+        Materials::setTerrainMat();
+        Terrain::drawTerrain();
+    glPopAttrib();
+    /**** Draw the sky ***/
+    glPushAttrib(GL_LIGHTING_BIT);
+        Materials::setSkyMat();
+        glPushMatrix();
+            glScalef(450.0, 450.0, 450.0);
+                skyGalaxy.draw();
+            //    skyCloud.draw();
+        glPopMatrix();
+    glPopAttrib();
+
+    // Draw the sun
+    // PRAISE THE SUN
+    glPushAttrib(GL_LIGHTING_BIT);
+        Materials::setSunMat();
+        glPushMatrix();
+            glTranslatef(lightpos[0], lightpos[1], lightpos[2]);
+            glScalef(15.0,15.0,15.0);
+            sun.draw();
+        glPopMatrix();
+    glPopAttrib();
+
 	/**** Setup and draw your objects ****/
-
-	// You can freely enable/disable some of the lights in the scene as you wish
-	glEnable(GL_LIGHT0);
-	glDisable(GL_LIGHT1);
-
 
 	// You can stack new transformation matrix if you don't want
 	// the previous transformations to apply on this object
@@ -426,12 +461,11 @@ void CCanvas::paintGL()
 	 *  glGetFloatv (GL_MODELVIEW_MATRIX, matrix);
 	*/
 
-	GLfloat matrix[16];
-	glGetFloatv (GL_MODELVIEW_MATRIX, matrix);
 
     // Draw the objects
     // Draw candy canes
-
+    glPushAttrib(GL_LIGHTING_BIT);
+    Materials::resetDefault();
     for (int i = -100; i < 100; i += 20) {
         for (int j = -100; j < 100; j += 20) {
             if(i == 0 && j == 0) continue;
@@ -445,6 +479,7 @@ void CCanvas::paintGL()
         }
     }
     candyRotation++;
+    glPopAttrib();
 
     // Draw the Earth
     glPushMatrix();

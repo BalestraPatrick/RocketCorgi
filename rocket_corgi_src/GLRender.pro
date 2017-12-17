@@ -27,8 +27,9 @@ HEADERS += ./Base.h \
     terrain.h \
 	PerlinNoise.hpp \
 	Particle.h \
-	Skybox.h \
-    ParticleEmitter.h
+        ParticleEmitter.h \
+        Skybox.h\
+        materials.h
 
 # Source files
 SOURCES += ./CCanvas.cpp \
@@ -40,8 +41,8 @@ SOURCES += ./CCanvas.cpp \
            ./objloader.cpp \
            ./tinyply.cpp \
 	Particle.cpp \
-		   ./Skybox.cpp \
-    ParticleEmitter.cpp
+        ParticleEmitter.cpp \
+		   ./Skybox.cpp
 
 # Forms
 FORMS += ./GLRender.ui

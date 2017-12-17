@@ -15,6 +15,7 @@
 #include "ObjModel.h"
 #include "PlyModel.h"
 #include "Skybox.h"
+#include "Sphere.h"
 
 using namespace std;
 
@@ -22,7 +23,6 @@ using namespace std;
  const string PROJECT_FOLDER = "/Users/luca/Documents/USI/FS_2017/ComputerGraphics/project/RocketCorgi";
 //const string PROJECT_FOLDER = "/Users/BMW/Documents/Git/RocketCorgi";
 //const string PROJECT_FOLDER = "/Users/SusannaChuck/Documents/computer_graphics";
-
 //const string PROJECT_FOLDER = "/Users/lara/Documents/USI/5th/ComputerGraphics/Project";
 /************************************************************************/
 /* Canvas to draw                                                       */
@@ -52,7 +52,8 @@ public:
         earth(PROJECT_FOLDER + "/models/EarthOBJ/earth.obj"),
         ocean(PROJECT_FOLDER + "/models/EarthOBJ/ocean.obj"),
         skyCloud(PROJECT_FOLDER + "/skyboxes/Clouds2", "bmp"),
-        skyGalaxy(PROJECT_FOLDER + "/skyboxes/Galaxy", "png")
+        skyGalaxy(PROJECT_FOLDER + "/skyboxes/Galaxy", "png"),
+        sun(20,20)
 	{
 		QTimer *timer = new QTimer(this);
 		connect(timer, SIGNAL(timeout()), this, SLOT(updateGL()));
@@ -89,8 +90,10 @@ private:
 	void setView(View _view);
 
     void renderCorgi(void);
-    /* Textures */
-    // Textures for Corgi
+
+
+
+    // Models and textures
     Texture textureCorgiFur;
     Texture textureEngine;
     Texture textureGoggles;
@@ -125,6 +128,16 @@ private:
     Skybox skyGalaxy;
 
     PointArray candies;
+
+
+    // primary light position
+    GLfloat lightpos[4];
+    // The Sun
+    Sphere sun;
+
+
+	// Model loaded from .ply format
+//    PlyModel modelTrain2;
 };
 
 #endif
