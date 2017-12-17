@@ -192,7 +192,7 @@ void  matrix_mul_vector(GLdouble *c,GLdouble *a,GLdouble *b) {
 }
 
 float engineRotation = 0;
-float corgiElevation = 1;
+float corgiElevation = 0.1;
 
 Point3d corgiUltimatePosition = Point3d(0, -corgiElevation-3, 0);
 Point3d corgiUltimateDirection = Point3d(0,0,-1);
@@ -461,7 +461,6 @@ void CCanvas::paintGL()
     glPopMatrix();
 
     // Draw the Corgi
-   // glScalef(0.05f, 0.05f, 0.05f);
     renderCorgi();
 	// Remove the last transformation matrix from the stack - you have drawn your last
 	// object with a new transformation and now you go back to the previous one
