@@ -123,6 +123,8 @@ private:
     // Skybox(es)
     Skybox skyCloud;
     Skybox skyGalaxy;
+
+    PointArray candies;
 };
 
 #endif

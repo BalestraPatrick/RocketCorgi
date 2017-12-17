@@ -183,19 +183,35 @@ void CCanvas::resizeGL(int width, int height)
 	glPerspective(beta, gamma, -n, -f);
 }
 
+void  matrix_mul_vector(GLdouble *c,GLdouble *a,GLdouble *b) {
+    GLdouble q[3];
+    q[0]=(a[ 0]*b[0])+(a[ 1]*b[1])+(a[ 2]*b[2])+(a[ 3]);
+    q[1]=(a[ 4]*b[0])+(a[ 5]*b[1])+(a[ 6]*b[2])+(a[ 7]);
+    q[2]=(a[ 8]*b[0])+(a[ 9]*b[1])+(a[10]*b[2])+(a[11]);
+    for(int i=0;i<3;i++) c[i]=q[i];
+}
 
 float engineRotation = 0;
 float corgiElevation = 1;
+
+Point3d corgiUltimatePosition = Point3d(0, -corgiElevation-3, 0);
+Point3d corgiUltimateDirection = Point3d(0,0,-1);
 void CCanvas::renderCorgi() {
   glPushMatrix();
+
     glTranslatef(0.0f, corgiElevation, 0);
+
+
     glRotatef(90.0f, 0.0f, 0.0f, 0.0f);
+
+
+    glScalef(0.05f, 0.05f, 0.05f);
+
     // Drawing the object with texture
     textureCorgiFur.bind();
     corgiFront.draw();
     corgiBack.draw();
     textureCorgiFur.unbind();
-
 
     //we move the googles a bit forward
     glPushMatrix();
@@ -249,22 +265,26 @@ void CCanvas::renderCorgi() {
 
     if(engineRotation < 90)
         engineRotation += 1;
-    else if(corgiElevation < 10000)
+    else if(corgiElevation < 100) {
         corgiElevation = corgiElevation*1.06;
+
+        corgiUltimatePosition = Point3d(0, -corgiElevation-3, 0);
+    }
+
 
 }
 
 bool freeCamera = true;
-double freeCameraAngleHorizontal=3.14f;
+double freeCameraAngleHorizontal=3.0*3.14f/4.0;
 double freeCameraAngleVertical=0.0;
 Point3d freeCameraDirection(cos(freeCameraAngleVertical) * sin(freeCameraAngleHorizontal),
                             sin(freeCameraAngleVertical),
                             cos(freeCameraAngleVertical) * cos(freeCameraAngleHorizontal));
-Point3d freeCameraPosition(0, 1, 5);
+Point3d freeCameraPosition(0, -2, -15);
 Point3d freeCameraRight(1,0,0);
 Point3d freeCameraForward(0, 0, 1);
 Point3d freeCameraUpward(0, 1, 0);
-Point3d freeCameraUp = freeCameraRight ^ freeCameraDirection;
+Point3d freeCameraUp = Point3d(0,1,0);
 
 float speed = 3.0f;
 double deltaTime = 1.0f;
@@ -310,12 +330,16 @@ void QWidget::keyPressEvent( QKeyEvent *evt ) {
         case Qt::Key_D:
             freeCameraAngleHorizontal += speed * deltaTime * 0.01f;
             break;
+
+    case Qt::Key_C:
+        freeCamera = !freeCamera;
+        break;
+
+
     }
     freeCameraDirection = Point3d(cos(freeCameraAngleVertical) * sin(freeCameraAngleHorizontal),
                                  sin(freeCameraAngleVertical),
                                  cos(freeCameraAngleVertical) * cos(freeCameraAngleHorizontal));
-    freeCameraUp = freeCameraRight ^ freeCameraDirection;
-    freeCameraUp.normalize();
 }
 
 
@@ -324,13 +348,18 @@ void QWidget::keyPressEvent( QKeyEvent *evt ) {
 void CCanvas::setView(View _view) {
 	switch(_view) {
 	case Perspective:
-        glTranslatef(1.0, -2.5, -10.0);
-//		glRotatef(45.0f, 0.0f, 1.0f, 0.0f);
+        lookAt(	freeCameraPosition.x(), freeCameraPosition.y(), freeCameraPosition.z(),
+                freeCameraPosition.x() + freeCameraDirection.x(), freeCameraDirection.y()+freeCameraPosition.y(),  freeCameraPosition.z()+freeCameraDirection.z(),
+                freeCameraUp.x(), freeCameraUp.y(),  freeCameraUp.z());
 		break;
-	case Cockpit:
-		// Maybe you want to have an option to view the scene from the train cockpit, up to you
+    case Cockpit:
+        Point3d cameraPosition = corgiUltimatePosition + corgiUltimateDirection;
+        lookAt(cameraPosition.x(), cameraPosition.y(), cameraPosition.z(),
+               corgiUltimatePosition.x(), corgiUltimatePosition.y(), corgiUltimatePosition.z(),
+
+                0,1,0);
 		break;
-	}
+    }
 }
 
 float earthRotation = 1;
@@ -345,14 +374,11 @@ void CCanvas::paintGL()
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 
-    lookAt(	freeCameraPosition.x(), freeCameraPosition.y(), freeCameraPosition.z(),
-            freeCameraPosition.x() + freeCameraDirection.x(), freeCameraDirection.y()+freeCameraPosition.y(),  freeCameraPosition.z()+freeCameraDirection.z(),
-            freeCameraUp.x(), freeCameraUp.y(),  freeCameraUp.z());
 
 	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
 	// Setup the current view
-    setView(View::Perspective);
+    freeCamera ? setView(View::Perspective) : setView(View::Cockpit);
 
 	// You can always change the light position here if you want
     GLfloat lightpos[] = {0.0f, 100.0f, 100.0f, 0.0f};
@@ -408,6 +434,7 @@ void CCanvas::paintGL()
 
     for (int i = -100; i < 100; i += 20) {
         for (int j = -100; j < 100; j += 20) {
+            if(i == 0 && j == 0) continue;
             glPushMatrix();
             glTranslatef(j, 0, i);
             glRotatef(((i * j) + candyRotation % 360), 0.0f, 1.0f, 0.0f);
@@ -434,9 +461,8 @@ void CCanvas::paintGL()
     glPopMatrix();
 
     // Draw the Corgi
-    glScalef(0.05f, 0.05f, 0.05f);
+   // glScalef(0.05f, 0.05f, 0.05f);
     renderCorgi();
-    glPopMatrix();
 	// Remove the last transformation matrix from the stack - you have drawn your last
 	// object with a new transformation and now you go back to the previous one
 
