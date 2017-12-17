@@ -383,11 +383,7 @@ void CCanvas::paintGL()
 
 	// set model-view matrix
 	glMatrixMode(GL_MODELVIEW);
-	glLoadIdentity();
-
-    lookAt(	freeCameraPosition.x(), freeCameraPosition.y(), freeCameraPosition.z(),
-            freeCameraPosition.x() + freeCameraDirection.x(), freeCameraDirection.y()+freeCameraPosition.y(),  freeCameraPosition.z()+freeCameraDirection.z(),
-            freeCameraUp.x(), freeCameraUp.y(),  freeCameraUp.z());
+    glLoadIdentity();
 
     /****************************************************************
     * Light position should be called here, after the lookAt to have a global light position (i.e. it does not move with camera)
