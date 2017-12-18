@@ -73,6 +73,12 @@ void CCanvas::initializeGL()
     // Setup the skybox(es)
     skyCloud.init();
     skyGalaxy.init();
+
+    // Generate array of random position of candies
+    for (int i = 0; i < 200; i++) {
+        positionCandyX[i] = rand() % 200 -100;
+        positionCandyY[i] = rand() % 200 -100;
+    }
 }
 
 //-----------------------------------------------------------------------------
@@ -460,22 +466,20 @@ void CCanvas::paintGL()
 
     // Draw the objects
     // Draw candy canes
-    glPushAttrib(GL_LIGHTING_BIT);
-    Materials::resetDefault();
-    for (int i = -100; i < 100; i += 20) {
-        for (int j = -100; j < 100; j += 20) {
-            if(i == 0 && j == 0) continue;
-            glPushMatrix();
-            glTranslatef(j, 0, i);
-            glRotatef(((i * j) + candyRotation % 360), 0.0f, 1.0f, 0.0f);
-            textureCandyCane.bind();
-            candyCane.draw();
-            textureCandyCane.unbind();
-            glPopMatrix();
+        glPushAttrib(GL_LIGHTING_BIT);
+        Materials::resetDefault();
+        for (int i = -100; i <= 100; i += 20) {
+            for (int j = -100; j <= 100; j += 20) {
+                glPushMatrix();
+                glTranslatef(positionCandyY[i + 100], 0, positionCandyX[j + 100]);
+                glRotatef(((i + j + (i * j))), 0.0f, 1.0f, 0.0f);
+                textureCandyCane.bind();
+                candyCane.draw();
+                textureCandyCane.unbind();
+                glPopMatrix();
+            }
         }
-    }
-    candyRotation++;
-    glPopAttrib();
+        glPopAttrib();
 
     // Draw the Earth
     glPushMatrix();
