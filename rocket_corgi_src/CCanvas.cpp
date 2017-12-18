@@ -197,15 +197,29 @@ void  matrix_mul_vector(GLdouble *c,GLdouble *a,GLdouble *b) {
 
 float engineRotation = 0;
 float corgiElevation = 0.1;
+float t = 0.0;
+bool launch = false;
+float launchT = 0.1;
 
 Point3d corgiUltimatePosition = Point3d(0, -corgiElevation-3, 0);
 Point3d corgiUltimateDirection = Point3d(0,0,-1);
 
+
 void CCanvas::renderCorgi() {
   glPushMatrix();
 
-    glTranslatef(0.0f, corgiElevation, 0);
-
+    float x = 15*cos(t);
+    float y = corgiElevation;
+    float z = 15*sin(2*t);
+    if (launch) {
+        z += launchT;
+        y += launchT;
+    } else if (t == 0) {
+        x = 0;
+        z = 0;
+    }
+    glTranslatef(x, y, z);
+    corgiUltimatePosition = Point3d(x, y, z);
 
     glRotatef(90.0f, 0.0f, 0.0f, 0.0f);
 
@@ -274,15 +288,18 @@ void CCanvas::renderCorgi() {
 
   glPopMatrix();
 
-    if(engineRotation < 90)
+    if (launch && engineRotation > 45) {
+         engineRotation -= 1;
+    } else if (launch) {
+         launchT *= 1.15;
+    } else if (engineRotation < 90) {
         engineRotation += 1;
-    else if(corgiElevation < 100) {
-        corgiElevation = corgiElevation*1.06;
-
+    } else if (corgiElevation < 100) {
+        corgiElevation = corgiElevation * 1.06;
         corgiUltimatePosition = Point3d(0, -corgiElevation-3, 0);
+    } else {
+        t += 0.01;
     }
-
-
 }
 
 bool freeCamera = true;
@@ -341,12 +358,13 @@ void QWidget::keyPressEvent( QKeyEvent *evt ) {
         case Qt::Key_D:
             freeCameraAngleHorizontal += speed * deltaTime * 0.01f;
             break;
+        case Qt::Key_G:
+            launch = true;
+            break;
 
-    case Qt::Key_C:
-        freeCamera = !freeCamera;
-        break;
-
-
+        case Qt::Key_C:
+            freeCamera = !freeCamera;
+            break;
     }
     freeCameraDirection = Point3d(cos(freeCameraAngleVertical) * sin(freeCameraAngleHorizontal),
                                  sin(freeCameraAngleVertical),
