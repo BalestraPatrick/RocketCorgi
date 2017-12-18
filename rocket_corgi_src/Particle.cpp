@@ -43,22 +43,22 @@ void Particle::drawParticle(Point3d camera_pos) {
 	GLfloat yellow[] = {0.9, 0.7, 0.2f, transparency};
 	GLfloat white[] = {1.0f, 1.0f, 1.0f, 1.0f};
 
-	if(colour < 0.2){
-		glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, red);
-		glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE, red);
-		glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, red);
-		glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, red);
-	} else if (colour < 0.4){
-		glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, orange);
-		glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE, orange);
-		glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, orange);
-		glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, orange);
-	} else {
-		glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, yellow);
-		glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE, yellow);
-		glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, yellow);
-		glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, yellow);
-	}
+//	if(colour < 0.2){
+//		glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, red);
+//		glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE, red);
+//		glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, red);
+//		glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, red);
+//	} else if (colour < 0.4){
+//		glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, orange);
+//		glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE, orange);
+//		glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, orange);
+//		glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, orange);
+//	} else {
+//		glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, yellow);
+//		glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE, yellow);
+//		glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, yellow);
+//		glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, yellow);
+//	}
 
 
 		float sizeX = this->position.x()+this->size;

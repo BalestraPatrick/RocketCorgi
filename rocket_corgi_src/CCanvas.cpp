@@ -294,8 +294,11 @@ void CCanvas::renderCorgi() {
         rightEngine.y() -= 25;
 
 //		GLfloat light_right[] = {0.5, 0.5, 0.5, 0.3};
-//		GLfloat right_position[] = {(float)rightEngine.x(), (float)rightEngine.y(), (float)rightEngine.z(), 0.0};
+//		GLfloat right_position[] = {(float)rightEngine.x(), (float)rightEngine.y(), (float)rightEngine.z()-5, 0.0};
+//		GLfloat dir[] = {0.0f, -1.0f, 0.0f};
 //		glLightfv(GL_LIGHT6, GL_DIFFUSE, light_right);
+//		glLightfv(GL_LIGHT6, GL_SPOT_DIRECTION, dir);
+//		glLightfv(GL_LIGHT6, GL_SPOT_CUTOFF, dir);
 //		glLightfv(GL_LIGHT6, GL_POSITION, right_position);
 //		glEnable(GL_LIGHT6);
 //		glEnable(GL_LIGHTING);
@@ -317,9 +320,10 @@ void CCanvas::renderCorgi() {
         Point3d leftEngine = engineLeftFromOrigin;
         leftEngine.y() -= 25;
 
-//		GLfloat left_position[] = {(float)leftEngine.x(), (float)leftEngine.y(), (float)leftEngine.z(), 0.0};
+//		GLfloat left_position[] = {(float)leftEngine.x(), (float)leftEngine.y(), (float)leftEngine.z()+5, 0.0};
 //		glLightfv(GL_LIGHT5, GL_DIFFUSE, light_right);
-//		glLightfv(GL_LIGHT5, GL_POSITION, left_position);
+//		glLightfv(GL_LIGHT5, GL_SPOT_DIRECTION, dir);
+//		glLightfv(GL_LIGHT5, GL_SPOT_CUTOFF, dir);
 //		glEnable(GL_LIGHT5);
 //		glEnable(GL_LIGHTING);
 
