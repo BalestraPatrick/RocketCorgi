@@ -212,12 +212,13 @@ Point3d corgiUltimateDirection = Point3d(0,0,-1);
 
 
 bool freeCamera = true;
-double freeCameraAngleHorizontal=3.0*3.14f/4.0;
+double freeCameraAngleHorizontal=3.0*PI/4.0 + PI/2.0;
 double freeCameraAngleVertical=0.0;
 Point3d freeCameraDirection(cos(freeCameraAngleVertical) * sin(freeCameraAngleHorizontal),
-							sin(freeCameraAngleVertical),
-							cos(freeCameraAngleVertical) * cos(freeCameraAngleHorizontal));
-Point3d freeCameraPosition(0, -2, -15);
+                            sin(freeCameraAngleVertical),
+                            cos(freeCameraAngleVertical) * cos(freeCameraAngleHorizontal));
+//Point3d freeCameraDirection(0,0,1);
+Point3d freeCameraPosition(-8, -17, -50);
 Point3d freeCameraRight(1,0,0);
 Point3d freeCameraForward(0, 0, 1);
 Point3d freeCameraUpward(0, 1, 0);
