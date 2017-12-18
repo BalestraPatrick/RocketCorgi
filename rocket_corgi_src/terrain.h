@@ -17,12 +17,42 @@ float fac = 0.01;
 float hscale = 10.0;
 float exponent = 2.0;
 
+int Dim = 0;
+
+static siv::PerlinNoise perlin(026700375);
+
 std::vector<PointArray> terrainStrips;
 std::vector<PointArray> terrainNormals;
 
 
+double getElevation(float x, float y){
+    Point2d noiseCoords = Point2d(x * fac, y * fac);
+    double h = perlin.octaveNoise(noiseCoords.x() ,noiseCoords.y(), octaves)*hscale;
+    h = pow(h, exponent);
+
+    return h;
+}
+
+float getHeight(int x, int y){
+    float limit_x = scale.x()*Dim/2.0;
+    float limit_y = scale.z()*Dim/2.0;
+    if(x < -limit_x || x > limit_x) return 0.0;
+    if(y < -limit_y || y > limit_y) return 0.0;
+
+    PointArray strip = terrainStrips[(int)floor(x/scale.x() + Dim/2.0)];
+    Point3d p = strip[(int)floor(y/scale.y() + Dim/2.0)*2 + 2];
+    return p.y();
+}
+
+void scaleUp(Point3d &p){
+    p[0] *= scale.x();
+    p[1] *= scale.y();
+    p[2] *= scale.z();
+}
+
 void generateTerrain(int world_dim) {
 
+    Dim = world_dim;
     float cur_x,z;
     float x[2]; //keeps last and next x
 
@@ -33,23 +63,19 @@ void generateTerrain(int world_dim) {
     cur_x = x[0];
 
     Point3d off = Point3d(1.0, 0.0, 1.0);
-    siv::PerlinNoise perlin(026700375);
+
     for(int i=0; i<world_dim; i++)
     {
         terrainStrips.push_back(PointArray());
         terrainNormals.push_back(PointArray());
-            z=0.0;
+            z=world_dim/2.0;
             for(int j=0; j<2*world_dim; j++)
             {
                 /* Get y component by noise function */
-                Point2d noiseCoords = Point2d(cur_x * fac, (z + world_dim/2.0) *fac);
-                double elevation = perlin.octaveNoise(noiseCoords.x() ,noiseCoords.y(), octaves)*hscale;
-                elevation = pow(elevation, exponent);
-                Point3d p = Point3d(cur_x, elevation , z + world_dim/2.0);
+                double elevation = getElevation(cur_x, z);
+                Point3d p = Point3d(cur_x, elevation , z);
                 /* spread out the terrain */
-                p[0] *= scale.x();
-                p[1] *= scale.y();
-                p[2] *= scale.z();
+                scaleUp(p);
 
                 /* calculate normal by differential */
                 Point2d p_xz = Point2d(p.x(), p.z());
@@ -92,12 +118,6 @@ void drawTerrain()
     }
     glPopAttrib();
 
-}
-
-void scaleUp(Point3d &p, const Point3d &s){
-    p[0] *= s.x();
-    p[1] *= s.y();
-    p[2] *= s.z();
 }
 
 }
