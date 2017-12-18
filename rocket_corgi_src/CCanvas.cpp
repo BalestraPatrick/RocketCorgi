@@ -477,7 +477,10 @@ void CCanvas::paintGL()
 	/**** Draw the terrain ***/
     glPushAttrib(GL_LIGHTING_BIT);
         Materials::setTerrainMat();
-        Terrain::drawTerrain();
+//        glPushMatrix();
+//            glScalef(10.0, 10.0, 10.0);
+            Terrain::drawTerrain();
+//        glPopMatrix();
     glPopAttrib();
     /**** Draw the sky ***/
     glPushAttrib(GL_LIGHTING_BIT);

@@ -10,6 +10,13 @@
 namespace Terrain {
 
 
+Point3d scale = Point3d(10.0, 4.0, 10.0);
+
+int octaves = 10;
+float fac = 0.01;
+float hscale = 10.0;
+float exponent = 2.0;
+
 std::vector<PointArray> terrainStrips;
 std::vector<PointArray> terrainNormals;
 
@@ -26,7 +33,7 @@ void generateTerrain(int world_dim) {
     cur_x = x[0];
 
     Point3d off = Point3d(1.0, 0.0, 1.0);
-    siv::PerlinNoise perlin(12345);
+    siv::PerlinNoise perlin(026700375);
     for(int i=0; i<world_dim; i++)
     {
         terrainStrips.push_back(PointArray());
@@ -34,14 +41,24 @@ void generateTerrain(int world_dim) {
             z=0.0;
             for(int j=0; j<2*world_dim; j++)
             {
-                Point3d p = Point3d(cur_x, perlin.octaveNoise(cur_x  * 0.1, (z + world_dim/2.0)  * 0.1, 8) * 2 , z + world_dim/2.0);
+                /* Get y component by noise function */
+                Point2d noiseCoords = Point2d(cur_x * fac, (z + world_dim/2.0) *fac);
+                double elevation = perlin.octaveNoise(noiseCoords.x() ,noiseCoords.y(), octaves)*hscale;
+                elevation = pow(elevation, exponent);
+                Point3d p = Point3d(cur_x, elevation , z + world_dim/2.0);
+                /* spread out the terrain */
+                p[0] *= scale.x();
+                p[1] *= scale.y();
+                p[2] *= scale.z();
+
+                /* calculate normal by differential */
                 Point2d p_xz = Point2d(p.x(), p.z());
                 Point2d off_xy = Point2d(off.x(), off.y());
                 Point2d off_yz = Point2d(off.y(), off.z());
-                float hL = perlin.octaveNoise((p_xz - off_xy).x() * 0.1, -(p_xz - off_xy).y() * 0.1, 8);
-                float hR = perlin.octaveNoise((p_xz + off_xy).x() * 0.1, -(p_xz + off_xy).y() * 0.1, 8);
-                float hD = perlin.octaveNoise((p_xz - off_yz).x() * 0.1, -(p_xz - off_yz).y() * 0.1, 8 );
-                float hU = perlin.octaveNoise((p_xz + off_yz).x() * 0.1, -(p_xz + off_yz).y() * 0.1, 8);
+                float hL = perlin.octaveNoise((p_xz - off_xy).x() * fac, -(p_xz - off_xy).y() * fac, 8);
+                float hR = perlin.octaveNoise((p_xz + off_xy).x() * fac, -(p_xz + off_xy).y() * fac, 8);
+                float hD = perlin.octaveNoise((p_xz - off_yz).x() * fac, -(p_xz - off_yz).y() * fac, 8 );
+                float hU = perlin.octaveNoise((p_xz + off_yz).x() * fac, -(p_xz + off_yz).y() * fac, 8);
 
                 // deduce terrain normal
                 Point3d n = Point3d(hL - hR, 1.0, hD - hU).normalized();
@@ -75,6 +92,12 @@ void drawTerrain()
     }
     glPopAttrib();
 
+}
+
+void scaleUp(Point3d &p, const Point3d &s){
+    p[0] *= s.x();
+    p[1] *= s.y();
+    p[2] *= s.z();
 }
 
 }
