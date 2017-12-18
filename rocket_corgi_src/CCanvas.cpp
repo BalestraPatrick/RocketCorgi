@@ -489,8 +489,8 @@ void CCanvas::paintGL()
     // Draw candy canes
         glPushAttrib(GL_LIGHTING_BIT);
         Materials::resetDefault();
-        for (int i = -100; i <= 100; i += 20) {
-            for (int j = -100; j <= 100; j += 20) {
+        for (int i = -50; i <= 50; i += 20) {
+            for (int j = -50; j <= 50; j += 20) {
                 glPushMatrix();
                 glTranslatef(positionCandyY[i + 100], 0, positionCandyX[j + 100]);
                 glRotatef(((i + j + (i * j))), 0.0f, 1.0f, 0.0f);
