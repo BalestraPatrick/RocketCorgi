@@ -13,6 +13,13 @@ GLfloat defaultEmis[] = {0.0, 0.0, 0.0, 1.0};
 GLfloat defaultShin = 0.0;
 /* *** */
 
+/* Earth material */
+GLfloat earthAmb[] = {0.2, 0.2, 0.2, 1.0};
+GLfloat earthDiff[] = {0.8, 0.8, 0.8, 1.0};
+GLfloat earthSpec[] = {0.3, 0.3, 0.3, 1.0};
+GLfloat earthEmis[] = {0.2, 0.2, 0.2, 1.0};
+GLfloat earthShin = 0.01;
+
 /* Corgi body material */
 GLfloat corgiAmb[] = {0.4, 0.2, 0.2, 1.0};
 GLfloat corgiDiff[] = {0.9, 0.8, 0.8, 1.0};
@@ -59,6 +66,14 @@ void resetDefault(){
     glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, defaultSpec);
     glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, &defaultShin);
     glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, defaultEmis);
+}
+
+void setEarthMat(){
+    glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, earthAmb);
+    glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, earthDiff);
+    glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, earthSpec);
+    glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, &earthShin);
+    glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, earthEmis);
 }
 
 void setCorgiMat(){

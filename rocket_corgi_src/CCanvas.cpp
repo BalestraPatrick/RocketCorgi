@@ -509,9 +509,10 @@ void CCanvas::paintGL()
         glPopAttrib();
 
     // Draw the Earth
+    Materials::setEarthMat();
     glPushMatrix();
-        glScalef(1.0f, 1.00f, 1.00f);
-        glTranslatef(-5, 7, 0);
+        glScalef(10.0f, 10.00f, 10.00f);
+        glTranslatef(-5, 7, -6);
         glRotatef(earthRotation, 0.0f, 1.0f, 0.0f);
         textureEarth.bind();
         earth.draw();
