@@ -487,6 +487,7 @@ void CCanvas::paintGL()
         Materials::setSkyMat();
         glPushMatrix();
             glRotatef(90.0f, 1.0f, 0.0f, 0.0f);
+            glRotatef(90.0f, 0.0f, 0.0f, 1.0f);
             glScalef(600.0, 600.0, 600.0);
 //            glTranslatef(0.0, 150.0, 0.0);
                 skyGalaxy.draw();
@@ -540,8 +541,8 @@ void CCanvas::paintGL()
     // Draw the Earth
     Materials::setEarthMat();
     glPushMatrix();
-        glScalef(10.0f, 10.00f, 10.00f);
-        glTranslatef(-8, 11, -6);
+        glTranslatef(-100, 100, 650);
+        glScalef(20.0f, 20.00f, 20.00f);
         glRotatef(earthRotation, 0.0f, 1.0f, 0.0f);
         textureEarth.bind();
         earth.draw();

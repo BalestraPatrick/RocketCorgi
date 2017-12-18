@@ -116,7 +116,7 @@ void drawTerrain()
             }
         glEnd();
     }
-    glPopAttrib();
+//    glPopAttrib();
 
 }
 
