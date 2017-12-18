@@ -207,7 +207,7 @@ float t = 0.0;
 bool launch = false;
 float launchT = 0.1;
 
-Point3d corgiUltimatePosition = Point3d(0, -corgiElevation-3, 0);
+Point3d corgiUltimatePosition = Point3d(0, 0, 0);
 Point3d corgiUltimateDirection = Point3d(0,0,-1);
 
 
@@ -225,7 +225,7 @@ void CCanvas::renderCorgi() {
         z = 0;
     }
     glTranslatef(x, y, z);
-    corgiUltimatePosition = Point3d(x, y, z);
+    corgiUltimatePosition = Point3d(x, -y-3, z);
 
     // Initial rotation of model.
     glRotatef(90.0f, 1.0f, 0.0f, 0.0f);
