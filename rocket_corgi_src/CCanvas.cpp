@@ -300,11 +300,14 @@ void CCanvas::renderCorgi() {
          launchT *= 1.15;
     } else if (engineRotation < 90) {
         engineRotation += 1;
-    } else if (corgiElevation < 100) {
+    } else if (corgiElevation < 10) {
         corgiElevation = corgiElevation * 1.06;
         corgiUltimatePosition = Point3d(0, -corgiElevation-3, 0);
     } else {
         t += 0.01;
+        float x = 15*cos(t);
+        float z = 15*sin(2*(t));
+        corgiUltimatePosition = Point3d(x, -corgiElevation-3, z);
     }
 }
 
