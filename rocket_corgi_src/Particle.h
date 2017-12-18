@@ -8,7 +8,7 @@
 class Particle {
 	public:
 		Particle(Point3d pos);
-		void drawParticle();
+		void drawParticle(Point3d camera_pos);
 		void moveParticle();
 
 	private:
@@ -16,7 +16,7 @@ class Particle {
 		Point3d original_position;
 		int life;
 		int start_life = 200;
-		double size = 0.8;
+		double size = 1.0;
 		Point3d direction;
 };
 

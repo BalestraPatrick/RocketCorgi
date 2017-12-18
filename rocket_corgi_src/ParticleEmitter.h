@@ -10,7 +10,7 @@
 class ParticleEmitter {
 	public:
 		ParticleEmitter(Point3d pos);
-        void emitParticles();
+		void emitParticles(Point3d camera_pos);
 		void init();
 
 	private:

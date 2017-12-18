@@ -6,7 +6,6 @@
 
 Particle::Particle(Point3d startPosition){
 	this->life = this->start_life;
-	this->size = 1;
 	this->position = startPosition;
 
 	float neg = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
@@ -28,7 +27,7 @@ Particle::Particle(Point3d startPosition){
 }
 
 
-void Particle::drawParticle() {
+void Particle::drawParticle(Point3d camera_pos) {
 	moveParticle();
 	glPushAttrib(GL_LIGHTING_BIT);
 
@@ -36,100 +35,58 @@ void Particle::drawParticle() {
 	float transparency = this->life/this->start_life;
 
 
-	GLfloat red[] = {1.0f, 0.2, 0.0f, transparency};
-	GLfloat orange[] = {0.7, 0.3, 0.0f, transparency};
-	GLfloat yellow[] = {0.5, 0.4, 0.0f, transparency};
+	Point3d normal = (this->position - camera_pos);
+	normal.normalize();
+
+	GLfloat red[] = {1.0f, 0.1, 0.0f, transparency};
+	GLfloat orange[] = {0.9, 0.5, 0.0f, transparency};
+	GLfloat yellow[] = {0.9, 0.7, 0.2f, transparency};
+	GLfloat white[] = {1.0f, 1.0f, 1.0f, 1.0f};
 
 	if(colour < 0.2){
+		glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, red);
 		glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE, red);
-//		glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, red);
-//		glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, red);
+		glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, red);
+		glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, red);
 	} else if (colour < 0.4){
+		glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, orange);
 		glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE, orange);
-//		glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, orange);
-//		glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, orange);
+		glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, orange);
+		glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, orange);
 	} else {
+		glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, yellow);
 		glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE, yellow);
-//		glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, yellow);
-//		glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, yellow);
+		glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, yellow);
+		glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, yellow);
 	}
 
 
+		float sizeX = this->position.x()+this->size;
+		float sizeMinusX = this->position.x()-this->size;
+		float sizeY = this->position.y()+this->size;
+		float sizeMinusY = this->position.y()-this->size;
+		float sizeZ = this->position.z()+this->size;
+		float sizeMinusZ = this->position.z()-this->size;
 
 
-	glShadeModel(GL_SMOOTH);
-	glBegin(GL_TRIANGLES);
+	glShadeModel(GL_FLAT);
 
-
-	float sizeX = this->position.x()+this->size;
-	float sizeMinusX = this->position.x()-this->size;
-	float sizeY = this->position.y()+this->size;
-	float sizeMinusY = this->position.y()-this->size;
-	float sizeZ = this->position.z()+this->size;
-	float sizeMinusZ = this->position.z()-this->size;
-
-
-		// Bottom face
-//		glNormal3d(0, 0, -1);    // Normal of the face
-		glVertex3d(sizeMinusX, sizeMinusY, sizeZ);  // Triangle
-		glVertex3d(sizeX, sizeMinusY, sizeZ);
-		glVertex3d(sizeX, sizeMinusY, sizeMinusZ);
-
-		glVertex3d(sizeMinusX, sizeMinusY, sizeZ);  // Triangle
-		glVertex3d(sizeMinusX, sizeMinusY, sizeMinusZ);
-		glVertex3d(sizeX, sizeMinusY, sizeMinusZ);
-
-		// Top face
-//		glNormal3d(0, 0, 1);    // Normal of the face
-		glVertex3d(sizeMinusX, sizeY, sizeZ);   // Triangle
-		glVertex3d(sizeX, sizeY, sizeZ);
-		glVertex3d(sizeX, sizeY, sizeMinusZ);
-
-		glVertex3d(sizeMinusX, sizeY, sizeZ);   // Triangle
-		glVertex3d(sizeMinusX, sizeY, sizeMinusZ);
-		glVertex3d(sizeX, sizeY, sizeMinusZ);
-
-		// Right face
-//		glNormal3d(1, 0, 0);   // Normal of the face
-		glVertex3d(sizeX, sizeMinusY, sizeZ);   // Triangle
-		glVertex3d(sizeX, sizeMinusY, sizeMinusZ);
-		glVertex3d(sizeX, sizeY, sizeZ);
-
-		glVertex3d(sizeX, sizeY, sizeZ);    // Triangle
-		glVertex3d(sizeX, sizeMinusY, sizeMinusZ);
-		glVertex3d(sizeX, sizeY, sizeMinusZ);
-
-		// Left face
-//		glNormal3d(-1, 0, 0);   // Normal of the face
-		glVertex3d(sizeMinusX, sizeMinusY, sizeZ);  // Triangle
-		glVertex3d(sizeMinusX, sizeMinusY, sizeMinusZ);
-		glVertex3d(sizeMinusX, sizeY, sizeZ);
-
-		glVertex3d(sizeMinusX, sizeY, sizeZ);   // Triangle
-		glVertex3d(sizeMinusX, sizeMinusY, sizeMinusZ);
-		glVertex3d(sizeMinusX, sizeY, sizeMinusZ);
-
-		// Front face
-//		glNormal3d(0, 0, -1);    // Normal of the face
-		glVertex3d(sizeMinusX, sizeMinusY, sizeZ);  // Triangle
-		glVertex3d(sizeX, sizeMinusY, sizeZ);
-		glVertex3d(sizeMinusX, sizeY, sizeZ);
-
-		glVertex3d(sizeX, sizeMinusY, sizeZ);   // Triangle
-		glVertex3d(sizeMinusX, sizeY, sizeZ);
-		glVertex3d(sizeX, sizeY, sizeZ);
-
-		// Back face
-//		glNormal3d(0, 0, 1);    // Normal of the face
-		glVertex3d(sizeMinusX, sizeMinusY, sizeMinusZ); // Triangle
-		glVertex3d(sizeX, sizeMinusY, sizeMinusZ);
-		glVertex3d(sizeMinusX, sizeY, sizeMinusZ);
-
-		glVertex3d(sizeX, sizeMinusY, sizeMinusZ);  // Triangle
-		glVertex3d(sizeMinusX, sizeY, sizeMinusZ);
-		glVertex3d(sizeX, sizeY, sizeMinusZ);
-
+	glBegin(GL_POLYGON);
+	glNormal3d(normal.x(), normal.y(), normal.z());
+	glVertex3d(sizeMinusX, this->position.y(), this->position.z());
+	glVertex3d(this->position.x(), sizeY, this->position.z());
+	glVertex3d(sizeX, this->position.y(), this->position.z());
+	glVertex3d(this->position.x(), sizeMinusY, this->position.z());
 	glEnd();
+
+	glBegin(GL_POLYGON);
+	glNormal3d(normal.x(), normal.y(), normal.z());
+	glVertex3d(this->position.x(), this->position.y(), sizeMinusZ);
+	glVertex3d(this->position.x(), sizeY, this->position.z());
+	glVertex3d(this->position.x(), this->position.y(), sizeZ);
+	glVertex3d(this->position.x(), sizeMinusY, this->position.z());
+	glEnd();
+
 	glPopAttrib();
 }
 

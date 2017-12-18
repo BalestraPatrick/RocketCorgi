@@ -5,7 +5,7 @@
 
 ParticleEmitter::ParticleEmitter(Point3d pos){
 	this->position = pos;
-    this->nParticles = 500;
+	this->nParticles = 500;
 	init();
 }
 
@@ -15,9 +15,9 @@ void ParticleEmitter::init(){
 	}
 }
 
-void ParticleEmitter::emitParticles(){
+void ParticleEmitter::emitParticles(Point3d camera_pos){
     for (int i = 0; i < this->nParticles; i++){
-		this->particles.at(i).drawParticle();
+		this->particles.at(i).drawParticle(camera_pos);
 	}
 }
 

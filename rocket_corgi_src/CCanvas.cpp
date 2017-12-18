@@ -211,6 +211,23 @@ Point3d corgiUltimatePosition = Point3d(0, -corgiElevation-3, 0);
 Point3d corgiUltimateDirection = Point3d(0,0,-1);
 
 
+bool freeCamera = true;
+double freeCameraAngleHorizontal=3.0*3.14f/4.0;
+double freeCameraAngleVertical=0.0;
+Point3d freeCameraDirection(cos(freeCameraAngleVertical) * sin(freeCameraAngleHorizontal),
+							sin(freeCameraAngleVertical),
+							cos(freeCameraAngleVertical) * cos(freeCameraAngleHorizontal));
+Point3d freeCameraPosition(0, -2, -15);
+Point3d freeCameraRight(1,0,0);
+Point3d freeCameraForward(0, 0, 1);
+Point3d freeCameraUpward(0, 1, 0);
+Point3d freeCameraUp = Point3d(0,1,0);
+
+float speed = 3.0f;
+double deltaTime = 1.0f;
+
+
+
 void CCanvas::renderCorgi() {
   glPushMatrix();
 
@@ -271,8 +288,16 @@ void CCanvas::renderCorgi() {
         // fire
         Point3d rightEngine = engineRightFromOrigin;
         rightEngine.y() -= 25;
+
+//		GLfloat light_right[] = {0.5, 0.5, 0.0, 0.3};
+//		GLfloat right_position[] = {(float)rightEngine.x(), (float)rightEngine.y(), (float)rightEngine.z(), 0.0};
+//		glLightfv(GL_LIGHT6, GL_DIFFUSE, light_right);
+//		glLightfv(GL_LIGHT6, GL_POSITION, right_position);
+//		glEnable(GL_LIGHT6);
+//		glEnable(GL_LIGHTING);
+
         static ParticleEmitter rightParticles(rightEngine);
-        rightParticles.emitParticles();
+		rightParticles.emitParticles(freeCameraPosition);
     glPopMatrix();
 
     glPushMatrix();
@@ -287,8 +312,15 @@ void CCanvas::renderCorgi() {
         bottomRocketLeft.draw();
         Point3d leftEngine = engineLeftFromOrigin;
         leftEngine.y() -= 25;
+
+//		GLfloat left_position[] = {(float)leftEngine.x(), (float)leftEngine.y(), (float)leftEngine.z(), 0.0};
+//		glLightfv(GL_LIGHT5, GL_DIFFUSE, light_right);
+//		glLightfv(GL_LIGHT5, GL_POSITION, left_position);
+//		glEnable(GL_LIGHT5);
+//		glEnable(GL_LIGHTING);
+
         static ParticleEmitter left_particles(leftEngine);
-        left_particles.emitParticles();
+		left_particles.emitParticles(freeCameraPosition);
     glPopMatrix();
     textureEngine.unbind();
 
@@ -304,27 +336,12 @@ void CCanvas::renderCorgi() {
         corgiElevation = corgiElevation * 1.06;
         corgiUltimatePosition = Point3d(0, -corgiElevation-3, 0);
     } else {
-        t += 0.01;
+//        t += 0.01;
         float x = 15*cos(t);
         float z = 15*sin(2*(t));
         corgiUltimatePosition = Point3d(x, -corgiElevation-3, z);
     }
 }
-
-bool freeCamera = true;
-double freeCameraAngleHorizontal=3.0*3.14f/4.0;
-double freeCameraAngleVertical=0.0;
-Point3d freeCameraDirection(cos(freeCameraAngleVertical) * sin(freeCameraAngleHorizontal),
-                            sin(freeCameraAngleVertical),
-                            cos(freeCameraAngleVertical) * cos(freeCameraAngleHorizontal));
-Point3d freeCameraPosition(0, -2, -15);
-Point3d freeCameraRight(1,0,0);
-Point3d freeCameraForward(0, 0, 1);
-Point3d freeCameraUpward(0, 1, 0);
-Point3d freeCameraUp = Point3d(0,1,0);
-
-float speed = 3.0f;
-double deltaTime = 1.0f;
 
 void QWidget::keyPressEvent( QKeyEvent *evt ) {
 
