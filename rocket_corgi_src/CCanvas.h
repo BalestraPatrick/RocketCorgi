@@ -19,10 +19,10 @@
 
 using namespace std;
 
-const string PROJECT_FOLDER = "/Users/patrickbalestra/Documents/Github/RocketCorgi";
+//const string PROJECT_FOLDER = "/Users/patrickbalestra/Documents/Github/RocketCorgi";
 // const string PROJECT_FOLDER = "/Users/luca/Documents/USI/FS_2017/ComputerGraphics/project/RocketCorgi";
 //const string PROJECT_FOLDER = "/Users/BMW/Documents/Git/RocketCorgi";
-//const string PROJECT_FOLDER = "/Users/SusannaChuck/Documents/computer_graphics";
+const string PROJECT_FOLDER = "/Users/SusannaChuck/Documents/computer_graphics";
 //const string PROJECT_FOLDER = "/Users/lara/Documents/USI/5th/ComputerGraphics/Project";
 /************************************************************************/
 /* Canvas to draw                                                       */
@@ -135,6 +135,8 @@ private:
     // The Sun
     Sphere sun;
 
+    int positionCandyX[200];
+    int positionCandyY[200];
 
 	// Model loaded from .ply format
 //    PlyModel modelTrain2;
