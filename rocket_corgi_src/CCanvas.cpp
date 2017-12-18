@@ -207,7 +207,7 @@ float t = 0.0;
 bool launch = false;
 float launchT = 0.1;
 
-Point3d corgiUltimatePosition = Point3d(0, -corgiElevation-3, 0);
+Point3d corgiUltimatePosition = Point3d(0, 0, 0);
 Point3d corgiUltimateDirection = Point3d(0,0,-1);
 
 
@@ -231,9 +231,9 @@ double deltaTime = 1.0f;
 void CCanvas::renderCorgi() {
   glPushMatrix();
 
-    float x = 15*cos(t);
+    float x = 25*(1 - cos(t));
     float y = corgiElevation;
-    float z = 15*sin(2*t);
+    float z = 25*sin(2*t);
     if (launch) {
         z += launchT;
         y += launchT;
@@ -242,10 +242,14 @@ void CCanvas::renderCorgi() {
         z = 0;
     }
     glTranslatef(x, y, z);
-    corgiUltimatePosition = Point3d(x, y, z);
+    corgiUltimatePosition = Point3d(x, -y-3, z);
 
-    glRotatef(90.0f, 0.0f, 0.0f, 0.0f);
-
+    // Initial rotation of model.
+    glRotatef(90.0f, 1.0f, 0.0f, 0.0f);
+    // Rotation back and forth
+    glRotatef(5 * sin(2*t), 1.0f, 0.0f, 0.0f);
+    // Rotation left and right
+    glRotatef(10 * sin(2*t), 0.0f, 1.0f, 0.0f);
 
     glScalef(0.05f, 0.05f, 0.05f);
 
@@ -330,15 +334,23 @@ void CCanvas::renderCorgi() {
          engineRotation -= 1;
     } else if (launch) {
          launchT *= 1.15;
-    } else if (engineRotation < 90) {
+    } else if (engineRotation < 90 && t == 0) {
         engineRotation += 1;
-    } else if (corgiElevation < 10) {
+    } else if (corgiElevation < 20) {
         corgiElevation = corgiElevation * 1.06;
         corgiUltimatePosition = Point3d(0, -corgiElevation-3, 0);
     } else {
+<<<<<<< HEAD
 //        t += 0.01;
         float x = 15*cos(t);
         float z = 15*sin(2*(t));
+=======
+        // 8 movement
+        t += 0.01;
+        float x = 25 * (1 - cos(t));
+        float z = 25 * sin(2 * t);
+        engineRotation = 90 + 30 * sin(2 * t);
+>>>>>>> dd931a47f723466c45e1fd7f5a8f3203de774da5
         corgiUltimatePosition = Point3d(x, -corgiElevation-3, z);
     }
 }
@@ -505,9 +517,9 @@ void CCanvas::paintGL()
     // Draw the objects
     // Draw candy canes
         glPushAttrib(GL_LIGHTING_BIT);
-        Materials::resetDefault();
-        for (int i = -100; i <= 100; i += 20) {
-            for (int j = -100; j <= 100; j += 20) {
+        Materials::setEarthMat();
+        for (int i = -50; i <= 50; i += 20) {
+            for (int j = -50; j <= 50; j += 20) {
                 glPushMatrix();
                 glTranslatef(positionCandyY[i + 100], 0, positionCandyX[j + 100]);
                 glRotatef(((i + j + (i * j))), 0.0f, 1.0f, 0.0f);
@@ -520,9 +532,10 @@ void CCanvas::paintGL()
         glPopAttrib();
 
     // Draw the Earth
+    Materials::setEarthMat();
     glPushMatrix();
-        glScalef(1.0f, 1.00f, 1.00f);
-        glTranslatef(-5, 7, 0);
+        glScalef(10.0f, 10.00f, 10.00f);
+        glTranslatef(-8, 11, -6);
         glRotatef(earthRotation, 0.0f, 1.0f, 0.0f);
         textureEarth.bind();
         earth.draw();
