@@ -214,9 +214,9 @@ Point3d corgiUltimateDirection = Point3d(0,0,-1);
 void CCanvas::renderCorgi() {
   glPushMatrix();
 
-    float x = 15*cos(t);
+    float x = 25*cos(t);
     float y = corgiElevation;
-    float z = 15*sin(2*t);
+    float z = 25*sin(2*t);
     if (launch) {
         z += launchT;
         y += launchT;
@@ -227,8 +227,12 @@ void CCanvas::renderCorgi() {
     glTranslatef(x, y, z);
     corgiUltimatePosition = Point3d(x, y, z);
 
-    glRotatef(90.0f, 0.0f, 0.0f, 0.0f);
-
+    // Initial rotation of model.
+    glRotatef(90.0f, 1.0f, 0.0f, 0.0f);
+    // Rotation back and forth
+    glRotatef(5 * sin(2*t), 1.0f, 0.0f, 0.0f);
+    // Rotation left and right
+    glRotatef(10 * sin(2*t), 0.0f, 1.0f, 0.0f);
 
     glScalef(0.05f, 0.05f, 0.05f);
 
@@ -298,15 +302,17 @@ void CCanvas::renderCorgi() {
          engineRotation -= 1;
     } else if (launch) {
          launchT *= 1.15;
-    } else if (engineRotation < 90) {
+    } else if (engineRotation < 90 && t == 0) {
         engineRotation += 1;
-    } else if (corgiElevation < 10) {
+    } else if (corgiElevation < 20) {
         corgiElevation = corgiElevation * 1.06;
         corgiUltimatePosition = Point3d(0, -corgiElevation-3, 0);
     } else {
+        // 8 movement
         t += 0.01;
-        float x = 15*cos(t);
-        float z = 15*sin(2*(t));
+        float x = 25*cos(t);
+        float z = 25*sin(2*t);
+        engineRotation = 90 + 30 * sin(2*t);
         corgiUltimatePosition = Point3d(x, -corgiElevation-3, z);
     }
 }
