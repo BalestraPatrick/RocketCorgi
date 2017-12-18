@@ -494,7 +494,7 @@ void CCanvas::paintGL()
     // Draw the objects
     // Draw candy canes
         glPushAttrib(GL_LIGHTING_BIT);
-        Materials::resetDefault();
+        Materials::setEarthMat();
         for (int i = -50; i <= 50; i += 20) {
             for (int j = -50; j <= 50; j += 20) {
                 glPushMatrix();
@@ -512,7 +512,7 @@ void CCanvas::paintGL()
     Materials::setEarthMat();
     glPushMatrix();
         glScalef(10.0f, 10.00f, 10.00f);
-        glTranslatef(-5, 7, -6);
+        glTranslatef(-8, 11, -6);
         glRotatef(earthRotation, 0.0f, 1.0f, 0.0f);
         textureEarth.bind();
         earth.draw();
