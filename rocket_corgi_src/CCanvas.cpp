@@ -249,7 +249,7 @@ void CCanvas::renderCorgi() {
     // Rotation back and forth
     glRotatef(5 * sin(2*t), 1.0f, 0.0f, 0.0f);
     // Rotation left and right
-    glRotatef(10 * sin(2*t), 0.0f, 1.0f, 0.0f);
+    glRotatef(10 * -sin(2*t), 0.0f, 1.0f, 0.0f);
 
     glScalef(0.05f, 0.05f, 0.05f);
 
