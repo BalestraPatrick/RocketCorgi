@@ -32,9 +32,9 @@ void generateTerrain(int world_dim) {
         terrainStrips.push_back(PointArray());
         terrainNormals.push_back(PointArray());
             z=0.0;
-            for(int j=0; j<world_dim; j++)
+            for(int j=0; j<2*world_dim; j++)
             {
-                Point3d p = Point3d(cur_x, perlin.octaveNoise(cur_x  * 0.1, (z + 100)  * 0.1, 8) * 2 , z + 100);
+                Point3d p = Point3d(cur_x, perlin.octaveNoise(cur_x  * 0.1, (z + world_dim/2.0)  * 0.1, 8) * 2 , z + world_dim/2.0);
                 Point2d p_xz = Point2d(p.x(), p.z());
                 Point2d off_xy = Point2d(off.x(), off.y());
                 Point2d off_yz = Point2d(off.y(), off.z());

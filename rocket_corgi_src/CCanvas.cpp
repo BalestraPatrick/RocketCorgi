@@ -33,9 +33,9 @@ void CCanvas::initializeGL()
 	 * the default light source is directional, parallel to, and in the direction of the -z axis.
      */
 
-    lightpos[0] = 0.0;
+    lightpos[0] = 200.0;
     lightpos[1] = 350.0;
-    lightpos[2] = 1.0;
+    lightpos[2] = 180.0;
     lightpos[3] = 1.0;
     glLightfv(GL_LIGHT0, GL_POSITION, lightpos);
     GLfloat lightAmb[]  = {0.3, 0.3, 0.3, 1.0};
@@ -69,7 +69,7 @@ void CCanvas::initializeGL()
     earth.init();
     ocean.init();
 
-    Terrain::generateTerrain(600);
+    Terrain::generateTerrain(500);
     // Setup the skybox(es)
     skyCloud.init();
     skyGalaxy.init();
@@ -484,6 +484,7 @@ void CCanvas::paintGL()
         Materials::setSkyMat();
         glPushMatrix();
             glScalef(450.0, 450.0, 450.0);
+//            glTranslatef(0.0, 150.0, 0.0);
                 skyGalaxy.draw();
             //    skyCloud.draw();
         glPopMatrix();
