@@ -34,8 +34,8 @@ void CCanvas::initializeGL()
      */
 
     lightpos[0] = 400.0;
-    lightpos[1] = 350.0;
-    lightpos[2] = 80.0;
+    lightpos[1] = 450.0;
+    lightpos[2] = 180.0;
     lightpos[3] = 1.0;
     glLightfv(GL_LIGHT0, GL_POSITION, lightpos);
     GLfloat lightAmb[]  = {0.3, 0.3, 0.3, 1.0};
@@ -439,6 +439,9 @@ void CCanvas::paintGL()
 	glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
 
+    // Setup the current view
+    freeCamera ? setView(View::Perspective) : setView(View::Cockpit);
+
     /****************************************************************
     * Light position should be called here, after the lookAt to have a global light position (i.e. it does not move with camera)
     * The position is set in initialiyzeGL and stored in global variable so that also other functions can access it.
@@ -449,8 +452,7 @@ void CCanvas::paintGL()
 
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
-	// Setup the current view
-    freeCamera ? setView(View::Perspective) : setView(View::Cockpit);
+
 
     GLfloat matrix[16];
     glGetFloatv (GL_MODELVIEW_MATRIX, matrix);
