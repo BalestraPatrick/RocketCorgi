@@ -293,7 +293,7 @@ void CCanvas::renderCorgi() {
         Point3d rightEngine = engineRightFromOrigin;
         rightEngine.y() -= 25;
 
-//		GLfloat light_right[] = {0.5, 0.5, 0.0, 0.3};
+//		GLfloat light_right[] = {0.5, 0.5, 0.5, 0.3};
 //		GLfloat right_position[] = {(float)rightEngine.x(), (float)rightEngine.y(), (float)rightEngine.z(), 0.0};
 //		glLightfv(GL_LIGHT6, GL_DIFFUSE, light_right);
 //		glLightfv(GL_LIGHT6, GL_POSITION, right_position);
@@ -340,17 +340,11 @@ void CCanvas::renderCorgi() {
         corgiElevation = corgiElevation * 1.06;
         corgiUltimatePosition = Point3d(0, -corgiElevation-3, 0);
     } else {
-<<<<<<< HEAD
-//        t += 0.01;
-        float x = 15*cos(t);
-        float z = 15*sin(2*(t));
-=======
         // 8 movement
         t += 0.01;
         float x = 25 * (1 - cos(t));
         float z = 25 * sin(2 * t);
         engineRotation = 90 + 30 * sin(2 * t);
->>>>>>> dd931a47f723466c45e1fd7f5a8f3203de774da5
         corgiUltimatePosition = Point3d(x, -corgiElevation-3, z);
     }
 }
