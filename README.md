@@ -1,2 +1,4 @@
-# RocketCorgi
-A flying corgi on a rocket project for our Computer Graphics course project. 🐶🚀
+# 🐶 🚀 Rocket Corgi
+A flying corgi with a rocket jetpack as our Computer Graphics final project. 
+
+<p align="center"><img src="demo.png"/></p>
